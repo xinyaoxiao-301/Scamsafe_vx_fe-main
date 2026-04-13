@@ -169,6 +169,110 @@
   gap: 14px;
 }
 
+.scam-detection-page__result-top {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+}
+
+.scam-detection-page__risk-box {
+  width: min(100%, 170px);
+  aspect-ratio: 1 / 1;
+  border-radius: 26px;
+  border: 1px solid rgba(17, 38, 58, 0.14);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 14px;
+  box-shadow: 0 16px 28px rgba(17, 38, 61, 0.08);
+}
+
+.scam-detection-page__risk-box-label {
+  font-weight: 950;
+  letter-spacing: -0.05em;
+  font-size: calc(1.18rem * var(--sd-scale));
+  line-height: 1.05;
+}
+
+.scam-detection-page__risk-box-sub {
+  margin-top: 4px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  font-size: calc(0.75rem * var(--sd-scale));
+  opacity: 0.9;
+}
+
+.scam-detection-page__risk-box-pct {
+  margin-top: 2px;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  font-size: calc(1.05rem * var(--sd-scale));
+}
+
+.scam-detection-page__risk-box--very-low {
+  border-color: rgba(15, 74, 42, 0.24);
+  background: rgba(39, 174, 96, 0.14);
+  color: rgba(17, 38, 58, 0.92);
+}
+
+.scam-detection-page__risk-box--low {
+  border-color: rgba(13, 79, 179, 0.22);
+  background: rgba(19, 108, 242, 0.12);
+  color: var(--accent-strong);
+}
+
+.scam-detection-page__risk-box--medium {
+  border-color: rgba(107, 75, 0, 0.26);
+  background: rgba(255, 196, 0, 0.2);
+  color: rgba(17, 38, 58, 0.92);
+}
+
+.scam-detection-page__risk-box--high {
+  border-color: rgba(184, 74, 38, 0.35);
+  background: linear-gradient(180deg, rgba(211, 84, 0, 0.95), rgba(184, 74, 38, 0.95));
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.scam-detection-page__risk-box--very-high {
+  border-color: rgba(255, 0, 0, 0.55);
+  background: linear-gradient(180deg, rgba(255, 0, 0, 0.96), rgba(176, 0, 0, 0.96));
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.scam-detection-page__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.scam-detection-page__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 38, 58, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--muted-strong);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-size: calc(0.95rem * var(--sd-scale));
+}
+
+.scam-detection-page__pill--bad {
+  border-color: rgba(176, 0, 32, 0.32);
+  background: rgba(176, 0, 32, 0.12);
+  color: #7d1e1e;
+}
+
+.scam-detection-page__pill--good {
+  border-color: rgba(13, 79, 179, 0.22);
+  background: rgba(19, 108, 242, 0.12);
+  color: var(--accent-strong);
+}
+
 .scam-detection-page__result-verdict {
   margin: 0;
   color: var(--text);

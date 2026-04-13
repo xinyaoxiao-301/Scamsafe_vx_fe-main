@@ -182,17 +182,36 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
             ) : result ? (
               <>
                 <div className="scam-detection-page__result-top">
-                  <p className="scam-detection-page__result-verdict">
-                    {result.isScam ? s.resultVerdictScam : s.resultVerdictNotScam}
-                  </p>
-                  <p className="scam-detection-page__result-meta">
-                    {s.resultRiskLabel}: <strong>{s.riskLabels[result.riskLevel]}</strong>
-                    {result.isScam ? (
-                      <>
-                        {' '}• {s.resultTypeLabel}: <strong>{s.typeLabels[result.scamType]}</strong>
-                      </>
-                    ) : null}
-                  </p>
+                  <div
+                    className={[
+                      'scam-detection-page__risk-box',
+                      `scam-detection-page__risk-box--${result.riskLevel.toLowerCase().replace(' ', '-')}`,
+                    ].join(' ')}
+                    aria-hidden="true"
+                  >
+                    <div className="scam-detection-page__risk-box-label">
+                      {s.riskLabels[result.riskLevel]}
+                    </div>
+                    <div className="scam-detection-page__risk-box-sub">RISK</div>
+                    <div className="scam-detection-page__risk-box-pct">
+                      {Math.round(result.confidencePct)}%
+                    </div>
+                  </div>
+
+                  <div className="scam-detection-page__pills" aria-label="Result tags">
+                    <span className="scam-detection-page__pill">
+                      {s.resultTypeLabel}: <strong>{s.typeLabels[result.scamType]}</strong>
+                    </span>
+                    <span
+                      className={
+                        result.isScam
+                          ? 'scam-detection-page__pill scam-detection-page__pill--bad'
+                          : 'scam-detection-page__pill scam-detection-page__pill--good'
+                      }
+                    >
+                      {result.isScam ? s.resultVerdictScam : s.resultVerdictNotScam}
+                    </span>
+                  </div>
                 </div>
 
                 <p className="scam-detection-page__summary">{result.summary}</p>
