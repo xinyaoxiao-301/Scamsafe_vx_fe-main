@@ -320,6 +320,20 @@
   font-size: calc(0.98rem * var(--sd-scale));
 }
 
+.scam-detection-page__guidance-item {
+  font-weight: 400;
+}
+
+.scam-detection-page__guidance-first {
+  color: #c70022;
+  font-weight: 900;
+}
+
+.scam-detection-page__guidance-rest {
+  color: inherit;
+  font-weight: 400;
+}
+
 .scam-detection-page__error {
   margin-top: 12px;
   padding: 12px 14px;

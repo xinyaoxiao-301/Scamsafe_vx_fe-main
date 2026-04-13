@@ -69,6 +69,21 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
     setShowModal(false)
   }
 
+  const renderGuidanceStep = (step: string) => {
+    const trimmed = step.trim()
+    if (!trimmed) return null
+    const firstSpace = trimmed.search(/\s/)
+    const firstWord = firstSpace === -1 ? trimmed : trimmed.slice(0, firstSpace)
+    const rest = firstSpace === -1 ? '' : trimmed.slice(firstSpace)
+
+    return (
+      <>
+        <span className="scam-detection-page__guidance-first">{firstWord}</span>
+        <span className="scam-detection-page__guidance-rest">{rest}</span>
+      </>
+    )
+  }
+
   return (
     <main className="scam-detection-page" aria-label={s.pageLabel}>
 
@@ -231,10 +246,12 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
 
                 {result.guidance.length ? (
                   <div className="scam-detection-page__block">
-                    <h3 className="scam-detection-page__h3">{s.guidanceTitle}</h3>
+                    <h3 className="scam-detection-page__h3">Smart Guidance</h3>
                     <ol className="scam-detection-page__list">
                       {result.guidance.map((step, i) => (
-                        <li key={i}>{step}</li>
+                        <li key={i} className="scam-detection-page__guidance-item">
+                          {renderGuidanceStep(step)}
+                        </li>
                       ))}
                     </ol>
                   </div>
