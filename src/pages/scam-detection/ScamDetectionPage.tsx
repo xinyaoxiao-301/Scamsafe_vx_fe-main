@@ -89,9 +89,13 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
     setError(null)
   }
 
-  const renderGuidanceStep = (step: string) => {
+  const renderGuidanceStep = (step: string, riskLevel: ScamAnalysis['riskLevel']) => {
     const trimmed = step.trim()
     if (!trimmed) return null
+
+    if (riskLevel === 'Very Low' || riskLevel === 'Low') {
+      return <span className="scam-detection-page__guidance-rest">{trimmed}</span>
+    }
 
     const prefixes = (s.highlightPrefixes ?? [])
       .map((p) => p.trim())
@@ -281,7 +285,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                     <ul className="scam-detection-page__list">
                       {result.guidance.map((step, i) => (
                         <li key={i} className="scam-detection-page__guidance-item">
-                          {renderGuidanceStep(step)}
+                          {renderGuidanceStep(step, result.riskLevel)}
                         </li>
                       ))}
                     </ul>
