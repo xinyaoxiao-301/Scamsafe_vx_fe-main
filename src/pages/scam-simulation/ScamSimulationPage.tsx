@@ -264,7 +264,30 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
               <header className="scam-simulation-page__phone-header">
                 <div className="scam-simulation-page__phone-left" aria-hidden="true">
                   <div className="scam-simulation-page__bot-avatar">
-                    <span className="scam-simulation-page__bot-face">AI</span>
+                    <span className="sr-only">AI</span>
+                    <svg
+                      className="scam-simulation-page__bot-icon"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path
+                        d="M10.2 3.5a1.8 1.8 0 0 1 3.6 0v1.2h2.1a3.6 3.6 0 0 1 3.6 3.6v8.4a3.6 3.6 0 0 1-3.6 3.6H8.1a3.6 3.6 0 0 1-3.6-3.6V8.3a3.6 3.6 0 0 1 3.6-3.6h2.1V3.5ZM8.1 6.7a1.6 1.6 0 0 0-1.6 1.6v8.4a1.6 1.6 0 0 0 1.6 1.6h7.8a1.6 1.6 0 0 0 1.6-1.6V8.3a1.6 1.6 0 0 0-1.6-1.6H8.1Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M9.2 11.1a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2Zm5.6 0a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M8.7 14.4c.9.9 2 1.3 3.3 1.3s2.4-.4 3.3-1.3a1 1 0 1 0-1.4-1.4c-.5.5-1.2.7-1.9.7s-1.4-.2-1.9-.7a1 1 0 0 0-1.4 1.4Z"
+                        fill="currentColor"
+                      />
+                      <path
+                        d="M12 2.2a1 1 0 0 1 1 1v1.6a1 1 0 1 1-2 0V3.2a1 1 0 0 1 1-1Z"
+                        fill="currentColor"
+                      />
+                    </svg>
                   </div>
                   <p className="scam-simulation-page__phone-title">
                     {scenarioType ? SCENARIO_LABELS[scenarioType] : s.phoneDefaultTitle}
