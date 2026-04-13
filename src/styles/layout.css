@@ -45,7 +45,7 @@
   top: 0;
   min-height: 0;
   padding: 0 16px 8px;
-  margin: -2px -14px 4px;
+  margin: 0 -14px 12px;
   background: #ffffff;
   color: var(--muted-strong);
   box-shadow: inset 0 -1px 0 rgba(19, 108, 242, 0.12);
@@ -523,7 +523,7 @@
 }
 
 .app-footer {
-  margin-top: var(--space-7);
+  margin-top: calc(var(--space-7) + 16px);
   padding: 22px 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.14);
   background: #d1cfcf;
@@ -858,7 +858,7 @@
   .app-shell__brand {
     min-height: 0;
     padding: 0 24px 10px;
-    margin: -3px calc(var(--space-5) * -1) 4px;
+    margin: 0 calc(var(--space-5) * -1) 12px;
   }
 
   .app-shell__brand-mark {

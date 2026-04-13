@@ -150,7 +150,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
             </div>
           }
         >
-          <div className="scam-detection-page__textarea-wrapper">
+          <div className="scam-detection-page__textarea-wrap">
             <label className="scam-detection-page__label" htmlFor="scam-input">
               {s.messageLabel}
             </label>
@@ -166,7 +166,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
             />
             <p
               id="scam-input-meta"
-              className={`scam-detection-page__meta${isOverLimit ? ' scam-detection-page__meta--error' : ''}`}
+              className={`scam-detection-page__counter${isOverLimit ? ' scam-detection-page__counter--bad' : ''}`}
             >
               {isOverLimit
                 ? s.wordLimitExceeded(WORD_LIMIT, wordCount)
