@@ -35,14 +35,32 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   const listRef        = useRef<HTMLDivElement | null>(null)
   const recognitionRef = useRef<any>(null)
+  const shouldAutoScrollRef = useRef(true)
 
   const performance = getPerformance()
 
   // English only — simulation is API-backed via Groq + RAG
   const isApiMode = language === 'en'
 
+  const updateAutoScrollFlag = () => {
+    const el = listRef.current
+    if (!el) return
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+    shouldAutoScrollRef.current = distanceFromBottom < 48
+  }
+
   useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
+    const el = listRef.current
+    if (!el) return
+    updateAutoScrollFlag()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    const el = listRef.current
+    if (!el) return
+    if (!shouldAutoScrollRef.current) return
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
   }, [messages, isBotTyping])
 
   useEffect(() => {
@@ -296,7 +314,12 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 </p>
               </header>
 
-              <div className="scam-simulation-page__messages" ref={listRef} aria-label={s.messagesLabel}>
+              <div
+                className="scam-simulation-page__messages"
+                ref={listRef}
+                aria-label={s.messagesLabel}
+                onScroll={updateAutoScrollFlag}
+              >
                 {scenarioType ? (
                   <>
                     {messages.map((message) => (
