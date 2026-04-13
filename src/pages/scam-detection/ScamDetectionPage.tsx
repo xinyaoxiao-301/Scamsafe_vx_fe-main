@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import type { ClipboardEvent } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
@@ -76,6 +77,16 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
     setResult(null)
     setError(null)
     setShowModal(false)
+  }
+
+  const handleTextareaPaste = (event: ClipboardEvent<HTMLTextAreaElement>) => {
+    const pasted = event.clipboardData?.getData('text') ?? ''
+    if (!pasted || pasted.trim().length === 0) {
+      event.preventDefault()
+      setError(s.errorPasteEmpty)
+      return
+    }
+    setError(null)
   }
 
   const renderGuidanceStep = (step: string) => {
@@ -182,6 +193,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                 placeholder={s.messagePlaceholder}
                 value={text}
                 onChange={(e) => { setText(e.target.value); setError(null) }}
+                onPaste={handleTextareaPaste}
                 disabled={isLoading}
                 aria-describedby="scam-input-meta"
               />
