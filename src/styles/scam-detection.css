@@ -195,7 +195,7 @@
   color: var(--muted-strong);
   font-weight: 900;
   letter-spacing: -0.03em;
-  font-size: calc(1.05rem * var(--sd-scale));
+  font-size: calc(0.92rem * var(--sd-scale));
 }
 
 .scam-detection-page__list {
@@ -205,7 +205,7 @@
   color: var(--muted);
   line-height: 1.6;
   font-weight: 650;
-  font-size: calc(0.98rem * var(--sd-scale));
+  font-size: calc(0.88rem * var(--sd-scale));
 }
 
 .scam-detection-page__muted {
