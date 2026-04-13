@@ -214,8 +214,8 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                   </div>
 
                   <div className="scam-detection-page__pills" aria-label="Result tags">
-                    <span className="scam-detection-page__pill">
-                      {s.resultTypeLabel}:{' '}
+                    <span className="scam-detection-page__pill scam-detection-page__pill--type">
+                      <span>{s.resultTypeLabel}:</span>
                       <strong>{s.typeLabels[result.scamType]}</strong>
                     </span>
                     <span

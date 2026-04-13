@@ -261,6 +261,10 @@
   font-size: calc(0.95rem * var(--sd-scale));
 }
 
+.scam-detection-page__pill--type {
+  gap: 6px;
+}
+
 .scam-detection-page__pill--bad {
   border-color: rgba(176, 0, 32, 0.32);
   background: rgba(176, 0, 32, 0.12);
