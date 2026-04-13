@@ -53,9 +53,18 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
 
   const handlePaste = async () => {
     try {
+      if (!navigator.clipboard?.readText) {
+        setError(s.errorPasteUnavailable)
+        return
+      }
+
       const pasted = await navigator.clipboard.readText()
-      if (!pasted) { setError(s.errorPasteEmpty); return }
-      setText(pasted)
+      if (!pasted || pasted.trim().length === 0) {
+        setError(s.errorPasteEmpty)
+        return
+      }
+
+      setText(pasted.trim())
       setError(null)
     } catch {
       setError(s.errorPasteUnavailable)
