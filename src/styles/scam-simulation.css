@@ -172,7 +172,7 @@
 .scam-simulation-page__phone-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
+  align-items: baseline;
   gap: 12px;
   padding: 12px 12px;
   border-bottom: 1px solid rgba(17, 38, 58, 0.12);
@@ -180,7 +180,8 @@
 }
 
 .scam-simulation-page__phone-left {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
   gap: 10px;
   min-width: 0;
@@ -202,6 +203,7 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   white-space: normal;
+  align-self: baseline;
 }
 
 .scam-simulation-page__phone-time {
