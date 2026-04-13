@@ -361,6 +361,36 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
           {/* AI feedback */}
           {aiFeedback && (
             <div className="scam-simulation-page__feedback" aria-label={s.feedbackLabel}>
+              <div className="scam-simulation-page__feedback-summary" aria-label="Simulation summary">
+                <div
+                  className={
+                    lastOutcome === 'risky'
+                      ? 'scam-simulation-page__risk-box scam-simulation-page__risk-box--high'
+                      : 'scam-simulation-page__risk-box scam-simulation-page__risk-box--low'
+                  }
+                  aria-hidden="true"
+                >
+                  <span className="scam-simulation-page__risk-label">
+                    {lastOutcome === 'risky' ? 'High risk' : 'Low risk'}
+                  </span>
+                </div>
+                <div className="scam-simulation-page__feedback-pills">
+                  {scenarioType ? (
+                    <span className="scam-simulation-page__pill">
+                      Type: <strong>{SCENARIO_LABELS[scenarioType]}</strong>
+                    </span>
+                  ) : null}
+                  <span
+                    className={
+                      lastOutcome === 'risky'
+                        ? 'scam-simulation-page__pill scam-simulation-page__pill--bad'
+                        : 'scam-simulation-page__pill scam-simulation-page__pill--good'
+                    }
+                  >
+                    {lastOutcome === 'risky' ? 'Scam' : 'Safe'}
+                  </span>
+                </div>
+              </div>
               <div
                 className={
                   lastOutcome === 'risky'
