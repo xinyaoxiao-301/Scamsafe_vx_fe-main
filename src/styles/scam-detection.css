@@ -308,7 +308,7 @@
   padding-left: 1.2rem;
   color: var(--muted);
   line-height: 1.6;
-  font-weight: 650;
+  font-weight: 400;
   font-size: calc(0.88rem * var(--sd-scale));
 }
 
