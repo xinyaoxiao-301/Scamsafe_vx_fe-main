@@ -1,0 +1,1 @@
+export { ScamSimulationPage } from './ScamSimulationPage'

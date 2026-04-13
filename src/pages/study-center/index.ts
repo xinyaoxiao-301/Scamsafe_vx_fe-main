@@ -1,0 +1,1 @@
+export { StudyCenterPage } from './StudyCenterPage'

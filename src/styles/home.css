@@ -1,0 +1,233 @@
+.home-page {
+  display: grid;
+  gap: 0;
+  min-height: auto;
+  align-content: start;
+  padding-top: 0;
+}
+
+.feature-launchpad-shell {
+  border: 1px solid rgba(19, 108, 242, 0.14);
+  border-radius: 26px;
+  background: transparent;
+  box-shadow: none;
+  padding: 14px;
+  display: grid;
+  gap: 14px;
+}
+
+.feature-launchpad {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.feature-launchpad__lead {
+  display: grid;
+  gap: 6px;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(19, 108, 242, 0.12);
+}
+
+.feature-launchpad__lead-eyebrow {
+  color: var(--accent-strong);
+  font-size: 0.92rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.feature-launchpad__lead-title {
+  color: var(--text);
+  font-size: 1.55rem;
+  font-weight: 950;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.feature-launchpad__lead-helper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 2px;
+  color: var(--accent-strong);
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.feature-launchpad__lead-helper-before {
+  display: inline;
+}
+
+.feature-launchpad__lead-helper-after {
+  display: inline;
+}
+
+.feature-launchpad__lead-helper-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-strong);
+  font-weight: 950;
+  white-space: nowrap;
+}
+
+.feature-launchpad__lead-helper-action::after {
+  content: '';
+  display: inline-block;
+  margin-left: 6px;
+  width: 14px;
+  height: 14px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  border-radius: 2px;
+  line-height: 1;
+  transform: rotate(45deg);
+  animation: feature-launchpad-hint 1800ms ease-in-out infinite;
+}
+
+@keyframes feature-launchpad-hint {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(-2px) rotate(45deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(2px) rotate(45deg);
+  }
+}
+
+.feature-launchpad__item {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  min-height: 146px;
+  padding: 14px 14px 14px;
+  border: 1px solid rgba(19, 108, 242, 0.14);
+  border-radius: 24px;
+  background: linear-gradient(180deg, #eef4ff 0%, #ffffff 100%);
+  box-shadow:
+    0 12px 24px rgba(17, 38, 61, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.feature-launchpad__heading {
+  display: grid;
+  gap: 2px;
+  align-content: start;
+  text-align: center;
+}
+
+.feature-launchpad__icon {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto;
+  border-radius: 18px;
+  border: 1px solid rgba(19, 108, 242, 0.14);
+  background: linear-gradient(180deg, rgba(19, 108, 242, 0.12), rgba(19, 108, 242, 0.04));
+  color: var(--accent-strong);
+}
+
+.feature-launchpad__icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feature-launchpad__title {
+  color: var(--accent-strong);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.feature-launchpad__subtitle {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.22rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+  text-transform: none;
+}
+
+.feature-launchpad__subtitle--wide {
+  font-size: 1.22rem;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+}
+
+.feature-anchors {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .home-page {
+    min-height: auto;
+    padding-top: 0;
+  }
+
+  .feature-launchpad-shell {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .feature-launchpad {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .feature-launchpad__lead {
+    gap: 8px;
+    padding-bottom: 14px;
+  }
+
+  .feature-launchpad__lead-title {
+    font-size: 1.75rem;
+  }
+
+  .feature-launchpad__item {
+    min-height: 160px;
+    padding: 16px;
+  }
+
+  .feature-launchpad__icon {
+    width: 62px;
+    height: 62px;
+  }
+
+  .feature-launchpad__subtitle {
+    font-size: 1.28rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .feature-launchpad__lead-helper {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.92rem;
+    line-height: 1.25;
+  }
+
+  .feature-launchpad__lead-helper-before {
+    max-width: 100%;
+  }
+
+  .feature-launchpad__lead-helper-action {
+    font-size: 1em;
+  }
+}

@@ -1,0 +1,1 @@
+export { PostScamSupportPage } from './PostScamSupportPage'
