@@ -72,13 +72,22 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
   const renderGuidanceStep = (step: string) => {
     const trimmed = step.trim()
     if (!trimmed) return null
+
+    const prefixes = (s.highlightPrefixes ?? [])
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .sort((a, b) => b.length - a.length)
+
+    const matched = prefixes.find((prefix) => trimmed.toLowerCase().startsWith(prefix.toLowerCase()))
+
     const firstSpace = trimmed.search(/\s/)
-    const firstWord = firstSpace === -1 ? trimmed : trimmed.slice(0, firstSpace)
-    const rest = firstSpace === -1 ? '' : trimmed.slice(firstSpace)
+    const fallbackFirst = firstSpace === -1 ? trimmed : trimmed.slice(0, firstSpace)
+    const highlight = matched ?? fallbackFirst
+    const rest = trimmed.slice(highlight.length)
 
     return (
       <>
-        <span className="scam-detection-page__guidance-first">{firstWord}</span>
+        <span className="scam-detection-page__guidance-first">{highlight}</span>
         <span className="scam-detection-page__guidance-rest">{rest}</span>
       </>
     )
