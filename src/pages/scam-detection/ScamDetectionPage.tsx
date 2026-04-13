@@ -72,6 +72,12 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
   return (
     <main className="scam-detection-page" aria-label={s.pageLabel}>
 
+      <header className="scam-detection-page__header">
+        <p className="scam-detection-page__eyebrow">{s.headerEyebrow}</p>
+        <h1 className="scam-detection-page__title">{s.title}</h1>
+        <p className="scam-detection-page__lede">{s.lede}</p>
+      </header>
+
       {/* ── High-risk modal ───────────────────────────────────────────── */}
       {showModal && (
         <div className="scam-detection-page__modal" role="alertdialog" aria-modal="true">
@@ -122,6 +128,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                 onClick={handleAnalyze}
                 disabled={!canAnalyze}
                 aria-busy={isLoading}
+                className="scam-detection-page__analyze"
               >
                 {isLoading ? s.analyzing : s.analyze}
               </Button>
@@ -133,7 +140,11 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                   {s.clear}
                 </Button>
               )}
-              <Button variant="secondary" onClick={onBackHome}>
+              <Button
+                variant="secondary"
+                onClick={onBackHome}
+                className="scam-detection-page__back"
+              >
                 {strings.common.backToHome}
               </Button>
             </div>
