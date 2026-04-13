@@ -247,13 +247,13 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                 {result.guidance.length ? (
                   <div className="scam-detection-page__block">
                     <h3 className="scam-detection-page__h3">Smart Guidance</h3>
-                    <ol className="scam-detection-page__list">
+                    <ul className="scam-detection-page__list">
                       {result.guidance.map((step, i) => (
                         <li key={i} className="scam-detection-page__guidance-item">
                           {renderGuidanceStep(step)}
                         </li>
                       ))}
-                    </ol>
+                    </ul>
                   </div>
                 ) : null}
               </>
