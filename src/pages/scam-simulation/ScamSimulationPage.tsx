@@ -32,7 +32,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const [lastOutcome,   setLastOutcome]   = useState<'safe' | 'risky' | null>(null)
   const [isListening,   setIsListening]   = useState(false)
   const [now,           setNow]           = useState(() => new Date())
-  const [isPinnedToBottom, setIsPinnedToBottom] = useState(true)
 
   const listRef        = useRef<HTMLDivElement | null>(null)
   const recognitionRef = useRef<any>(null)
@@ -43,9 +42,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const isApiMode = language === 'en'
 
   useEffect(() => {
-    if (!isPinnedToBottom) return
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, isBotTyping, isPinnedToBottom])
+  }, [messages, isBotTyping])
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 30_000)
@@ -56,13 +54,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const timeLabel  = new Intl.DateTimeFormat(timeLocale, {
     month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit',
   }).format(now)
-
-  const handleMessagesScroll = () => {
-    const el = listRef.current
-    if (!el) return
-    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
-    setIsPinnedToBottom(distanceFromBottom < 40)
-  }
 
   // ── Voice input ─────────────────────────────────────────────────────────────
   const handleVoiceInput = () => {
@@ -305,12 +296,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 </p>
               </header>
 
-              <div
-                className="scam-simulation-page__messages"
-                ref={listRef}
-                aria-label={s.messagesLabel}
-                onScroll={handleMessagesScroll}
-              >
+              <div className="scam-simulation-page__messages" ref={listRef} aria-label={s.messagesLabel}>
                 {scenarioType ? (
                   <>
                     {messages.map((message) => (
