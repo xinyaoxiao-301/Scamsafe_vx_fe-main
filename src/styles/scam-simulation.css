@@ -150,7 +150,7 @@
 }
 
 .scam-simulation-page__phone {
-  width: clamp(290px, 92vw, 420px);
+  width: clamp(320px, 96vw, 480px);
   max-width: 100%;
   margin: 0 auto;
   border-radius: 28px;
