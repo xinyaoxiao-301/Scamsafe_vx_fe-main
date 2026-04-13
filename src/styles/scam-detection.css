@@ -4,6 +4,7 @@
   gap: var(--space-5);
   align-content: start;
   padding-top: clamp(16px, 5vh, 64px);
+  padding-bottom: var(--space-7);
 }
 
 .scam-detection-page__header {
