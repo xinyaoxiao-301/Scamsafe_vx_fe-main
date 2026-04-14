@@ -231,19 +231,27 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
             ) : result ? (
               <>
                 <div className="scam-detection-page__result-top">
-                  <div
-                    className={[
-                      'scam-detection-page__risk-box',
-                      `scam-detection-page__risk-box--${result.riskLevel.toLowerCase().replace(' ', '-')}`,
-                    ].join(' ')}
-                    aria-hidden="true"
-                  >
-                    <div className="scam-detection-page__risk-box-label">
-                      {s.riskLabels[result.riskLevel]}
+                  <div className="scam-detection-page__risk-wrap">
+                    <div
+                      className={[
+                        'scam-detection-page__risk-box',
+                        `scam-detection-page__risk-box--${result.riskLevel.toLowerCase().replace(' ', '-')}`,
+                      ].join(' ')}
+                    >
+                      <div className="scam-detection-page__risk-box-risk">
+                        {s.riskLabels[result.riskLevel]} risk
+                      </div>
+
+                      <div className="scam-detection-page__risk-box-metric">
+                        <div className="scam-detection-page__risk-box-pct">
+                          {Math.round(result.confidencePct)}%
+                        </div>
+                        <div className="scam-detection-page__risk-box-caption">confidence</div>
+                      </div>
                     </div>
-                    <div className="scam-detection-page__risk-box-sub">RISK</div>
-                    <div className="scam-detection-page__risk-box-pct">
-                      {Math.round(result.confidencePct)}%
+
+                    <div className="scam-detection-page__risk-sentence-pill" role="note">
+                      We’re {Math.round(result.confidencePct)}% confident this message is {s.riskLabels[result.riskLevel]} risk.
                     </div>
                   </div>
 

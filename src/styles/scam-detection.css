@@ -175,38 +175,72 @@
   gap: 12px;
 }
 
+.scam-detection-page__risk-wrap {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+}
+
 .scam-detection-page__risk-box {
   width: min(100%, 170px);
   aspect-ratio: 1 / 1;
   border-radius: 26px;
   border: 1px solid rgba(17, 38, 58, 0.14);
   display: grid;
-  place-content: center;
+  align-content: center;
+  justify-items: center;
+  gap: 8px;
   text-align: center;
   padding: 14px;
   box-shadow: 0 16px 28px rgba(17, 38, 61, 0.08);
 }
 
-.scam-detection-page__risk-box-label {
-  font-weight: 950;
-  letter-spacing: -0.05em;
-  font-size: calc(1.18rem * var(--sd-scale));
-  line-height: 1.05;
-}
-
-.scam-detection-page__risk-box-sub {
-  margin-top: 4px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  font-size: calc(0.75rem * var(--sd-scale));
-  opacity: 0.9;
+.scam-detection-page__risk-box-metric {
+  display: grid;
+  justify-items: center;
 }
 
 .scam-detection-page__risk-box-pct {
-  margin-top: 2px;
   font-weight: 950;
   letter-spacing: -0.03em;
-  font-size: calc(1.05rem * var(--sd-scale));
+  font-size: calc(1.35rem * var(--sd-scale));
+  line-height: 1;
+}
+
+.scam-detection-page__risk-box-caption {
+  margin-top: 2px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: calc(0.7rem * var(--sd-scale));
+  opacity: 0.88;
+}
+
+.scam-detection-page__risk-box-risk {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 38, 58, 0.14);
+  background: rgba(255, 255, 255, 0.78);
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  font-size: calc(0.88rem * var(--sd-scale));
+  line-height: 1.1;
+}
+
+.scam-detection-page__risk-sentence-pill {
+  max-width: 44ch;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 38, 58, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--muted-strong);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  font-size: calc(0.92rem * var(--sd-scale));
+  box-shadow: 0 14px 26px rgba(17, 38, 61, 0.06);
 }
 
 .scam-detection-page__risk-box--very-low {
@@ -231,6 +265,20 @@
   border-color: rgba(184, 74, 38, 0.35);
   background: linear-gradient(180deg, rgba(211, 84, 0, 0.95), rgba(184, 74, 38, 0.95));
   color: rgba(255, 255, 255, 0.98);
+}
+
+.scam-detection-page__risk-box--high .scam-detection-page__risk-box-risk,
+.scam-detection-page__risk-box--very-high .scam-detection-page__risk-box-risk {
+  border-color: rgba(255, 255, 255, 0.26);
+  background: rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.scam-detection-page__risk-wrap:has(.scam-detection-page__risk-box--high) .scam-detection-page__risk-sentence-pill,
+.scam-detection-page__risk-wrap:has(.scam-detection-page__risk-box--very-high) .scam-detection-page__risk-sentence-pill {
+  border-color: rgba(176, 0, 32, 0.22);
+  background: rgba(176, 0, 32, 0.08);
+  color: #7d1e1e;
 }
 
 .scam-detection-page__risk-box--very-high {
