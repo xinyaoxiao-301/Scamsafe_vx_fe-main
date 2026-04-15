@@ -198,7 +198,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
           {
             id:        `bot-${Date.now()}`,
             from:      'bot',
-            text:      result.bot_reply,
+            text:      result.bot_reply ?? '',
             timestamp: Date.now(),
           },
         ])
