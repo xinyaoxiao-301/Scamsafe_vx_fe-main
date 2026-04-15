@@ -43,8 +43,9 @@ export type SimulationStartResult = {
 
 /** POST /api/simulate/message */
 export type SimulationMessageResult = {
-  bot_reply:     string
+  bot_reply:     string | null
   fell_for_scam: boolean
+  session_ended: boolean 
   feedback:      string | null
 }
 
