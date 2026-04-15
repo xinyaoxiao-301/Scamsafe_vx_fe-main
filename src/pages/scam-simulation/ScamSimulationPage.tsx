@@ -35,32 +35,14 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   const listRef        = useRef<HTMLDivElement | null>(null)
   const recognitionRef = useRef<any>(null)
-  const shouldAutoScrollRef = useRef(true)
 
   const performance = getPerformance()
 
   // English only — simulation is API-backed via Groq + RAG
   const isApiMode = language === 'en'
 
-  const updateAutoScrollFlag = () => {
-    const el = listRef.current
-    if (!el) return
-    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
-    shouldAutoScrollRef.current = distanceFromBottom < 48
-  }
-
   useEffect(() => {
-    const el = listRef.current
-    if (!el) return
-    updateAutoScrollFlag()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  useEffect(() => {
-    const el = listRef.current
-    if (!el) return
-    if (!shouldAutoScrollRef.current) return
-    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
   }, [messages, isBotTyping])
 
   useEffect(() => {
@@ -192,7 +174,12 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
         setLastOutcome('risky')
         recordPerformance(scenarioType, 'risky')
         setIsFinished(true)
-      } else {
+      } else if (result.session_ended) {
+        setAiFeedback(result.feedback)
+        setLastOutcome('safe')
+        recordPerformance(scenarioType, 'safe')
+        setIsFinished(true)
+      } else if (result.bot_reply) {
         setMessages((current) => [
           ...current,
           {
@@ -282,28 +269,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
               <header className="scam-simulation-page__phone-header">
                 <div className="scam-simulation-page__phone-left" aria-hidden="true">
                   <div className="scam-simulation-page__bot-avatar">
-                    <span className="sr-only">AI</span>
-                    <svg
-                      className="scam-simulation-page__bot-icon"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <path
-                        d="M10.2 3.5a1.8 1.8 0 0 1 3.6 0v1.2h2.1a3.6 3.6 0 0 1 3.6 3.6v8.4a3.6 3.6 0 0 1-3.6 3.6H8.1a3.6 3.6 0 0 1-3.6-3.6V8.3a3.6 3.6 0 0 1 3.6-3.6h2.1V3.5ZM8.1 6.7a1.6 1.6 0 0 0-1.6 1.6v8.4a1.6 1.6 0 0 0 1.6 1.6h7.8a1.6 1.6 0 0 0 1.6-1.6V8.3a1.6 1.6 0 0 0-1.6-1.6H8.1Z"
-                        fill="currentColor"
-                      />
-                      <circle cx="9.2" cy="10.0" r="1.55" fill="currentColor" />
-                      <circle cx="14.8" cy="10.0" r="1.55" fill="currentColor" />
-                      <path
-                        d="M8.7 14.4c.9.9 2 1.3 3.3 1.3s2.4-.4 3.3-1.3a1 1 0 1 0-1.4-1.4c-.5.5-1.2.7-1.9.7s-1.4-.2-1.9-.7a1 1 0 0 0-1.4 1.4Z"
-                        fill="currentColor"
-                      />
-                      <path
-                        d="M12 2.2a1 1 0 0 1 1 1v1.6a1 1 0 1 1-2 0V3.2a1 1 0 0 1 1-1Z"
-                        fill="currentColor"
-                      />
-                    </svg>
+                    <span className="scam-simulation-page__bot-face">AI</span>
                   </div>
                   <p className="scam-simulation-page__phone-title">
                     {scenarioType ? SCENARIO_LABELS[scenarioType] : s.phoneDefaultTitle}
@@ -314,51 +280,44 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 </p>
               </header>
 
-              <div
-                className="scam-simulation-page__messages"
-                ref={listRef}
-                aria-label={s.messagesLabel}
-                onScroll={updateAutoScrollFlag}
-              >
-                <div className="scam-simulation-page__messages-inner">
-                  {scenarioType ? (
-                    <>
-                      {messages.map((message) => (
+              <div className="scam-simulation-page__messages" ref={listRef} aria-label={s.messagesLabel}>
+                {scenarioType ? (
+                  <>
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={
+                          message.from === 'user'
+                            ? 'scam-simulation-page__msg scam-simulation-page__msg--user'
+                            : 'scam-simulation-page__msg'
+                        }
+                      >
                         <div
-                          key={message.id}
                           className={
                             message.from === 'user'
-                              ? 'scam-simulation-page__msg scam-simulation-page__msg--user'
-                              : 'scam-simulation-page__msg'
+                              ? 'scam-simulation-page__bubble scam-simulation-page__bubble--user'
+                              : 'scam-simulation-page__bubble scam-simulation-page__bubble--bot'
                           }
                         >
-                          <div
-                            className={
-                              message.from === 'user'
-                                ? 'scam-simulation-page__bubble scam-simulation-page__bubble--user'
-                                : 'scam-simulation-page__bubble scam-simulation-page__bubble--bot'
-                            }
-                          >
-                            {message.text}
-                          </div>
+                          {message.text}
                         </div>
-                      ))}
-                      {isBotTyping && (
-                        <div className="scam-simulation-page__msg">
-                          <div className="scam-simulation-page__bubble scam-simulation-page__bubble--bot">
-                            <span className="scam-simulation-page__typing" aria-label={s.typingLabel}>
-                              <span /><span /><span />
-                            </span>
-                          </div>
+                      </div>
+                    ))}
+                    {isBotTyping && (
+                      <div className="scam-simulation-page__msg">
+                        <div className="scam-simulation-page__bubble scam-simulation-page__bubble--bot">
+                          <span className="scam-simulation-page__typing" aria-label={s.typingLabel}>
+                            <span /><span /><span />
+                          </span>
                         </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="scam-simulation-page__empty">
-                      <p>{s.emptyState}</p>
-                    </div>
-                  )}
-                </div>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="scam-simulation-page__empty">
+                    <p>{s.emptyState}</p>
+                  </div>
+                )}
               </div>
 
               <div className="scam-simulation-page__composer" aria-label={s.composerLabel}>
