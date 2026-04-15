@@ -255,13 +255,13 @@ const STRINGS: Record<Language, Strings> = {
       risky: 'Risky',
     },
     footer: {
-      title: 'References & Information',
-      sourcesTitle: 'Data sources',
-      sourcesHint: 'Add citations and report links here (e.g., State of Scam Report, local statistics, research papers).',
-      aboutTitle: 'About ScamSafe',
-      aboutHint: 'Add team or project background and contact information here.',
-      riskTitle: 'Risk level guide',
-      riskHint: 'Explain what each risk level means and what actions to take.',
+      title: 'Coming soon',
+      sourcesTitle: 'Coming soon',
+      sourcesHint: 'Coming soon',
+      aboutTitle: 'Coming soon',
+      aboutHint: 'Coming soon',
+      riskTitle: 'Coming soon',
+      riskHint: 'Coming soon',
     },
     homeCard: {
       eyebrow: 'Professional and reliable',
@@ -309,7 +309,7 @@ const STRINGS: Record<Language, Strings> = {
       },
       video: {
         label: 'Tutorial video placeholder',
-        hint: 'Insert “How to use ScamSafe” video here',
+        hint: 'Coming soon',
       },
     },
     featurePage: {
@@ -497,13 +497,13 @@ const STRINGS: Record<Language, Strings> = {
       risky: 'Berisiko',
     },
     footer: {
-      title: 'Rujukan & Maklumat',
-      sourcesTitle: 'Sumber data',
-      sourcesHint: 'Tambah rujukan dan pautan laporan di sini (contoh: State of Scam Report, statistik tempatan, kertas kajian).',
-      aboutTitle: 'Tentang ScamSafe',
-      aboutHint: 'Tambah latar belakang pasukan atau projek dan maklumat hubungan di sini.',
-      riskTitle: 'Panduan tahap risiko',
-      riskHint: 'Terangkan maksud setiap tahap risiko dan tindakan yang disyorkan.',
+      title: 'Coming soon',
+      sourcesTitle: 'Coming soon',
+      sourcesHint: 'Coming soon',
+      aboutTitle: 'Coming soon',
+      aboutHint: 'Coming soon',
+      riskTitle: 'Coming soon',
+      riskHint: 'Coming soon',
     },
     homeCard: {
       eyebrow: 'Profesional dan boleh dipercayai',
@@ -550,7 +550,7 @@ const STRINGS: Record<Language, Strings> = {
       },
       video: {
         label: 'Ruang video tutorial',
-        hint: 'Masukkan video “Cara guna ScamSafe” di sini',
+        hint: 'Coming soon',
       },
     },
     featurePage: {
@@ -738,13 +738,13 @@ const STRINGS: Record<Language, Strings> = {
       risky: '风险',
     },
     footer: {
-      title: '参考与说明',
-      sourcesTitle: '数据来源',
-      sourcesHint: '在这里添加引用与报告链接（例如 State of Scam Report、本地统计、研究论文等）。',
-      aboutTitle: '关于 ScamSafe',
-      aboutHint: '在这里添加团队或项目背景与联系方式。',
-      riskTitle: '风险等级说明',
-      riskHint: '解释各风险等级代表什么，并给出建议操作。',
+      title: 'Coming soon',
+      sourcesTitle: 'Coming soon',
+      sourcesHint: 'Coming soon',
+      aboutTitle: 'Coming soon',
+      aboutHint: 'Coming soon',
+      riskTitle: 'Coming soon',
+      riskHint: 'Coming soon',
     },
     homeCard: {
       eyebrow: '专业可靠',
@@ -789,7 +789,7 @@ const STRINGS: Record<Language, Strings> = {
       },
       video: {
         label: '教学视频占位',
-        hint: '在此插入“如何使用 ScamSafe”的视频',
+        hint: 'Coming soon',
       },
     },
     featurePage: {
