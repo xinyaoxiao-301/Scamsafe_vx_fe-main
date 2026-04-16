@@ -186,8 +186,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const correctExplanation  = current && hasSubmitted
     ? current.choiceExplanations?.[current.correctOptionId] ?? null
     : null
-  const moreInfo             = current && hasSubmitted ? current.questionExplanation ?? null : null
-  const hasBackendStyleExplanation = Boolean(selectedExplanation || correctExplanation || moreInfo)
+  const hasBackendStyleExplanation = Boolean(selectedExplanation || correctExplanation)
 
   const reasons = current
     ? hasSubmitted
@@ -354,7 +353,14 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                         {hasBackendStyleExplanation ? (
                           <div className="study-center-page__explain">
                             {selectedExplanation ? (
-                              <div className="study-center-page__explain-block">
+                              <div
+                                className={[
+                                  'study-center-page__explain-block',
+                                  isCorrect
+                                    ? 'study-center-page__explain-block--correct'
+                                    : 'study-center-page__explain-block--wrong',
+                                ].join(' ')}
+                              >
                                 <p className="study-center-page__explain-label">{strings.studyCenter.yourAnswerLabel}</p>
                                 <ul className="study-center-page__list">
                                   {splitExplanation(selectedExplanation).slice(0, 3).map((item) => (
@@ -365,21 +371,10 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                             ) : null}
 
                             {!isCorrect && correctExplanation ? (
-                              <div className="study-center-page__explain-block study-center-page__explain-block--good">
+                              <div className="study-center-page__explain-block study-center-page__explain-block--correct">
                                 <p className="study-center-page__explain-label">{strings.studyCenter.correctAnswerLabel}</p>
                                 <ul className="study-center-page__list">
                                   {splitExplanation(correctExplanation).slice(0, 3).map((item) => (
-                                    <li key={item}>{item}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ) : null}
-
-                            {moreInfo ? (
-                              <div className="study-center-page__explain-block">
-                                <p className="study-center-page__explain-label">{strings.studyCenter.moreInfoLabel}</p>
-                                <ul className="study-center-page__list">
-                                  {splitExplanation(moreInfo).slice(0, 3).map((item) => (
                                     <li key={item}>{item}</li>
                                   ))}
                                 </ul>
