@@ -307,6 +307,9 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                     className={[
                       'study-center-page__option',
                       selectedOptionId === opt.id ? 'study-center-page__option--selected' : '',
+                      hasSubmitted && opt.id === current.correctOptionId
+                        ? 'study-center-page__option--correct'
+                        : '',
                       hasSubmitted && !isCorrect && selectedOptionId === opt.id
                         ? 'study-center-page__option--wrong'
                         : '',
@@ -315,6 +318,11 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                       .join(' ')}
                     onClick={() => { if (hasSubmitted) return; setSelectedOptionId(opt.id); setError(null) }}
                     aria-pressed={selectedOptionId === opt.id}
+                    aria-label={
+                      hasSubmitted && opt.id === current.correctOptionId
+                        ? `${opt.text}. ${strings.studyCenter.correctAnswerLabel}`
+                        : opt.text
+                    }
                     disabled={hasSubmitted}
                   >
                     <div className="study-center-page__option-badge">{String.fromCharCode(65 + optIndex)}</div>
