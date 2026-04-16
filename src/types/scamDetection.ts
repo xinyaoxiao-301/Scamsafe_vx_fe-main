@@ -3,10 +3,13 @@ export type ScamRiskLevel = 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High'
 export type ScamType =
   | 'Phishing'
   | 'Impersonation'
-  | 'Investment scam'
-  | 'Prize scam'
-  | 'Tech support scam'
-  | 'Unknown'
+  | 'Investment Scam'
+  | 'Lottery/Prize Scam'
+  | 'Romance Scam'
+  | 'Tech Support Scam'
+  | 'Bank Fraud'
+  | 'Other'
+  | 'Not a scam'
 
 export type ScamAnalysis = {
   isScam: boolean

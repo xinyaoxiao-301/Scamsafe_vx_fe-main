@@ -13,7 +13,9 @@ const API_BASE =
     ?.VITE_API_BASE_URL ?? 'http://localhost:8000'
 
 const VALID_RISK_LEVELS: ScamRiskLevel[] = ['Very Low', 'Low', 'Medium', 'High', 'Very High']
-const VALID_SCAM_TYPES: ScamType[] = ['Phishing', 'Impersonation', 'Investment scam', 'Prize scam', 'Tech support scam', 'Unknown']
+const VALID_SCAM_TYPES: ScamType[] = ['Phishing', 'Impersonation', 'Investment Scam',
+  'Lottery/Prize Scam', 'Romance Scam', 'Tech Support Scam',
+  'Bank Fraud', 'Other', 'Not a scam']
 
 const RISK_SCORE_MAP: Record<ScamRiskLevel, number> = {
   'Very Low': 8,
@@ -60,7 +62,7 @@ export async function analyzeScamText(
       confidencePct: Math.round(data.confidence_percentage),
       riskScore: RISK_SCORE_MAP[riskLevel],
       riskLevel,
-      scamType,
+      scamType:      data.scam_type,
       summary: data.summary,
       indicators: (data.warning_indicators ?? []).map((title: string) => ({ title, description: '' })),
       guidance: data.action_steps ?? [],
@@ -71,7 +73,7 @@ export async function analyzeScamText(
       confidencePct: 0,
       riskScore: 0,
       riskLevel: 'Very Low',
-      scamType: 'Unknown',
+      scamType: 'Other',
       summary: 'Analysis not available.',
       indicators: [],
       guidance: [],
