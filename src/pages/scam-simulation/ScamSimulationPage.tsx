@@ -411,7 +411,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
           <div className="scam-simulation-page__report-actions">
             <Button
-              variant="secondary"
+              variant="primary"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               Return to top
