@@ -73,8 +73,12 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   {feature.subtitle}
                 </p>
               </div>
-              <Button fullWidth onClick={() => onNavigate(feature.route)}>
-                {strings.homeFeatures.open}
+              <Button
+                fullWidth
+                onClick={() => onNavigate(feature.route)}
+                className={feature.id === 'post-scam-support' ? 'feature-launchpad__button feature-launchpad__button--coming-soon' : 'feature-launchpad__button'}
+              >
+                {feature.id === 'post-scam-support' ? 'Coming soon' : strings.homeFeatures.open}
               </Button>
             </article>
           ))}

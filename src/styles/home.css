@@ -173,6 +173,10 @@
   display: none;
 }
 
+.feature-launchpad__button--coming-soon {
+  color: #6b7280;
+}
+
 @media (min-width: 768px) {
   .home-page {
     min-height: auto;
