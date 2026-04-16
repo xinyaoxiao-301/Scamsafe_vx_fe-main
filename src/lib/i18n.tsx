@@ -304,8 +304,8 @@ const STRINGS: Record<Language, Strings> = {
         detectionSubtitle: 'SMS and pasted message checks',
         practiceTitle: 'Practice mode',
         practiceSubtitle: 'Learn safe replies step-by-step',
-        supportTitle: 'Support',
-        supportSubtitle: 'Calm next steps if you are unsure',
+        supportTitle: 'Study Center',
+        supportSubtitle: 'Learn safe replies with short quizzes',
       },
       video: {
         label: 'Tutorial video placeholder',
@@ -548,8 +548,8 @@ const STRINGS: Record<Language, Strings> = {
         detectionSubtitle: 'Semakan SMS dan mesej tampal',
         practiceTitle: 'Mod latihan',
         practiceSubtitle: 'Belajar membalas dengan selamat',
-        supportTitle: 'Sokongan',
-        supportSubtitle: 'Langkah tenang apabila ragu',
+        supportTitle: 'Pusat Pembelajaran',
+        supportSubtitle: 'Belajar balasan selamat melalui kuiz ringkas',
       },
       video: {
         label: 'Ruang video tutorial',
@@ -790,8 +790,8 @@ const STRINGS: Record<Language, Strings> = {
         detectionSubtitle: '短信与粘贴内容检查',
         practiceTitle: '练习模式',
         practiceSubtitle: '一步步学会安全回应',
-        supportTitle: '支援',
-        supportSubtitle: '不确定时的安心指引',
+        supportTitle: '学习中心',
+        supportSubtitle: '通过简短测验学习安全回应',
       },
       video: {
         label: '教学视频占位',

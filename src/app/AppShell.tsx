@@ -169,7 +169,11 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
                   <InfoPill label={strings.hero.pills.steps} />
                 </div>
                 <div className="app-shell__hero-mini-grid" aria-label="Core modules">
-                  <div className="app-shell__hero-mini">
+                  <button
+                    type="button"
+                    className="app-shell__hero-mini"
+                    onClick={() => onNavigate(appRoutes.detection)}
+                  >
                     <div className="app-shell__hero-mini-icon">
                       <FeatureIcon name="detection" />
                     </div>
@@ -177,8 +181,12 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
                       <p className="app-shell__hero-mini-title">{strings.hero.modules.detectionTitle}</p>
                       <p className="app-shell__hero-mini-subtitle">{strings.hero.modules.detectionSubtitle}</p>
                     </div>
-                  </div>
-                  <div className="app-shell__hero-mini">
+                  </button>
+                  <button
+                    type="button"
+                    className="app-shell__hero-mini"
+                    onClick={() => onNavigate(appRoutes.simulation)}
+                  >
                     <div className="app-shell__hero-mini-icon">
                       <FeatureIcon name="simulation" />
                     </div>
@@ -186,16 +194,20 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
                       <p className="app-shell__hero-mini-title">{strings.hero.modules.practiceTitle}</p>
                       <p className="app-shell__hero-mini-subtitle">{strings.hero.modules.practiceSubtitle}</p>
                     </div>
-                  </div>
-                  <div className="app-shell__hero-mini">
+                  </button>
+                  <button
+                    type="button"
+                    className="app-shell__hero-mini"
+                    onClick={() => onNavigate(appRoutes.studyCenter)}
+                  >
                     <div className="app-shell__hero-mini-icon">
-                      <FeatureIcon name="support" />
+                      <FeatureIcon name="study" />
                     </div>
                     <div className="app-shell__hero-mini-copy">
                       <p className="app-shell__hero-mini-title">{strings.hero.modules.supportTitle}</p>
                       <p className="app-shell__hero-mini-subtitle">{strings.hero.modules.supportSubtitle}</p>
                     </div>
-                  </div>
+                  </button>
                 </div>
               </div>
               <div className="app-shell__hero-media" aria-label="ScamSafe tutorial video">
