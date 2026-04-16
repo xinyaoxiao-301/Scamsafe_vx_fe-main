@@ -30,7 +30,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const [isFinished,    setIsFinished]    = useState(false)
   const [aiFeedback,    setAiFeedback]    = useState<string | null>(null)
   const [lastOutcome,   setLastOutcome]   = useState<'safe' | 'risky' | null>(null)
-  const [isReportOpen,  setIsReportOpen]  = useState(false)
   const [isListening,   setIsListening]   = useState(false)
   const [now,           setNow]           = useState(() => new Date())
 
@@ -49,19 +48,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   // English only — simulation is API-backed via Groq + RAG
   const isApiMode = language === 'en'
-
-  useEffect(() => {
-    if (aiFeedback) setIsReportOpen(true)
-  }, [aiFeedback])
-
-  useEffect(() => {
-    if (!isReportOpen) return
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setIsReportOpen(false)
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [isReportOpen])
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
@@ -153,7 +139,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     setIsFinished(false)
     setAiFeedback(null)
     setLastOutcome(null)
-    setIsReportOpen(false)
   }
 
   // ── Send message ────────────────────────────────────────────────────────────
@@ -388,6 +373,32 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
         </SectionCard>
       </section>
 
+      {/* Feedback report (shared under Step 1 + Step 2) */}
+      {aiFeedback && (
+        <section className="scam-simulation-page__feedback" aria-label={s.feedbackLabel}>
+          <div
+            className={
+              lastOutcome === 'risky'
+                ? 'scam-simulation-page__feedback-banner scam-simulation-page__feedback-banner--risky'
+                : 'scam-simulation-page__feedback-banner'
+            }
+          >
+            <p className="scam-simulation-page__feedback-title">
+              {lastOutcome === 'risky'
+                ? 'You fell for the scam — here is what happened'
+                : 'Well done — you avoided the scam!'}
+            </p>
+          </div>
+
+          <div className="scam-simulation-page__report-box">
+            <p className="scam-simulation-page__report-heading">Here&apos;s your feedback report:</p>
+            {feedbackLines.map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* ── Performance summary ─────────────────────────────────────────── */}
       <section className="scam-simulation-page__performance" aria-label={s.performanceLabel}>
         <SectionCard
@@ -409,53 +420,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
           </div>
         </SectionCard>
       </section>
-
-      {/* Feedback report modal */}
-      {aiFeedback && isReportOpen && (
-        <div
-          className="scam-simulation-page__modal-overlay"
-          role="presentation"
-          onClick={() => setIsReportOpen(false)}
-        >
-          <div
-            className="scam-simulation-page__modal"
-            role="dialog"
-            aria-modal="true"
-            aria-label={s.feedbackLabel}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div
-              className={
-                lastOutcome === 'risky'
-                  ? 'scam-simulation-page__feedback-banner scam-simulation-page__feedback-banner--risky'
-                  : 'scam-simulation-page__feedback-banner'
-              }
-            >
-              <p className="scam-simulation-page__feedback-title">
-                {lastOutcome === 'risky'
-                  ? 'You fell for the scam — here is what happened'
-                  : 'Well done — you avoided the scam!'}
-              </p>
-            </div>
-
-            <div className="scam-simulation-page__report-box">
-              <p className="scam-simulation-page__report-heading">Here&apos;s your feedback report:</p>
-              {feedbackLines.map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
-            </div>
-
-            <div className="scam-simulation-page__modal-actions">
-              <Button variant="secondary" onClick={() => setIsReportOpen(false)}>
-                Return to this scam sim
-              </Button>
-              <Button variant="secondary" onClick={onBackHome}>
-                {strings.common.backToHome}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
     </main>
   )
 }
