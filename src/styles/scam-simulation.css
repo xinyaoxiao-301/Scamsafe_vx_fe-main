@@ -258,7 +258,7 @@
   line-height: 1.45;
   font-weight: 650;
   position: relative;
-  white-space: pre-wrap;
+  white-space: break-spaces;
   overflow-wrap: anywhere;
   text-align: left;
   text-justify: auto;
