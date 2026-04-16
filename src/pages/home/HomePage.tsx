@@ -75,8 +75,16 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </div>
               <Button
                 fullWidth
-                onClick={() => onNavigate(feature.route)}
-                className={feature.id === 'post-scam-support' ? 'feature-launchpad__button feature-launchpad__button--coming-soon' : 'feature-launchpad__button'}
+                disabled={feature.id === 'post-scam-support'}
+                onClick={() => {
+                  if (feature.id === 'post-scam-support') return
+                  onNavigate(feature.route)
+                }}
+                className={
+                  feature.id === 'post-scam-support'
+                    ? 'feature-launchpad__button feature-launchpad__button--coming-soon'
+                    : 'feature-launchpad__button'
+                }
               >
                 {feature.id === 'post-scam-support' ? 'Coming soon' : strings.homeFeatures.open}
               </Button>

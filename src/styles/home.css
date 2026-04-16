@@ -174,7 +174,18 @@
 }
 
 .feature-launchpad__button--coming-soon {
-  color: #6b7280;
+  background: rgba(107, 114, 128, 0.95) !important;
+  border-color: rgba(107, 114, 128, 0.55) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+.feature-launchpad__button--coming-soon:hover,
+.feature-launchpad__button--coming-soon:focus-visible,
+.feature-launchpad__button--coming-soon:active {
+  background: rgba(107, 114, 128, 0.95) !important;
+  color: #ffffff !important;
+  box-shadow: none !important;
 }
 
 @media (min-width: 768px) {
