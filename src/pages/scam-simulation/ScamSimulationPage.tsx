@@ -34,6 +34,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const [now,           setNow]           = useState(() => new Date())
 
   const listRef        = useRef<HTMLDivElement | null>(null)
+  const feedbackRef    = useRef<HTMLElement | null>(null)
   const recognitionRef = useRef<any>(null)
 
   const performance = getPerformance()
@@ -52,6 +53,13 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
   }, [messages, isBotTyping])
+
+  useEffect(() => {
+    if (!aiFeedback) return
+    window.setTimeout(() => {
+      feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 0)
+  }, [aiFeedback])
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 30_000)
@@ -375,7 +383,11 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
       {/* Feedback report (shared under Step 1 + Step 2) */}
       {aiFeedback && (
-        <section className="scam-simulation-page__feedback" aria-label={s.feedbackLabel}>
+        <section
+          className="scam-simulation-page__feedback"
+          aria-label={s.feedbackLabel}
+          ref={(node) => { feedbackRef.current = node }}
+        >
           <div
             className={
               lastOutcome === 'risky'
