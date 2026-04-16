@@ -38,6 +38,14 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   const performance = getPerformance()
 
+  const feedbackLines = aiFeedback
+    ? aiFeedback
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .filter((line) => line.toLowerCase() !== "here's your feedback report:")
+    : []
+
   // English only — simulation is API-backed via Groq + RAG
   const isApiMode = language === 'en'
 
@@ -380,9 +388,12 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 </p>
               </div>
               <div className="scam-simulation-page__ai-feedback">
-                {aiFeedback.split('\n').filter(Boolean).map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
+                <div className="scam-simulation-page__report-box">
+                  <p className="scam-simulation-page__report-heading">Here&apos;s your feedback report:</p>
+                  {feedbackLines.map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+                </div>
               </div>
             </div>
           )}
