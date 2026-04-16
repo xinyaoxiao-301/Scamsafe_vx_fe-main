@@ -55,14 +55,14 @@ export async function analyzeScamText(
 
     const scamType: ScamType = VALID_SCAM_TYPES.includes(data.scam_type)
       ? data.scam_type
-      : 'Unknown'
+      : 'Other'
 
     return {
       isScam: data.is_scam,
       confidencePct: Math.round(data.confidence_percentage),
       riskScore: RISK_SCORE_MAP[riskLevel],
       riskLevel,
-      scamType:      data.scam_type,
+      scamType,
       summary: data.summary,
       indicators: (data.warning_indicators ?? []).map((title: string) => ({ title, description: '' })),
       guidance: data.action_steps ?? [],
