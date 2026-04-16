@@ -260,6 +260,10 @@
   position: relative;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  text-align: left;
+  text-justify: auto;
+  word-spacing: normal;
+  letter-spacing: normal;
 }
 
 .scam-simulation-page__bubble--bot {
@@ -365,6 +369,9 @@
   color: var(--text);
   font-weight: 650;
   font-size: calc(1rem * var(--sim-scale));
+  text-align: left;
+  word-spacing: normal;
+  letter-spacing: normal;
 }
 
 .scam-simulation-page__input:focus-visible {
@@ -493,6 +500,11 @@
 
 .scam-simulation-page__report-box p + p {
   margin-top: 8px;
+}
+
+.scam-simulation-page__report-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .scam-simulation-page__feedback-grid {
