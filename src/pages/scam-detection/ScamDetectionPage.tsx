@@ -26,11 +26,11 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
 
   const wordCount   = countWords(text)
   const isOverLimit = wordCount > WORD_LIMIT
-  const canAnalyze  = text.trim().length > 0 && !isOverLimit && !isLoading
+  const canAnalyze  = !isOverLimit && !isLoading
 
   const handleAnalyze = async () => {
-    if (!canAnalyze) return
     if (text.trim().length === 0) { setError(s.errorEmpty); return }
+    if (!canAnalyze) return
 
     setIsLoading(true)
     setError(null)
