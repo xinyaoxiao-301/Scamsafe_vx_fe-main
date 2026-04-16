@@ -262,8 +262,8 @@
   overflow-wrap: anywhere;
   text-align: left;
   text-justify: auto;
-  word-spacing: normal;
-  letter-spacing: normal;
+  word-spacing: 0.14em;
+  letter-spacing: 0;
 }
 
 .scam-simulation-page__bubble--bot {
@@ -370,8 +370,8 @@
   font-weight: 650;
   font-size: calc(1rem * var(--sim-scale));
   text-align: left;
-  word-spacing: normal;
-  letter-spacing: normal;
+  word-spacing: 0.14em;
+  letter-spacing: 0;
 }
 
 .scam-simulation-page__input:focus-visible {
