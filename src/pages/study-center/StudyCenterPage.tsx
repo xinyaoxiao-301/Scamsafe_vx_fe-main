@@ -284,7 +284,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
           {isLoadingQuiz ? (
             <div className="study-center-page__loading" role="status" aria-live="polite">
               <div className="study-center-page__spinner" aria-hidden="true" />
-              <p>{strings.scamDetection?.loadingLabel ?? 'Loading questions…'}</p>
+              <p>{strings.studyCenter.loadingLabel}</p>
             </div>
           ) : quizQuestions && current ? (
             <>
