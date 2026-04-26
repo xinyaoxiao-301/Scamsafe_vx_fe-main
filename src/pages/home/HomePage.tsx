@@ -39,6 +39,13 @@ export function HomePage({ onNavigate }: HomePageProps) {
       subtitle: strings.homeFeatures.support,
       route: appRoutes.support,
     },
+    {
+      id: 'knowledge-hub',
+      icon: 'study',
+      title: strings.homeFeatures.scam,
+      subtitle: strings.homeFeatures.knowledgeHub,
+      route: appRoutes.aboutUs,
+    },
   ] as const
 
   return (
@@ -76,13 +83,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
               <Button
                 fullWidth
                 onClick={() => onNavigate(feature.route)}
-                className={
-                  feature.id === 'post-scam-support'
-                    ? 'feature-launchpad__button feature-launchpad__button--coming-soon'
-                    : 'feature-launchpad__button'
-                }
+                className="feature-launchpad__button"
               >
-                {feature.id === 'post-scam-support' ? 'Coming soon' : strings.homeFeatures.open}
+                {strings.homeFeatures.open}
               </Button>
             </article>
           ))}

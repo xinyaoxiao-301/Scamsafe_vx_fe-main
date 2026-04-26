@@ -48,7 +48,20 @@ type Strings = {
     simulation: string
     studyCenter: string
     support: string
+    knowledgeHub: string
     open: string
+  }
+  homeStats: {
+    eyebrow: string
+    title: string
+    description: string
+    cards: {
+      monthlyExposure: { value: string; label: string; hint: string }
+      totalLosses: { value: string; label: string; hint: string }
+      gdpShare: { value: string; label: string; hint: string }
+      seniorsAffected: { value: string; label: string; hint: string }
+    }
+    sources: string
   }
   hero: {
     titleTokens: HeroTitleToken[]
@@ -220,6 +233,7 @@ type I18nContextValue = {
 const I18nContext = createContext<I18nContextValue | null>(null)
 
 function getInitialLanguage(): Language {
+  // Prefer the user's saved language, then fall back to the browser locale.
   const stored = window.localStorage.getItem('scamsafe_language')
   if (stored === 'en' || stored === 'ms' || stored === 'zh') return stored
 
@@ -233,11 +247,11 @@ const STRINGS: Record<Language, Strings> = {
   en: {
     nav: {
       [appRoutes.home]: 'Home',
-      [appRoutes.detection]: 'Scam Detection',
-      [appRoutes.simulation]: 'Scam Simulation',
+      [appRoutes.detection]: 'Detection',
+      [appRoutes.simulation]: 'Simulation',
       [appRoutes.studyCenter]: 'Study Center',
-      [appRoutes.support]: 'Post-Scam Support',
-      [appRoutes.aboutUs]: 'About Us',
+      [appRoutes.support]: 'Support',
+      [appRoutes.aboutUs]: 'Knowledge Hub',
     },
     ui: {
       openMenu: 'Open navigation menu',
@@ -277,7 +291,36 @@ const STRINGS: Record<Language, Strings> = {
       simulation: 'Simulation',
       studyCenter: 'Study Center',
       support: 'Support',
+      knowledgeHub: 'Knowledge Hub',
       open: 'Open',
+    },
+    homeStats: {
+      eyebrow: 'Real-world data',
+      title: 'Malaysia Scam Impact',
+      description: '',
+      cards: {
+        monthlyExposure: {
+          value: '74%',
+          label: 'Monthly scam exposure',
+          hint: 'Adults face scams via calls, social media, and texts.',
+        },
+        totalLosses: {
+          value: 'RM54.02b',
+          label: 'Total losses (Malaysia)',
+          hint: 'Reported in the State of Scam Report 2024.',
+        },
+        gdpShare: {
+          value: '~3%',
+          label: 'Share of national GDP',
+          hint: 'Estimated impact of scam losses.',
+        },
+        seniorsAffected: {
+          value: '83.7%',
+          label: 'Victims aged 60+',
+          hint: 'Higher risk with lower digital literacy.',
+        },
+      },
+      sources: 'Sources: Global Anti-Scam Alliance (2024); Saifuddin et al. (2024).',
     },
     hero: {
       titleTokens: [
@@ -285,7 +328,8 @@ const STRINGS: Record<Language, Strings> = {
         { id: 'safe', tone: 'highlight', text: 'Safe', spaceAfter: false },
         { id: 'comma', tone: 'plain', text: ',', spaceAfter: true },
         { id: 'stay-2', tone: 'plain', text: 'Stay', spaceAfter: true },
-        { id: 'confident', tone: 'highlight', text: 'Confident', spaceAfter: true },
+        { id: 'confident', tone: 'highlight', text: 'Confident', spaceAfter: false },
+        { id: 'br-1', tone: 'plain', text: '\n', spaceAfter: false },
         { id: 'in', tone: 'plain', text: 'in', spaceAfter: true },
         { id: 'the', tone: 'plain', text: 'the', spaceAfter: true },
         { id: 'digital', tone: 'plain', text: 'Digital', spaceAfter: true },
@@ -321,21 +365,21 @@ const STRINGS: Record<Language, Strings> = {
       supportText: 'We can continue with forms, results panels, call-to-action areas, and mobile-first layouts directly inside this page.',
     },
     aboutUs: {
-      eyebrow: 'About Us',
-      title: 'ScamSafe',
-      description: 'ScamSafe is an academic project focused on scam awareness, detection, and support for older adults.',
-      missionEyebrow: 'Mission',
-      missionTitle: 'Professional. Simple. Reliable.',
-      missionDescription: 'We aim to make scam prevention tools more accessible and easier to understand.',
+      eyebrow: 'Knowledge Hub',
+      title: 'Knowledge Hub',
+      description: 'Browse ScamSafe learning resources, practical scam-awareness guidance, and support information in one place.',
+      missionEyebrow: 'Featured topics',
+      missionTitle: 'Practical guidance, explained clearly.',
+      missionDescription: 'This area can hold short learning content that helps older adults recognise scams with more confidence.',
       missionPoints: [
         'Mobile-first layouts with large, readable typography.',
         'Clear actions and calm, supportive language.',
         'Practical learning and post-incident guidance.',
       ],
-      teamEyebrow: 'Team',
-      teamTitle: 'FIT5120 Team TM08',
-      teamDescription: 'Team details can be added here when finalized.',
-      teamSupport: 'This section will include team information, acknowledgements, and any required academic disclosures.',
+      teamEyebrow: 'More resources',
+      teamTitle: 'ScamSafe resource collection',
+      teamDescription: 'This area can expand into articles, links, checklists, and trusted external guidance.',
+      teamSupport: 'You can continue growing this page into a true knowledge hub with scam categories, prevention tips, and support pathways.',
     },
     postScamSupport: {
       eyebrow: 'Post-Scam Support',
@@ -355,7 +399,7 @@ const STRINGS: Record<Language, Strings> = {
       lede: 'Take simple quizzes to learn scam patterns, get instant feedback, and track your progress.',
       step1Eyebrow: 'Step 1',
       step1Title: 'Choose a quiz',
-      step1Description: 'Pick a category (or Mixed quiz), then tap “Start quiz”.',
+      step1Description: 'Pick a category (or Mix scams), then tap “Start quiz”.',
       step2Eyebrow: 'Step 2',
       step2Title: 'Answer and learn',
       step2Description: 'Pick one answer, then tap “Submit answer” to see why.',
@@ -478,11 +522,11 @@ const STRINGS: Record<Language, Strings> = {
   ms: {
     nav: {
       [appRoutes.home]: 'Laman Utama',
-      [appRoutes.detection]: 'Pengesanan Penipuan',
-      [appRoutes.simulation]: 'Simulasi Penipuan',
+      [appRoutes.detection]: 'Pengesanan',
+      [appRoutes.simulation]: 'Simulasi',
       [appRoutes.studyCenter]: 'Pusat Pembelajaran',
-      [appRoutes.support]: 'Sokongan Selepas Ditipu',
-      [appRoutes.aboutUs]: 'Tentang Kami',
+      [appRoutes.support]: 'Sokongan',
+      [appRoutes.aboutUs]: 'Pusat Pengetahuan',
     },
     ui: {
       openMenu: 'Buka menu navigasi',
@@ -522,7 +566,36 @@ const STRINGS: Record<Language, Strings> = {
       simulation: 'Simulasi',
       studyCenter: 'Pusat Pembelajaran',
       support: 'Sokongan',
+      knowledgeHub: 'Pusat Pengetahuan',
       open: 'Buka',
+    },
+    homeStats: {
+      eyebrow: 'Data dunia nyata',
+      title: 'Kesan Penipuan di Malaysia',
+      description: '',
+      cards: {
+        monthlyExposure: {
+          value: '74%',
+          label: 'Pendedahan penipuan bulanan',
+          hint: 'Melalui panggilan, media sosial, dan mesej teks.',
+        },
+        totalLosses: {
+          value: 'RM54.02b',
+          label: 'Jumlah kerugian (Malaysia)',
+          hint: 'State of Scam Report 2024.',
+        },
+        gdpShare: {
+          value: '~3%',
+          label: 'Perkongsian KDNK negara',
+          hint: 'Anggaran kesan kerugian penipuan.',
+        },
+        seniorsAffected: {
+          value: '83.7%',
+          label: 'Mangsa berumur 60+',
+          hint: 'Risiko lebih tinggi dengan literasi digital rendah.',
+        },
+      },
+      sources: 'Sumber: Global Anti-Scam Alliance (2024); Saifuddin et al. (2024).',
     },
     hero: {
       titleTokens: [
@@ -565,21 +638,21 @@ const STRINGS: Record<Language, Strings> = {
       supportText: 'Kita boleh terus bina borang, panel hasil, kawasan tindakan, dan susun atur mobile-first terus di halaman ini.',
     },
     aboutUs: {
-      eyebrow: 'Tentang Kami',
-      title: 'ScamSafe',
-      description: 'ScamSafe ialah projek akademik yang memberi tumpuan kepada kesedaran, pengesanan, dan sokongan penipuan untuk warga emas.',
-      missionEyebrow: 'Misi',
-      missionTitle: 'Profesional. Mudah. Boleh dipercayai.',
-      missionDescription: 'Kami mahu menjadikan alat pencegahan penipuan lebih mudah dicapai dan difahami.',
+      eyebrow: 'Pusat Pengetahuan',
+      title: 'Pusat Pengetahuan',
+      description: 'Terokai bahan pembelajaran ScamSafe, panduan kesedaran penipuan, dan maklumat sokongan dalam satu tempat.',
+      missionEyebrow: 'Topik utama',
+      missionTitle: 'Panduan praktikal yang mudah difahami.',
+      missionDescription: 'Ruang ini boleh menempatkan kandungan pembelajaran ringkas untuk membantu warga emas mengenali penipuan dengan lebih yakin.',
       missionPoints: [
         'Susun atur mobile-first dengan tulisan besar dan mudah dibaca.',
         'Tindakan yang jelas dan bahasa yang tenang serta menyokong.',
         'Pembelajaran praktikal dan panduan selepas insiden.',
       ],
-      teamEyebrow: 'Pasukan',
-      teamTitle: 'FIT5120 Team TM08',
-      teamDescription: 'Maklumat pasukan boleh ditambah di sini apabila dimuktamadkan.',
-      teamSupport: 'Bahagian ini akan merangkumi maklumat pasukan, penghargaan, dan sebarang pendedahan akademik yang diperlukan.',
+      teamEyebrow: 'Sumber tambahan',
+      teamTitle: 'Koleksi sumber ScamSafe',
+      teamDescription: 'Ruang ini boleh dikembangkan menjadi artikel, pautan, senarai semak, dan panduan luar yang dipercayai.',
+      teamSupport: 'Halaman ini boleh terus dibina menjadi pusat pengetahuan sebenar dengan kategori penipuan, tip pencegahan, dan laluan sokongan.',
     },
     postScamSupport: {
       eyebrow: 'Sokongan Selepas Ditipu',
@@ -722,11 +795,11 @@ const STRINGS: Record<Language, Strings> = {
   zh: {
     nav: {
       [appRoutes.home]: '首页',
-      [appRoutes.detection]: '诈骗检测',
-      [appRoutes.simulation]: '诈骗模拟',
+      [appRoutes.detection]: '检测',
+      [appRoutes.simulation]: '模拟',
       [appRoutes.studyCenter]: '学习中心',
       [appRoutes.support]: '事后支援',
-      [appRoutes.aboutUs]: '关于我们',
+      [appRoutes.aboutUs]: '知识中心',
     },
     ui: {
       openMenu: '打开导航菜单',
@@ -766,7 +839,36 @@ const STRINGS: Record<Language, Strings> = {
       simulation: '模拟',
       studyCenter: '学习中心',
       support: '支援',
+      knowledgeHub: '知识中心',
       open: '进入',
+    },
+    homeStats: {
+      eyebrow: '真实数据',
+      title: '马来西亚诈骗影响',
+      description: '',
+      cards: {
+        monthlyExposure: {
+          value: '74%',
+          label: '每月遭遇诈骗',
+          hint: '电话、社交媒体与短信等渠道。',
+        },
+        totalLosses: {
+          value: 'RM54.02b',
+          label: '受害总损失（马来西亚）',
+          hint: 'State of Scam Report 2024。',
+        },
+        gdpShare: {
+          value: '~3%',
+          label: '约占全国 GDP',
+          hint: '诈骗损失的估算影响。',
+        },
+        seniorsAffected: {
+          value: '83.7%',
+          label: '受害者为 60+',
+          hint: '数字素养较低导致风险更高。',
+        },
+      },
+      sources: '来源：Global Anti-Scam Alliance（2024）；Saifuddin 等（2024）。',
     },
     hero: {
       titleTokens: [
@@ -807,21 +909,21 @@ const STRINGS: Record<Language, Strings> = {
       supportText: '我们可以直接在这个页面继续做表单、结果面板、操作区，以及移动端优先布局。',
     },
     aboutUs: {
-      eyebrow: '关于我们',
-      title: 'ScamSafe',
-      description: 'ScamSafe 是一个专注于诈骗认知、检测与支援的学术项目，主要面向老年群体。',
-      missionEyebrow: '使命',
-      missionTitle: '专业、简单、可靠。',
-      missionDescription: '我们的目标是让防诈工具更容易接触、更容易理解。',
+      eyebrow: '知识中心',
+      title: '知识中心',
+      description: '在这里集中浏览 ScamSafe 的学习资源、反诈指引与支援信息。',
+      missionEyebrow: '重点内容',
+      missionTitle: '把实用反诈知识讲清楚。',
+      missionDescription: '这个区域可以承载简明学习内容，帮助老年用户更有把握地识别诈骗。',
       missionPoints: [
         '移动端优先布局，字体更大、更清晰。',
         '操作明确，语言平静且有支持感。',
         '提供实用学习与事后应对指引。',
       ],
-      teamEyebrow: '团队',
-      teamTitle: 'FIT5120 Team TM08',
-      teamDescription: '团队信息可在确定后补充到这里。',
-      teamSupport: '这里后续可加入团队成员、致谢以及所需的学术说明。',
+      teamEyebrow: '更多资源',
+      teamTitle: 'ScamSafe 资源集合',
+      teamDescription: '这里后续可以扩展为文章、链接、清单以及可信外部指引。',
+      teamSupport: '这个页面可以继续发展成真正的知识中心，覆盖诈骗分类、防范技巧和求助路径。',
     },
     postScamSupport: {
       eyebrow: '事后支援',
@@ -966,10 +1068,14 @@ export function I18nProvider({ children }: PropsWithChildren) {
   const [language, setLanguage] = useState<Language>(() => getInitialLanguage())
 
   useEffect(() => {
+    // Persist language changes immediately so returning users do not have to
+    // reselect their preferred language on the same device.
     window.localStorage.setItem('scamsafe_language', language)
   }, [language])
 
   useEffect(() => {
+    // Keep the document language in sync for screen readers, browser translation,
+    // and search/indexing tools that inspect the rendered HTML.
     const html = window.document.documentElement
     html.lang = language === 'zh' ? 'zh-Hans' : language
   }, [language])

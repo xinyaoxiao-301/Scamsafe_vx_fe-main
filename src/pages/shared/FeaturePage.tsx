@@ -11,6 +11,8 @@ type FeaturePageProps = {
   onBackHome: () => void
 }
 
+// Shared placeholder layout for feature areas that have approved navigation and
+// copy but do not yet have their final interactive workflow.
 export function FeaturePage({
   eyebrow,
   title,

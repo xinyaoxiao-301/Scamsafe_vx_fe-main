@@ -49,6 +49,8 @@ export async function analyzeScamText(
 
     const data = await res.json()
 
+    // Treat backend enum values as untrusted input so the result UI never crashes
+    // if the model/API returns a label outside the frontend type set.
     const riskLevel: ScamRiskLevel = VALID_RISK_LEVELS.includes(data.risk_level)
       ? data.risk_level
       : 'Low'
@@ -68,6 +70,8 @@ export async function analyzeScamText(
       guidance: data.action_steps ?? [],
     }
   } catch {
+    // Keep the page usable when the API is unavailable; the UI can still render a
+    // neutral analysis state instead of failing the whole interaction.
     return {
       isScam: false,
       confidencePct: 0,

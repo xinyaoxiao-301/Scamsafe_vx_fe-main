@@ -38,6 +38,8 @@ function buildPolylinePoints(values: number[], width: number, height: number) {
 }
 
 function splitExplanation(text: string): string[] {
+  // Backend explanations may arrive as newline text or bullet text; normalize
+  // both formats into a short list for the feedback panel.
   const cleaned = text
     .replace(/\r\n/g, '\n')
     .split('\n')
@@ -138,6 +140,8 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     setHasSubmitted(true)
     setIsCorrect(correct)
 
+    // Track per-topic results inside a mixed quiz so the progress breakdown can
+    // still show category-level learning history.
     const topic = current.topic
     setSessionByTopic((previous) => {
       const row = previous[topic] ?? { total: 0, correct: 0 }
@@ -162,6 +166,8 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     const total        = quizQuestions.length
     const pointsEarned = correctCount * 10
 
+    // Persist only the completed quiz summary; in-progress answers are kept in
+    // component state and are discarded when the user restarts.
     const record: QuizSessionRecord = {
       id:             `sc-${Date.now()}`,
       topic:          selectedTopic,
@@ -249,26 +255,36 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
           }
         >
           <div className="study-center-page__topics" role="list" aria-label={strings.studyCenter.chooseTopicLabel}>
-            {topics.map((item) => (
-              <button
-                key={item.topic}
-                type="button"
-                className={
-                  [
-                    'study-center-page__topic',
-                    item.topic === 'mixed' ? 'study-center-page__topic--wide' : '',
-                    selectedTopic === item.topic ? 'study-center-page__topic--active' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')
-                }
-                onClick={() => setSelectedTopic(item.topic)}
-                aria-label={item.title}
-              >
-                <p className="study-center-page__topic-title">{item.title}</p>
-                <p className="study-center-page__topic-desc">{item.description}</p>
-              </button>
-            ))}
+            {topics.map((item) => {
+              const tooltipId = `sc-topic-tip-${item.topic}`
+              return (
+                <button
+                  key={item.topic}
+                  type="button"
+                  className={
+                    [
+                      'study-center-page__topic',
+                      item.topic === 'mixed' ? 'study-center-page__topic--wide' : '',
+                      selectedTopic === item.topic ? 'study-center-page__topic--active' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')
+                  }
+                  onClick={() => setSelectedTopic(item.topic)}
+                  aria-label={item.title}
+                  aria-describedby={tooltipId}
+                >
+                  <p className="study-center-page__topic-title">{item.title}</p>
+                  <span
+                    id={tooltipId}
+                    className="study-center-page__topic-tooltip"
+                    role="tooltip"
+                  >
+                    {item.description}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </SectionCard>
 

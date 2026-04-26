@@ -39,15 +39,15 @@ export type TopicMeta = {
 
 const TOPICS: Record<Language, TopicMeta[]> = {
   en: [
-    { topic: 'mixed',               title: 'Mixed quiz',             description: 'A short mix of common scam patterns.' },
-    { topic: 'romance',             title: 'Romance scam',           description: 'Recognize emotional pressure and money requests.' },
-    { topic: 'investment',          title: 'Investment scam',        description: 'Spot "guaranteed returns" and urgent deposits.' },
-    { topic: 'tech-support',        title: 'Tech support scam',      description: 'Avoid fake "virus" fixes and code requests.' },
-    { topic: 'government-imposter', title: 'Government imposter',    description: 'Know what official agencies never ask by message.' },
-    { topic: 'marketplace',         title: 'Marketplace scam',       description: 'Stay safe when buying or selling online.' },
-    { topic: 'charity',             title: 'Charity scam',           description: 'Verify donation requests before sending money.' },
-    { topic: 'lottery-prize',       title: 'Lottery / prize scam',   description: 'You cannot win a contest you did not enter.' },
-    { topic: 'family-emergency',    title: 'Family emergency scam',  description: 'Pause, verify, and call a trusted number.' },
+    { topic: 'mixed',               title: 'Mix scams',              description: 'A short mix of common scam patterns.' },
+    { topic: 'romance',             title: 'Romance scams',          description: 'Protect yourself when someone online pretends to be a lover to scam you.' },
+    { topic: 'investment',          title: 'Investment scams',       description: 'Recognize offers that sound too good to be true.' },
+    { topic: 'tech-support',        title: 'Tech support scams',     description: 'Avoid fake solutions for non-existent problems.' },
+    { topic: 'government-imposter', title: 'Government imposters',   description: 'Know how scammers imitate governmental bodies.' },
+    { topic: 'marketplace',         title: 'Marketplace scams',      description: 'Learn to avoid fake sellers and escrow tricks.' },
+    { topic: 'charity',             title: 'Charity scams',          description: 'Understand how scammers pose as legitimate charities.' },
+    { topic: 'lottery-prize',       title: 'Lottery / prize scams',  description: 'You cannot win a contest you did not enter.' },
+    { topic: 'family-emergency',    title: 'Family emergency scams', description: 'Check urgent calls claiming a relative is in trouble.' },
   ],
   ms: [
     { topic: 'mixed',               title: 'tidak tersedia',  description: 'tidak tersedia' },
@@ -126,6 +126,8 @@ export function recordSession(record: QuizSessionRecord) {
 }
 
 export function buildSessionStats(sessions: QuizSessionRecord[]) {
+  // Pre-seed every topic so the progress chart can render stable rows even
+  // before the user has answered questions in each category.
   const byTopic: Record<string, { attempts: number; total: number; correct: number }> = {}
   for (const topic of TOPIC_ORDER) {
     byTopic[topic] = { attempts: 0, total: 0, correct: 0 }

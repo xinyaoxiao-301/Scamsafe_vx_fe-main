@@ -37,11 +37,12 @@ const API_BASE        = env.apiBaseUrl
 const PERFORMANCE_KEY = 'scamsafe_simulation_performance_v1'
 
 // ── Slug → UI display label ───────────────────────────────────────────────────
-// Must match the keys in SLUG_TO_CATEGORY in scam_sim.py exactly.
 // These English labels are only used in the scenario picker UI.
 // ms/zh show "not available" — handled via i18n scenarioUnavailable string.
 
-export const SCENARIO_SLUGS: ScamScenarioType[] = [
+export type ApiScenarioType = Exclude<ScamScenarioType, 'mixed-scams'>
+
+export const API_SCENARIO_SLUGS: ApiScenarioType[] = [
   'romance-scams',
   'investment-scams',
   'tech-support-scams',
@@ -52,15 +53,30 @@ export const SCENARIO_SLUGS: ScamScenarioType[] = [
   'family-emergency-scams',
 ]
 
+export const SCENARIO_SLUGS: ScamScenarioType[] = ['mixed-scams', ...API_SCENARIO_SLUGS]
+
 export const SCENARIO_LABELS: Record<ScamScenarioType, string> = {
-  'romance-scams':          'Romance scam',
-  'investment-scams':       'Investment scam',
-  'tech-support-scams':     'Tech support scam',
-  'government-imposters':   'Government imposter',
-  'marketplace-scams':      'Marketplace scam',
-  'charity-scams':          'Charity scam',
-  'lottery-prize-scams':    'Lottery / prize scam',
-  'family-emergency-scams': 'Family emergency scam',
+  'mixed-scams':            'Mix scams',
+  'romance-scams':          'Romance scams',
+  'investment-scams':       'Investment scams',
+  'tech-support-scams':     'Tech support scams',
+  'government-imposters':   'Government imposters',
+  'marketplace-scams':      'Marketplace scams',
+  'charity-scams':          'Charity scams',
+  'lottery-prize-scams':    'Lottery / prize scams',
+  'family-emergency-scams': 'Family emergency scams',
+}
+
+export const SCENARIO_DESCRIPTIONS: Record<ScamScenarioType, string> = {
+  'mixed-scams':            'A short mix of common scam patterns.',
+  'romance-scams':          'Protect yourself when someone online pretends to be a lover to scam you.',
+  'investment-scams':       'Recognize offers that sound too good to be true.',
+  'tech-support-scams':     'Avoid fake solutions for non-existent problems.',
+  'government-imposters':   'Know how scammers imitate governmental bodies.',
+  'marketplace-scams':      'Learn to avoid fake sellers and escrow tricks.',
+  'charity-scams':          'Understand how scammers pose as legitimate charities.',
+  'lottery-prize-scams':    'You cannot win a contest you did not enter.',
+  'family-emergency-scams': 'Check urgent calls claiming a relative is in trouble.',
 }
 
 // ── Goodbye detection ─────────────────────────────────────────────────────────
@@ -92,6 +108,8 @@ function readPerformance(): PerformanceStore {
   try {
     const raw = window.localStorage.getItem(PERFORMANCE_KEY)
     if (!raw) return buildEmptyPerformance()
+    // Stored progress is intentionally local-only and best-effort. If future
+    // versions add new scenario slugs, getPerformance fills missing rows below.
     return JSON.parse(raw) as PerformanceStore
   } catch {
     return buildEmptyPerformance()
@@ -125,7 +143,7 @@ export function recordPerformance(type: ScamScenarioType, outcome: 'safe' | 'ris
  * Returns: { session_id, initial_message }
  */
 export async function startSimulationSession(
-  scenarioType: ScamScenarioType,
+  scenarioType: ApiScenarioType,
 ): Promise<SimulationStartResult> {
   const res = await fetch(`${API_BASE}/api/simulate/start`, {
     method:  'POST',

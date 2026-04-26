@@ -26,8 +26,10 @@
   display: grid;
   gap: 6px;
   text-align: center;
-  padding-bottom: 12px;
+  padding: 12px 12px 12px;
   border-bottom: 1px solid rgba(19, 108, 242, 0.12);
+  background: #ffffff;
+  border-radius: 18px;
 }
 
 .feature-launchpad__lead-eyebrow {
@@ -206,7 +208,7 @@
 
   .feature-launchpad__lead {
     gap: 8px;
-    padding-bottom: 14px;
+    padding: 14px 14px 14px;
   }
 
   .feature-launchpad__lead-title {
@@ -225,6 +227,77 @@
 
   .feature-launchpad__subtitle {
     font-size: 1.28rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Make the "Choose a service" lead more compact when it sits beside the video. */
+  .feature-launchpad-shell {
+    padding: 12px;
+    gap: 12px;
+    border-radius: 22px;
+    margin-top: 0;
+    height: 100%;
+    width: 100%;
+    justify-self: stretch;
+    transform: none;
+  }
+
+  .feature-launchpad__lead {
+    text-align: center;
+    gap: 4px;
+    padding: 10px 10px 10px;
+  }
+
+  .feature-launchpad__lead-eyebrow {
+    font-size: 0.9rem;
+  }
+
+  .feature-launchpad__lead-title {
+    font-size: 1.45rem;
+  }
+
+  .feature-launchpad__lead-helper {
+    justify-content: center;
+    font-size: 1rem;
+    gap: 8px;
+  }
+
+  /* Make the 5 feature cards very compact on desktop. */
+  .feature-launchpad {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    align-content: start;
+  }
+
+  .feature-launchpad__item {
+    min-height: 118px;
+    padding: 10px 10px 10px;
+    border-radius: 18px;
+  }
+
+  .feature-launchpad__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .feature-launchpad__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .feature-launchpad__title {
+    font-size: 0.78rem;
+  }
+
+  .feature-launchpad__subtitle {
+    font-size: 1.05rem;
+  }
+
+  .feature-launchpad__subtitle--wide {
+    white-space: normal;
+    font-size: 1.05rem;
   }
 }
 

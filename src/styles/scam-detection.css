@@ -1,4 +1,6 @@
 .scam-detection-page {
+  /* Page-level scale is used to keep this senior-friendly feature readable
+     without multiplying every font token in the shared design system. */
   --sd-scale: 1.3;
   display: grid;
   gap: var(--space-5);
@@ -51,6 +53,8 @@
 }
 
 .scam-detection-page__card--input {
+  /* Match the result card height so input and output stay visually paired on
+     desktop while still fitting within common laptop viewports. */
   min-height: 728px;
   height: min(1014px, calc(100vh - 240px));
   display: flex;
@@ -78,6 +82,8 @@
 }
 
 .scam-detection-page__card--result .section-card__body {
+  /* Result content can be longer than the card after an API response. Keep the
+     card stable and scroll inside the body instead of growing the full page. */
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -182,6 +188,7 @@
 }
 
 .scam-detection-page__risk-box {
+  /* The square risk tile is the primary visual anchor of the result panel. */
   width: min(100%, 170px);
   aspect-ratio: 1 / 1;
   border-radius: 26px;

@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import type { CSSProperties, PropsWithChildren } from 'react'
 import { primaryNavItems, type AppRoute, appRoutes } from '@/app/routes'
-import { InfoPill } from '@/components/ui/InfoPill'
-import { FeatureIcon } from '@/components/ui/FeatureIcon'
 import { useI18n, type Language } from '@/lib/i18n'
 import logo from '@/assets/scamsafe-logo.png'
+import homeHeroBackground from '@/assets/home-hero-background.png'
 
 type AppShellProps = PropsWithChildren<{
   currentRoute: AppRoute
@@ -18,10 +17,16 @@ type HeroTitleToken = {
   spaceAfter: boolean
 }
 
+// Split the hero title into letters so CSS can stagger the animation while the
+// hidden full title remains available to screen readers.
 function renderAnimatedTitle(tokens: HeroTitleToken[]) {
   let globalIndex = 0
 
   return tokens.flatMap((token) => {
+    if (token.text === '\n') {
+      return [<br key={token.id} />]
+    }
+
     const letters = token.text.split('').map((char, letterIndex) => {
       const style = { ['--i' as const]: globalIndex++ } as CSSProperties
       const className =
@@ -54,12 +59,16 @@ function renderAnimatedTitle(tokens: HeroTitleToken[]) {
 }
 
 function titleTokensToText(tokens: HeroTitleToken[]) {
-  return tokens.map((token) => token.text + (token.spaceAfter ? ' ' : '')).join('').trim()
+  return tokens
+    .map((token) => (token.text === '\n' ? ' ' : token.text) + (token.spaceAfter ? ' ' : ''))
+    .join('')
+    .trim()
 }
 
 export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches)
+  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 1200px)').matches)
   const isHome = currentRoute === appRoutes.home
   const { language, setLanguage, strings } = useI18n()
 
@@ -68,18 +77,33 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
   }, [currentRoute])
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 767px)')
-    const handleChange = () => setIsMobile(mediaQuery.matches)
+    const mobileQuery = window.matchMedia('(max-width: 767px)')
+    const desktopQuery = window.matchMedia('(min-width: 1200px)')
+    const handleChange = () => {
+      setIsMobile(mobileQuery.matches)
+      setIsDesktop(desktopQuery.matches)
+    }
 
     handleChange()
 
-    if (typeof mediaQuery.addEventListener === 'function') {
-      mediaQuery.addEventListener('change', handleChange)
-      return () => mediaQuery.removeEventListener('change', handleChange)
+    if (
+      typeof mobileQuery.addEventListener === 'function' &&
+      typeof desktopQuery.addEventListener === 'function'
+    ) {
+      mobileQuery.addEventListener('change', handleChange)
+      desktopQuery.addEventListener('change', handleChange)
+      return () => {
+        mobileQuery.removeEventListener('change', handleChange)
+        desktopQuery.removeEventListener('change', handleChange)
+      }
     }
 
-    mediaQuery.addListener(handleChange)
-    return () => mediaQuery.removeListener(handleChange)
+    mobileQuery.addListener(handleChange)
+    desktopQuery.addListener(handleChange)
+    return () => {
+      mobileQuery.removeListener(handleChange)
+      desktopQuery.removeListener(handleChange)
+    }
   }, [])
 
   const languageLabel = (value: Language) => {
@@ -93,7 +117,7 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
     <div className="app-shell">
       <div className="app-shell__ambient" aria-hidden="true" />
       <div className="app-shell__ambient app-shell__ambient--secondary" aria-hidden="true" />
-      <div className="app-shell__frame">
+      <div className={isHome ? 'app-shell__frame app-shell__frame--home' : 'app-shell__frame'}>
         <header className="app-shell__brand" aria-label="ScamSafe brand">
           <div className="app-shell__brand-copy">
             <button className="app-shell__brand-home" type="button" onClick={() => onNavigate(appRoutes.home)}>
@@ -101,20 +125,72 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
               <span className="app-shell__brand-mark">ScamSafe</span>
             </button>
           </div>
-          <div className="app-shell__nav">
-            <div className="app-shell__nav-controls">
-              <button
-                type="button"
-                className="app-shell__menu-button"
-                aria-label={strings.ui.openMenu}
-                aria-expanded={isMenuOpen}
-                aria-controls="app-navigation"
-                onClick={() => setIsMenuOpen((current) => !current)}
-              >
-                <span aria-hidden="true" />
-                <span aria-hidden="true" />
-                <span aria-hidden="true" />
-              </button>
+          {isDesktop ? (
+            <nav className="app-shell__nav app-shell__nav--desktop" id="app-navigation" aria-label="Primary navigation">
+              {primaryNavItems.map((item) => (
+                <button
+                  key={item.route}
+                  className={
+                    item.route === currentRoute
+                      ? 'app-shell__nav-link app-shell__nav-link--active'
+                      : 'app-shell__nav-link'
+                  }
+                  type="button"
+                  onClick={() => onNavigate(item.route)}
+                >
+                  {strings.nav[item.route]}
+                </button>
+              ))}
+            </nav>
+          ) : (
+            <div className="app-shell__nav">
+              <div className="app-shell__nav-controls">
+                <button
+                  type="button"
+                  className="app-shell__menu-button"
+                  aria-label={strings.ui.openMenu}
+                  aria-expanded={isMenuOpen}
+                  aria-controls="app-navigation"
+                  onClick={() => setIsMenuOpen((current) => !current)}
+                >
+                  <span aria-hidden="true" />
+                  <span aria-hidden="true" />
+                  <span aria-hidden="true" />
+                </button>
+                <label className="app-shell__lang" aria-label={strings.ui.language}>
+                  <select
+                    value={language}
+                    onChange={(event) => setLanguage(event.target.value as Language)}
+                    aria-label={strings.ui.language}
+                  >
+                    <option value="en">{languageLabel('en')}</option>
+                    <option value="ms">{languageLabel('ms')}</option>
+                    <option value="zh">{languageLabel('zh')}</option>
+                  </select>
+                </label>
+              </div>
+              {isMenuOpen ? (
+                <nav className="app-shell__menu-panel" id="app-navigation" aria-label="Primary navigation">
+                  {primaryNavItems.map((item) => (
+                    <button
+                      key={item.route}
+                      className={
+                        item.route === currentRoute
+                          ? 'app-shell__menu-link app-shell__menu-link--active'
+                          : 'app-shell__menu-link'
+                      }
+                      type="button"
+                      onClick={() => onNavigate(item.route)}
+                    >
+                      {strings.nav[item.route]}
+                    </button>
+                  ))}
+                </nav>
+              ) : null}
+            </div>
+          )}
+          <div className={isDesktop ? 'app-shell__nav-controls app-shell__nav-controls--desktop' : 'app-shell__nav-controls'}>
+            {isDesktop ? (
               <label className="app-shell__lang" aria-label={strings.ui.language}>
                 <select
                   value={language}
@@ -126,91 +202,40 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
                   <option value="zh">{languageLabel('zh')}</option>
                 </select>
               </label>
-            </div>
-            {isMenuOpen ? (
-              <nav className="app-shell__menu-panel" id="app-navigation" aria-label="Primary navigation">
-                {primaryNavItems.map((item) => (
-                  <button
-                    key={item.route}
-                    className={
-                      item.route === currentRoute
-                        ? 'app-shell__menu-link app-shell__menu-link--active'
-                        : 'app-shell__menu-link'
-                    }
-                    type="button"
-                    onClick={() => onNavigate(item.route)}
-                  >
-                    {strings.nav[item.route]}
-                  </button>
-                ))}
-              </nav>
             ) : null}
           </div>
         </header>
         {isHome ? (
-          <section className="app-shell__hero" aria-label="ScamSafe hero introduction">
-            <header className="app-shell__hero-header" aria-label="ScamSafe tagline">
-              <h1 className="app-shell__hero-title" aria-label={titleTokensToText(strings.hero.titleTokens)}>
-                <span className="sr-only">{titleTokensToText(strings.hero.titleTokens)}</span>
-                <span className="app-shell__hero-title-animated" aria-hidden="true">
-                  {renderAnimatedTitle(strings.hero.titleTokens)}
-                </span>
-              </h1>
-            </header>
-            <div className="app-shell__hero-body">
-              <div className="app-shell__hero-copy">
-                <p className="app-shell__hero-subtitle">
-                  {strings.hero.subtitle}
-                </p>
-                <div className="app-shell__hero-pills" aria-label="Product highlights">
-                  <InfoPill tone="accent" label={strings.hero.pills.detection} />
-                  <InfoPill label={strings.hero.pills.chat} />
-                  <InfoPill label={strings.hero.pills.senior} />
-                  <InfoPill label={strings.hero.pills.steps} />
-                </div>
-                <div className="app-shell__hero-mini-grid" aria-label="Core modules">
-                  <button
-                    type="button"
-                    className="app-shell__hero-mini"
-                    onClick={() => onNavigate(appRoutes.detection)}
-                  >
-                    <div className="app-shell__hero-mini-icon">
-                      <FeatureIcon name="detection" />
-                    </div>
-                    <div className="app-shell__hero-mini-copy">
-                      <p className="app-shell__hero-mini-title">{strings.hero.modules.detectionTitle}</p>
-                      <p className="app-shell__hero-mini-subtitle">{strings.hero.modules.detectionSubtitle}</p>
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    className="app-shell__hero-mini"
-                    onClick={() => onNavigate(appRoutes.simulation)}
-                  >
-                    <div className="app-shell__hero-mini-icon">
-                      <FeatureIcon name="simulation" />
-                    </div>
-                    <div className="app-shell__hero-mini-copy">
-                      <p className="app-shell__hero-mini-title">{strings.hero.modules.practiceTitle}</p>
-                      <p className="app-shell__hero-mini-subtitle">{strings.hero.modules.practiceSubtitle}</p>
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    className="app-shell__hero-mini"
-                    onClick={() => onNavigate(appRoutes.studyCenter)}
-                  >
-                    <div className="app-shell__hero-mini-icon">
-                      <FeatureIcon name="study" />
-                    </div>
-                    <div className="app-shell__hero-mini-copy">
-                      <p className="app-shell__hero-mini-title">{strings.hero.modules.supportTitle}</p>
-                      <p className="app-shell__hero-mini-subtitle">{strings.hero.modules.supportSubtitle}</p>
-                    </div>
-                  </button>
+          <>
+            <section
+              className="app-shell__hero"
+              aria-label="ScamSafe hero introduction"
+            >
+              <div className="app-shell__hero-bg" aria-hidden="true">
+                <img src={homeHeroBackground} alt="" />
+              </div>
+              <div className="app-shell__hero-inner">
+                <header className="app-shell__hero-header" aria-label="ScamSafe tagline">
+                  <h1 className="app-shell__hero-title" aria-label={titleTokensToText(strings.hero.titleTokens)}>
+                    <span className="sr-only">{titleTokensToText(strings.hero.titleTokens)}</span>
+                    <span className="app-shell__hero-title-animated" aria-hidden="true">
+                      {renderAnimatedTitle(strings.hero.titleTokens)}
+                    </span>
+                  </h1>
+                </header>
+                <div className="app-shell__hero-body">
+                  <div className="app-shell__hero-copy">
+                    <p className="app-shell__hero-subtitle">{strings.hero.subtitle}</p>
+                  </div>
                 </div>
               </div>
-              <div className="app-shell__hero-media" aria-label="ScamSafe tutorial video">
+            </section>
+          </>
+        ) : null}
+        {isHome ? (
+          <>
+            <div className="app-shell__home-main" aria-label="Homepage main content">
+              <section className="app-shell__hero-video-section" aria-label="ScamSafe tutorial video">
                 <div className="app-shell__hero-video-wrap">
                   <div className="app-shell__hero-video-frame">
                     <div className="app-shell__hero-video-play">
@@ -222,31 +247,105 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
                     <p className="app-shell__hero-video-hint">{strings.hero.video.hint}</p>
                   </div>
                 </div>
-              </div>
+              </section>
+              {children}
+
+              <section className="app-shell__stats" aria-label="Malaysia scam statistics">
+                <header className="app-shell__stats-header">
+                  <p className="app-shell__stats-eyebrow">{strings.homeStats.eyebrow}</p>
+                  <h2 className="app-shell__stats-title">{strings.homeStats.title}</h2>
+                </header>
+
+                <div className="app-shell__stats-grid" role="list" aria-label="Key statistics">
+                  <article className="app-shell__stats-card" role="listitem">
+                    <div className="app-shell__stats-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8 3h8" />
+                        <path d="M7 7h10a4 4 0 0 1 4 4v2a7 7 0 0 1-7 7h-4a7 7 0 0 1-7-7v-2a4 4 0 0 1 4-4Z" />
+                        <path d="M12 10v4" />
+                        <path d="M10 12h4" />
+                      </svg>
+                    </div>
+                    <p className="app-shell__stats-label">{strings.homeStats.cards.monthlyExposure.label}</p>
+                    <p className="app-shell__stats-value">{strings.homeStats.cards.monthlyExposure.value}</p>
+                    <p className="app-shell__stats-hint">{strings.homeStats.cards.monthlyExposure.hint}</p>
+                  </article>
+
+                  <article className="app-shell__stats-card" role="listitem">
+                    <div className="app-shell__stats-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M4.5 18.5V6.8a2.3 2.3 0 0 1 2.3-2.3h10.4a2.3 2.3 0 0 1 2.3 2.3v11.7" />
+                        <path d="M6.8 18.5h10.4" />
+                        <path d="M8.2 9.2h7.6" />
+                        <path d="M8.2 12.2h7.6" />
+                        <path d="M8.2 15.2h4.6" />
+                      </svg>
+                    </div>
+                    <p className="app-shell__stats-label">{strings.homeStats.cards.totalLosses.label}</p>
+                    <p className="app-shell__stats-value">{strings.homeStats.cards.totalLosses.value}</p>
+                    <p className="app-shell__stats-hint">{strings.homeStats.cards.totalLosses.hint}</p>
+                  </article>
+
+                  <article className="app-shell__stats-card" role="listitem">
+                    <div className="app-shell__stats-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M5 18.5V6.5" />
+                        <path d="M5 18.5h14" />
+                        <path d="M8 16v-4" />
+                        <path d="M12 16V9" />
+                        <path d="M16 16v-6" />
+                      </svg>
+                    </div>
+                    <p className="app-shell__stats-label">{strings.homeStats.cards.gdpShare.label}</p>
+                    <p className="app-shell__stats-value">{strings.homeStats.cards.gdpShare.value}</p>
+                    <p className="app-shell__stats-hint">{strings.homeStats.cards.gdpShare.hint}</p>
+                  </article>
+
+                  <article className="app-shell__stats-card" role="listitem">
+                    <div className="app-shell__stats-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M8.5 10.3a3.2 3.2 0 1 1 6.4 0" />
+                        <path d="M6.5 20v-1.1a5.5 5.5 0 0 1 11 0V20" />
+                        <path d="M9.1 13.1h5.8" />
+                      </svg>
+                    </div>
+                    <p className="app-shell__stats-label">{strings.homeStats.cards.seniorsAffected.label}</p>
+                    <p className="app-shell__stats-value">{strings.homeStats.cards.seniorsAffected.value}</p>
+                    <p className="app-shell__stats-hint">{strings.homeStats.cards.seniorsAffected.hint}</p>
+                  </article>
+                </div>
+
+                <p className="app-shell__stats-sources">{strings.homeStats.sources}</p>
+              </section>
             </div>
-          </section>
-        ) : null}
-        {children}
-        <footer className="app-footer" aria-label="Footer">
-          <div className="app-footer__header">
-            <h2 className="app-footer__title">{strings.footer.title}</h2>
-          </div>
-          <div className="app-footer__grid">
-            <section className="app-footer__card" aria-label="Data sources">
-              <h3 className="app-footer__card-title">{strings.footer.sourcesTitle}</h3>
-              <p className="app-footer__card-text">{strings.footer.sourcesHint}</p>
-            </section>
-            <section className="app-footer__card" aria-label="About ScamSafe">
-              <h3 className="app-footer__card-title">{strings.footer.aboutTitle}</h3>
-              <p className="app-footer__card-text">{strings.footer.aboutHint}</p>
-            </section>
-            <section className="app-footer__card" aria-label="Risk level guide">
-              <h3 className="app-footer__card-title">{strings.footer.riskTitle}</h3>
-              <p className="app-footer__card-text">{strings.footer.riskHint}</p>
-            </section>
-          </div>
-          <p className="app-footer__copyright">© {new Date().getFullYear()} ScamSafe</p>
-        </footer>
+          </>
+        ) : (
+          children
+        )}
+        <div className="app-shell__footer-wrap">
+          <footer className="app-footer" aria-label="Footer">
+            <div className="app-footer__inner">
+              <div className="app-footer__header">
+                <h2 className="app-footer__title">{strings.footer.title}</h2>
+              </div>
+              <div className="app-footer__grid">
+                <section className="app-footer__card" aria-label="Data sources">
+                  <h3 className="app-footer__card-title">{strings.footer.sourcesTitle}</h3>
+                  <p className="app-footer__card-text">{strings.footer.sourcesHint}</p>
+                </section>
+                <section className="app-footer__card" aria-label="About ScamSafe">
+                  <h3 className="app-footer__card-title">{strings.footer.aboutTitle}</h3>
+                  <p className="app-footer__card-text">{strings.footer.aboutHint}</p>
+                </section>
+                <section className="app-footer__card" aria-label="Risk level guide">
+                  <h3 className="app-footer__card-title">{strings.footer.riskTitle}</h3>
+                  <p className="app-footer__card-text">{strings.footer.riskHint}</p>
+                </section>
+              </div>
+              <p className="app-footer__copyright">© {new Date().getFullYear()} ScamSafe</p>
+            </div>
+          </footer>
+        </div>
       </div>
     </div>
   )

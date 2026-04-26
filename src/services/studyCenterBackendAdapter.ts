@@ -1,5 +1,8 @@
 import type { QuizQuestion, QuizTopic } from '@/types/studyCenterQuiz'
 
+// These row shapes mirror the quiz tables returned by the backend. They are kept
+// separate from the UI-facing QuizQuestion type so database naming can stay
+// snake_case while React components work with camelCase fields.
 type BackendQuizRow = {
   id: number
   title: string
@@ -35,6 +38,8 @@ export type BackendQuizBundle = BackendQuizRow & {
   >
 }
 
+// Backend quiz slugs are public API values. Convert them once at the adapter
+// boundary so the rest of the frontend can use compact topic keys.
 const SLUG_TO_TOPIC: Record<string, Exclude<QuizTopic, 'mixed'>> = {
   'romance-scams': 'romance',
   'investment-scams': 'investment',
@@ -53,6 +58,8 @@ export function topicFromQuizSlug(slug: string): Exclude<QuizTopic, 'mixed'> | n
 export function adaptBackendQuiz(bundle: BackendQuizBundle): { topic: Exclude<QuizTopic, 'mixed'>; questions: QuizQuestion[] } {
   const topic = topicFromQuizSlug(bundle.slug)
   if (!topic) {
+    // Fail loudly for new or misspelled slugs. Silent fallback would store
+    // progress under the wrong category and make the learning chart misleading.
     throw new Error(`Unknown quiz slug: ${bundle.slug}`)
   }
 
@@ -64,6 +71,8 @@ function adaptBackendQuestion(
   topic: Exclude<QuizTopic, 'mixed'>,
   question: BackendQuestionRow & { choices: BackendChoiceRow[] },
 ): QuizQuestion {
+  // Respect backend display_order so non-alphabetical answer ordering can be
+  // authored in the database without frontend changes.
   const choices = [...(question.choices ?? [])].sort((a, b) => a.display_order - b.display_order)
   const correct = choices.find((choice) => choice.is_correct) ?? choices[0]
 
@@ -85,7 +94,11 @@ function adaptBackendQuestion(
     prompt: question.prompt,
     questionExplanation: question.explanation,
     options,
+    // The fallback keeps malformed question data renderable in development, but
+    // production content should always include exactly one correct choice.
     correctOptionId: String(correct?.id ?? options[0]?.id ?? 'a'),
+    // Older quiz UI expects generic reason arrays. Backend-authored quizzes use
+    // per-choice explanations instead, so these stay empty for compatibility.
     explanation: { correctReasons: [], incorrectReasons: [], tips: [] },
     choiceExplanations,
   }

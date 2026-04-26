@@ -31,6 +31,8 @@ export default function App() {
     }
   }, [])
 
+  // Hash routing keeps the static build deployable without server-side rewrite
+  // rules while still allowing direct feature navigation inside the app.
   const handleNavigate = (route: AppRoute) => {
     if (window.location.hash === route) {
       setCurrentRoute(route)

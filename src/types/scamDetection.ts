@@ -1,3 +1,5 @@
+// Labels are intentionally human-readable because the backend/model returns
+// these exact strings and the UI maps them directly to localized display labels.
 export type ScamRiskLevel = 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High'
 
 export type ScamType =
@@ -14,6 +16,8 @@ export type ScamType =
 export type ScamAnalysis = {
   isScam: boolean
   confidencePct: number
+  // Derived frontend score used for visual emphasis; the API confidence remains
+  // separate because confidence and severity are not the same concept.
   riskScore: number
   riskLevel: ScamRiskLevel
   scamType: ScamType
@@ -22,4 +26,3 @@ export type ScamAnalysis = {
   indicators: { title: string; description: string }[]
   guidance: string[]
 }
-

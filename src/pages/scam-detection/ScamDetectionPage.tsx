@@ -39,6 +39,8 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
     try {
       const analysis = await analyzeScamText(text, language)
       setResult(analysis)
+      // High-risk results need an immediate interruption before the user reads
+      // the detailed panel, because the safest action is to stop first.
       if (analysis.riskLevel === 'High' || analysis.riskLevel === 'Very High') {
         setShowModal(true)
       }
@@ -102,6 +104,8 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
       .filter(Boolean)
       .sort((a, b) => b.length - a.length)
 
+    // Highlight an explicit safety command such as "Do not" when available;
+    // otherwise emphasize the first word to keep urgent guidance scannable.
     const matched = prefixes.find((prefix) => trimmed.toLowerCase().startsWith(prefix.toLowerCase()))
 
     const firstSpace = trimmed.search(/\s/)
@@ -241,17 +245,6 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                       <div className="scam-detection-page__risk-box-risk">
                         {s.riskLabels[result.riskLevel]} risk
                       </div>
-
-                      <div className="scam-detection-page__risk-box-metric">
-                        <div className="scam-detection-page__risk-box-pct">
-                          {Math.round(result.confidencePct)}%
-                        </div>
-                        <div className="scam-detection-page__risk-box-caption">confidence</div>
-                      </div>
-                    </div>
-
-                    <div className="scam-detection-page__risk-sentence-pill" role="note">
-                      We’re {Math.round(result.confidencePct)}% confident this message is {s.riskLabels[result.riskLevel]} risk.
                     </div>
                   </div>
 

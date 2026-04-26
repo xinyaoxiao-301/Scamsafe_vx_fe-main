@@ -5,8 +5,10 @@
  * Consumed by services/scamSimulation.ts and ScamSimulationPage.tsx.
  */
 
-// Scenario slugs — must match SLUG_TO_CATEGORY keys in scam_sim.py
+// Scenario slugs.
+// Note: 'mixed-scams' is a UI-only picker option. It never gets sent to the API.
 export type ScamScenarioType =
+  | 'mixed-scams'
   | 'romance-scams'
   | 'investment-scams'
   | 'tech-support-scams'
