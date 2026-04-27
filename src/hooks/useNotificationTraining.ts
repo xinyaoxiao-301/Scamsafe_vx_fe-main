@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import logo from '@/assets/scamsafe-logo.png'
 import { appRoutes } from '@/app/routes'
-import { pickNotificationScenario } from '@/lib/notification-training/scenarios'
 import { writeStoredNotificationScenario } from '@/lib/notification-training/storage'
 import type { StoredNotificationScenario } from '@/lib/notification-training/types'
+import { fetchRandomNotification } from '@/services/notificationTraining'
 
 type NotificationPermissionState = NotificationPermission | 'unsupported'
 
@@ -92,47 +92,66 @@ export function useNotificationTraining(enabled: boolean) {
     const elapsed = Date.now() - entryTimeRef.current
     const waitTime = Math.max(0, FIRST_NOTIFICATION_DELAY_MS - elapsed)
 
+    let isCancelled = false
+
     const timeoutId = window.setTimeout(() => {
       if (hasTriggeredRef.current) {
         return
       }
 
-      hasTriggeredRef.current = true
-
-      const scenario = pickNotificationScenario()
-      writeStoredNotificationScenario(scenario)
-      setActiveScenario(scenario)
-
-      // The in-app training popup should always appear after site entry.
-      // Native browser notifications are optional and only shown when allowed.
-      if (permission === 'granted') {
+      void (async () => {
         try {
-          const nativeNotification = new window.Notification(scenario.title, {
-            body: `${scenario.body}\n${scenario.sender}\n${scenario.url}`,
-            icon: logo,
-            requireInteraction: true,
-            tag: scenario.id,
-          })
-
-          nativeNotification.onclick = (event) => {
-            event.preventDefault()
-            notificationRef.current?.close()
-            notificationRef.current = null
-            setActiveScenario(null)
-            writeStoredNotificationScenario(scenario)
-            window.location.hash = appRoutes.notificationReveal
-            window.focus()
+          const preview = await fetchRandomNotification()
+          if (isCancelled || hasTriggeredRef.current) {
+            return
           }
 
-          notificationRef.current = nativeNotification
+          hasTriggeredRef.current = true
+
+          const scenario: StoredNotificationScenario = {
+            id: preview.id,
+            message: preview.message,
+            triggeredAt: Date.now(),
+          }
+
+          writeStoredNotificationScenario(scenario)
+          setActiveScenario(scenario)
+
+          // The in-app training popup should always appear after site entry.
+          // Native browser notifications are optional and only shown when allowed.
+          if (permission === 'granted') {
+            try {
+              const nativeNotification = new window.Notification('ScamSafe notification training', {
+                body: scenario.message,
+                icon: logo,
+                requireInteraction: true,
+                tag: `notification-training-${scenario.id}`,
+              })
+
+              nativeNotification.onclick = (event) => {
+                event.preventDefault()
+                notificationRef.current?.close()
+                notificationRef.current = null
+                setActiveScenario(null)
+                writeStoredNotificationScenario(scenario)
+                window.location.hash = appRoutes.notificationReveal
+                window.focus()
+              }
+
+              notificationRef.current = nativeNotification
+            } catch {
+              // Keep the mirrored in-app preview available even if the native
+              // notification constructor fails on a specific browser/runtime.
+            }
+          }
         } catch {
-          // Keep the mirrored in-app preview available even if the native
-          // notification constructor fails on a specific browser/runtime.
+          hasTriggeredRef.current = false
         }
-      }
+      })()
     }, waitTime)
 
     return () => {
+      isCancelled = true
       window.clearTimeout(timeoutId)
     }
   }, [enabled, permission])

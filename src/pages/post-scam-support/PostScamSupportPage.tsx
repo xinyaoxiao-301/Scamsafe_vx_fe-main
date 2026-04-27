@@ -11,6 +11,8 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
   const { strings } = useI18n()
   const [selectedIncident, setSelectedIncident] = useState<'transferred-money' | null>(null)
   const [completedCount, setCompletedCount] = useState(0)
+  const [isCurrentStepConfirmed, setIsCurrentStepConfirmed] = useState(false)
+  const [reviewingStepIndex, setReviewingStepIndex] = useState<number | null>(null)
   const trackerRef = useRef<HTMLDivElement | null>(null)
 
   const bankHotlines = [
@@ -20,6 +22,14 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
     { name: 'UOB Fraud Reporting Hotline', number: '03-2612 8100' },
     { name: 'AmBank Contact Centre', number: '03-2178 8888' },
     { name: 'Bank Islam Contact Centre', number: '03-2690 0900' },
+    { name: 'Hong Leong Lost Card / Scam Reporting', number: '03-7626 8899' },
+    { name: 'HSBC Fraud Operations', number: '03-8800 7420' },
+    { name: 'OCBC Personal Banking', number: '03-8317 5000' },
+    { name: 'BSN Contact Centre / Fraud & Scam Report', number: '03-2613 1900' },
+    {
+      name: 'Other bank',
+      number: 'Use the official number on your bank card or banking app immediately.',
+    },
   ] as const
 
   const steps = [
@@ -39,7 +49,8 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
         'My bank account number is:',
         'The transfer amount, time, and recipient account are:',
       ],
-      extraTitle: 'Major Malaysian bank hotlines',
+      extraTitle: 'After 997, call your bank immediately',
+      extraDescription: 'Find your bank below and tap to call.',
       extraItems: bankHotlines,
     },
     {
@@ -91,18 +102,25 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
     },
   ] as const
 
+  const defaultStepIndex = Math.min(completedCount, steps.length - 1)
   const activeStepIndex =
-    selectedIncident === null ? -1 : Math.min(completedCount, steps.length - 1)
+    selectedIncident === null ? -1 : reviewingStepIndex ?? defaultStepIndex
   const isAllDone = selectedIncident !== null && completedCount >= steps.length
   const activeStep = activeStepIndex >= 0 ? steps[activeStepIndex] : null
+  const isReviewingPastStep = reviewingStepIndex !== null && reviewingStepIndex < completedCount
 
   const startTransferredMoneyFlow = () => {
     setSelectedIncident('transferred-money')
     setCompletedCount(0)
+    setIsCurrentStepConfirmed(false)
+    setReviewingStepIndex(null)
   }
 
   const completeCurrentStep = () => {
+    if (!isCurrentStepConfirmed) return
     setCompletedCount((count) => Math.min(count + 1, steps.length))
+    setIsCurrentStepConfirmed(false)
+    setReviewingStepIndex(null)
 
     requestAnimationFrame(() => {
       trackerRef.current?.scrollIntoView({
@@ -110,6 +128,12 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
         block: 'start',
       })
     })
+  }
+
+  const openStepFromTracker = (index: number) => {
+    if (index > completedCount) return
+    setReviewingStepIndex(index === completedCount ? null : index)
+    setIsCurrentStepConfirmed(false)
   }
 
   return (
@@ -124,8 +148,8 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
         <SectionCard
           className="support-recovery-page__card"
           eyebrow="Step 1"
-          title="Start here"
-          description="If you have already transferred money, tap the large button below. The page will then show one action at a time."
+          title="Transferred money recovery"
+          description="Use this guided flow only if you have already sent money to a scammer or suspicious recipient."
         >
           <div className="support-recovery-page__start-panel">
             <Button
@@ -139,7 +163,7 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
               I transferred money, start recovery now
             </Button>
             <p className="support-recovery-page__start-hint">
-              Use this page in order. After you finish the current action, press <strong>Done</strong> to unlock the next one.
+              This page is for one case only: money has already been sent. Follow it in order, and unlock the next step only after doing the current one in real life.
             </p>
           </div>
         </SectionCard>
@@ -148,13 +172,14 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
           className="support-recovery-page__card"
           eyebrow="How to use"
           title="A simple recovery roadmap"
-          description="This page is made for high-stress moments. It keeps your attention on one urgent task at a time."
+          description="This page is made for high-stress moments. It keeps your attention on one urgent task at a time, starting with the most time-sensitive action."
           footer={<Button variant="secondary" onClick={onBackHome}>{strings.common.backToHome}</Button>}
         >
           <ul className="support-recovery-page__bullet-list">
             <li>Press the large start button once.</li>
             <li>Read only the current step on screen.</li>
-            <li>Press Done after you complete that step.</li>
+            <li>Do the action first in real life.</li>
+            <li>Then mark it done to unlock the next step.</li>
             <li>The next step will open automatically.</li>
           </ul>
         </SectionCard>
@@ -178,26 +203,30 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                   const isLocked = index > completedCount
 
                   return (
-                    <li
-                      key={step.key}
-                      className={
-                        [
-                          'support-recovery-page__tracker-step',
-                          isDone ? 'support-recovery-page__tracker-step--done' : '',
-                          isActive ? 'support-recovery-page__tracker-step--active' : '',
-                          isLocked ? 'support-recovery-page__tracker-step--locked' : '',
-                        ]
-                          .filter(Boolean)
-                          .join(' ')
-                      }
-                    >
-                      <span className="support-recovery-page__tracker-index">{index + 1}</span>
-                      <div className="support-recovery-page__tracker-copy">
-                        <p className="support-recovery-page__tracker-label">{step.label}</p>
-                        <p className="support-recovery-page__tracker-status">
-                          {isDone ? 'Done' : isActive ? 'Active' : 'Locked'}
-                        </p>
-                      </div>
+                    <li key={step.key}>
+                      <button
+                        type="button"
+                        className={
+                          [
+                            'support-recovery-page__tracker-step',
+                            isDone ? 'support-recovery-page__tracker-step--done' : '',
+                            isActive ? 'support-recovery-page__tracker-step--active' : '',
+                            isLocked ? 'support-recovery-page__tracker-step--locked' : '',
+                          ]
+                            .filter(Boolean)
+                            .join(' ')
+                        }
+                        onClick={() => openStepFromTracker(index)}
+                        disabled={isLocked}
+                      >
+                        <span className="support-recovery-page__tracker-index">{index + 1}</span>
+                        <div className="support-recovery-page__tracker-copy">
+                          <p className="support-recovery-page__tracker-label">{step.label}</p>
+                          <p className="support-recovery-page__tracker-status">
+                            {isDone ? 'Done' : isActive ? 'Active' : 'Locked'}
+                          </p>
+                        </div>
+                      </button>
                     </li>
                   )
                 })}
@@ -215,10 +244,32 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
             footer={
               !isAllDone ? (
                 <div className="support-recovery-page__active-footer">
-                  <p className="support-recovery-page__active-footer-text">
-                    Finish this action first, then press Done.
-                  </p>
-                  <Button onClick={completeCurrentStep}>Done</Button>
+                  {isReviewingPastStep ? (
+                    <p className="support-recovery-page__active-footer-text">
+                      You are reviewing an earlier step. Return to the active step in the tracker when you are ready to continue.
+                    </p>
+                  ) : (
+                    <>
+                      <p className="support-recovery-page__active-footer-text">
+                        Complete this action in real life before unlocking the next step.
+                      </p>
+                      <label className="support-recovery-page__confirm-check">
+                        <input
+                          type="checkbox"
+                          checked={isCurrentStepConfirmed}
+                          onChange={(event) => setIsCurrentStepConfirmed(event.target.checked)}
+                        />
+                        <span>I have completed this action and I am ready for the next step.</span>
+                      </label>
+                      <Button
+                        onClick={completeCurrentStep}
+                        disabled={!isCurrentStepConfirmed}
+                        className="support-recovery-page__active-button"
+                      >
+                        Done, next step
+                      </Button>
+                    </>
+                  )}
                 </div>
               ) : undefined
             }
@@ -278,7 +329,7 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                           </svg>
                         </span>
                         <p className="support-recovery-page__emergency-panel-title">
-                          Malaysia Scam Emergency Help
+                          Call 997 now
                         </p>
                       </div>
 
@@ -300,10 +351,10 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
 
                       <div className="support-recovery-page__emergency-service-card">
                         <p className="support-recovery-page__emergency-service-label">
-                          Police / Bank / Scam support
+                          997 first
                         </p>
                         <p className="support-recovery-page__emergency-service-text">
-                          Available 24/7 for urgent scam response
+                          Start with NSRC 997. Call your bank right after that.
                         </p>
                       </div>
                     </div>
@@ -320,28 +371,43 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                 </div>
 
                 <div className="support-recovery-page__callout">
-                  <div className="support-recovery-page__callout-title-row">
-                    <p className="support-recovery-page__callout-title">{activeStep.extraTitle}</p>
-                    <span className="support-recovery-page__tap-hint">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 4.2v8.2" />
-                        <path d="M9 13.6V12a1.6 1.6 0 1 1 3.2 0v1.2" />
-                        <path d="M12.2 13.2v-2a1.6 1.6 0 1 1 3.2 0v2" />
-                        <path d="M15.4 13.5v-1a1.6 1.6 0 1 1 3.2 0v4a4.3 4.3 0 0 1-4.3 4.3h-2.4a4.1 4.1 0 0 1-3.5-1.9L6.6 16a1.4 1.4 0 0 1 2.4-1.5l1 1.4" />
-                      </svg>
-                      <span>Tap to call now</span>
-                    </span>
+                  <div className="support-recovery-page__callout-header">
+                    <div className="support-recovery-page__callout-title-row">
+                      <p className="support-recovery-page__callout-title">{activeStep.extraTitle}</p>
+                      <span className="support-recovery-page__tap-hint">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M12 4.2v8.2" />
+                          <path d="M9 13.6V12a1.6 1.6 0 1 1 3.2 0v1.2" />
+                          <path d="M12.2 13.2v-2a1.6 1.6 0 1 1 3.2 0v2" />
+                          <path d="M15.4 13.5v-1a1.6 1.6 0 1 1 3.2 0v4a4.3 4.3 0 0 1-4.3 4.3h-2.4a4.1 4.1 0 0 1-3.5-1.9L6.6 16a1.4 1.4 0 0 1 2.4-1.5l1 1.4" />
+                        </svg>
+                        <span>Tap to call now</span>
+                      </span>
+                    </div>
+                    {'extraDescription' in activeStep ? (
+                      <p className="support-recovery-page__callout-text">{activeStep.extraDescription}</p>
+                    ) : null}
                   </div>
                   <div className="support-recovery-page__hotline-list">
                     {activeStep.extraItems.map((item) => (
-                      <a
-                        key={item.name}
-                        className="support-recovery-page__hotline"
-                        href={`tel:${item.number.replace(/[^+\d]/g, '')}`}
-                      >
-                        <span>{item.name}</span>
-                        <strong>{item.number}</strong>
-                      </a>
+                      item.name === 'Other bank' ? (
+                        <div
+                          key={item.name}
+                          className="support-recovery-page__hotline support-recovery-page__hotline--other"
+                        >
+                          <span>{item.name}</span>
+                          <strong>{item.number}</strong>
+                        </div>
+                      ) : (
+                        <a
+                          key={item.name}
+                          className="support-recovery-page__hotline"
+                          href={`tel:${item.number.replace(/[^+\d]/g, '')}`}
+                        >
+                          <span>{item.name}</span>
+                          <strong>{item.number}</strong>
+                        </a>
+                      )
                     ))}
                   </div>
                 </div>
@@ -390,8 +456,10 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
           <SectionCard
             className="support-recovery-page__card support-recovery-page__card--complete"
             eyebrow="Completed"
-            title="You have finished the emergency roadmap"
-            description="Keep your evidence together, follow your bank and police instructions, and do not continue talking to the scammer."
+            title="You have reviewed the emergency recovery checklist"
+            description={
+              'Keep your evidence together, keep following your bank and police instructions,\nand do not continue talking to the scammer.'
+            }
             footer={
               <Button variant="secondary" onClick={onBackHome}>
                 {strings.common.backToHome}
@@ -399,7 +467,9 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
             }
           >
             <p className="support-recovery-page__final-note">
-              If new money movements appear, call your bank and 997 again immediately.
+              This checklist does not replace live follow-up. If new money movements appear,
+              <br />
+              call your bank and 997 again immediately.
             </p>
           </SectionCard>
         ) : null}

@@ -228,16 +228,17 @@
   align-items: center;
   justify-content: center;
   min-height: 46px;
-  padding: 0 18px;
+  padding: 10px 16px;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--surface-strong);
   color: var(--muted-strong);
   font-size: 0.98rem;
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
+  text-wrap: balance;
   cursor: pointer;
-  white-space: nowrap;
   transition:
     background-color 180ms ease,
     color 180ms ease,
@@ -377,8 +378,14 @@
 }
 
 .app-shell__hero-title-letter {
-  --hero-letter-stagger: 22ms;
   display: inline-block;
+  opacity: 1;
+  transform: translateY(0);
+  will-change: transform, opacity;
+}
+
+.app-shell__hero-title-letter--animate {
+  --hero-letter-stagger: 22ms;
   opacity: 0;
   transform: translateY(10px);
   animation: hero-letter-in 520ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
@@ -402,6 +409,11 @@
 }
 
 .app-shell__hero-copy > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.app-shell__hero--animate .app-shell__hero-copy > * {
   opacity: 0;
   transform: translateY(10px);
   animation: hero-fade-up 620ms ease forwards;
@@ -658,6 +670,12 @@
     animation: none;
   }
 
+  .app-shell__hero-title-letter--animate {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
   .app-shell__hero-video-frame {
     animation: none;
   }
@@ -732,6 +750,30 @@
   margin-top: 10px;
   color: var(--muted);
   line-height: 1.65;
+}
+
+.app-footer__credit {
+  margin-top: 12px;
+  color: var(--muted-strong);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.app-footer__credit-label {
+  color: var(--text);
+}
+
+.app-footer__credit-link {
+  color: var(--accent-strong);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+.app-footer__credit-link:hover,
+.app-footer__credit-link:focus-visible {
+  color: var(--accent);
+  outline: none;
 }
 
 .app-footer__copyright {
@@ -1057,7 +1099,7 @@
 
   .app-shell__brand {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 780px) minmax(220px, 1fr);
     align-items: center;
     gap: 14px 24px;
     margin-left: min(0px, calc((var(--content-width) - 100vw) / 2));
@@ -1089,22 +1131,42 @@
   }
 
   .app-shell__nav--desktop {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: stretch;
     gap: 8px;
-    flex-wrap: wrap;
     position: static;
     left: auto;
     transform: none;
-    width: max-content;
-    max-width: 100%;
+    width: 100%;
     justify-self: center;
     z-index: 1;
   }
 
+  .app-shell__nav--desktop .app-shell__nav-link {
+    width: 100%;
+    min-width: 0;
+    min-height: 58px;
+  }
+
+  .app-shell__nav--desktop .app-shell__nav-link--study-center {
+    padding-left: 12px;
+    padding-right: 12px;
+    line-height: 1;
+    white-space: nowrap;
+    text-wrap: nowrap;
+  }
+
+  .app-shell__nav--desktop .app-shell__nav-link--knowledge-hub {
+    white-space: nowrap;
+    text-wrap: nowrap;
+  }
+
   .app-shell__nav-controls--desktop {
     justify-self: end;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
     margin-left: 0;
     margin-right: 0;
     position: relative;

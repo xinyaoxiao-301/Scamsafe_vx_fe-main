@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PropsWithChildren } from 'react'
 import { primaryNavItems, type AppRoute, appRoutes } from '@/app/routes'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -9,6 +9,7 @@ import homeHeroBackground from '@/assets/home-hero-background.png'
 type AppShellProps = PropsWithChildren<{
   currentRoute: AppRoute
   onNavigate: (route: AppRoute) => void
+  enableHeroAnimations?: boolean
 }>
 
 type HeroTitleToken = {
@@ -20,7 +21,7 @@ type HeroTitleToken = {
 
 // Split the hero title into letters so CSS can stagger the animation while the
 // hidden full title remains available to screen readers.
-function renderAnimatedTitle(tokens: HeroTitleToken[]) {
+function renderAnimatedTitle(tokens: HeroTitleToken[], shouldAnimate: boolean) {
   let globalIndex = 0
 
   return tokens.flatMap((token) => {
@@ -32,8 +33,16 @@ function renderAnimatedTitle(tokens: HeroTitleToken[]) {
       const style = { ['--i' as const]: globalIndex++ } as CSSProperties
       const className =
         token.tone === 'highlight'
-          ? 'app-shell__hero-title-letter app-shell__hero-title-letter--highlight'
-          : 'app-shell__hero-title-letter'
+          ? [
+              'app-shell__hero-title-letter',
+              'app-shell__hero-title-letter--highlight',
+              shouldAnimate ? 'app-shell__hero-title-letter--animate' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')
+          : ['app-shell__hero-title-letter', shouldAnimate ? 'app-shell__hero-title-letter--animate' : '']
+              .filter(Boolean)
+              .join(' ')
 
       return (
         <span className={className} style={style} key={`${token.id}-${letterIndex}`}>
@@ -66,16 +75,38 @@ function titleTokensToText(tokens: HeroTitleToken[]) {
     .trim()
 }
 
-export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) {
+export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimations = false }: AppShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [heroAnimationCycle, setHeroAnimationCycle] = useState(0)
   const isMobile = useMediaQuery('(max-width: 767px)')
   const isDesktop = useMediaQuery('(min-width: 1200px)')
   const isHome = currentRoute === appRoutes.home
   const { language, setLanguage, strings } = useI18n()
+  const lastHeroTriggerRef = useRef<string | null>(null)
 
   useEffect(() => {
     setIsMenuOpen(false)
   }, [currentRoute])
+
+  useEffect(() => {
+    if (!enableHeroAnimations) {
+      lastHeroTriggerRef.current = null
+      return
+    }
+
+    if (!isHome) {
+      lastHeroTriggerRef.current = null
+      return
+    }
+
+    const triggerKey = `${currentRoute}-${language}`
+    if (lastHeroTriggerRef.current === triggerKey) {
+      return
+    }
+
+    lastHeroTriggerRef.current = triggerKey
+    setHeroAnimationCycle((current) => current + 1)
+  }, [currentRoute, enableHeroAnimations, isHome, language])
 
   const languageLabel = (value: Language) => {
     if (!isMobile) return strings.ui.languageOption[value]
@@ -101,11 +132,18 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
               {primaryNavItems.map((item) => (
                 <button
                   key={item.route}
-                  className={
-                    item.route === currentRoute
-                      ? 'app-shell__nav-link app-shell__nav-link--active'
-                      : 'app-shell__nav-link'
-                  }
+                  className={[
+                    'app-shell__nav-link',
+                    item.route === currentRoute ? 'app-shell__nav-link--active' : '',
+                    item.route === appRoutes.studyCenter && language === 'en'
+                      ? 'app-shell__nav-link--study-center'
+                      : '',
+                    item.route === appRoutes.knowledgeHub && language === 'en'
+                      ? 'app-shell__nav-link--knowledge-hub'
+                      : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
                   type="button"
                   onClick={() => onNavigate(item.route)}
                 >
@@ -179,7 +217,8 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
         {isHome ? (
           <>
             <section
-              className="app-shell__hero"
+              key={heroAnimationCycle}
+              className={enableHeroAnimations ? 'app-shell__hero app-shell__hero--animate' : 'app-shell__hero'}
               aria-label="ScamSafe hero introduction"
             >
               <div className="app-shell__hero-bg" aria-hidden="true">
@@ -190,7 +229,7 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
                   <h1 className="app-shell__hero-title" aria-label={titleTokensToText(strings.hero.titleTokens)}>
                     <span className="sr-only">{titleTokensToText(strings.hero.titleTokens)}</span>
                     <span className="app-shell__hero-title-animated" aria-hidden="true">
-                      {renderAnimatedTitle(strings.hero.titleTokens)}
+                      {renderAnimatedTitle(strings.hero.titleTokens, enableHeroAnimations)}
                     </span>
                   </h1>
                 </header>
@@ -303,6 +342,17 @@ export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) 
                 <section className="app-footer__card" aria-label="Data sources">
                   <h3 className="app-footer__card-title">{strings.footer.sourcesTitle}</h3>
                   <p className="app-footer__card-text">{strings.footer.sourcesHint}</p>
+                  <p className="app-footer__credit">
+                    <span className="app-footer__credit-label">Image credit:</span>{' '}
+                    <a
+                      className="app-footer__credit-link"
+                      href="https://www.freepik.com/free-photo/elderly-senior-asian-male-freelancer-casual-clothes-typing-laptop-keyboard-while-talking-smartphone-standing-desk-busy-working-home-office_25117731.htm#fromView=search&page=1&position=2&uuid=ff5cca6a-b8fa-489a-ba36-8c4ab535e59c&query=Elderly+fraud+asian+technical"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Image by Lifestylememory on Freepik
+                    </a>
+                  </p>
                 </section>
                 <section className="app-footer__card" aria-label="About ScamSafe">
                   <h3 className="app-footer__card-title">{strings.footer.aboutTitle}</h3>

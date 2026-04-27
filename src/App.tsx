@@ -28,8 +28,6 @@ function AppContent() {
   const { activeScenario, dismissScenario, openScenario } = useNotificationTraining(hasAcceptedSiteDisclaimer)
   const siteDisclaimerStrings = strings.siteDisclaimer
   const notificationStrings = strings.notificationTraining
-  const showDistinctNotificationBranding =
-    activeScenario?.branding.trim().toLowerCase() !== activeScenario?.sender.trim().toLowerCase()
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -92,7 +90,11 @@ function AppContent() {
 
   return (
     <>
-      <AppShell currentRoute={currentRoute} onNavigate={handleNavigate}>
+      <AppShell
+        currentRoute={currentRoute}
+        onNavigate={handleNavigate}
+        enableHeroAnimations={hasAcceptedSiteDisclaimer}
+      >
         {page}
       </AppShell>
       {!hasAcceptedSiteDisclaimer ? (
@@ -128,18 +130,9 @@ function AppContent() {
       ) : null}
       {hasAcceptedSiteDisclaimer && currentRoute !== appRoutes.notificationReveal && activeScenario ? (
         <div className="notification-modal" role="dialog" aria-modal="true" aria-label="Simulated notification popup">
-          <button
-            type="button"
-            className="notification-modal__backdrop"
-            aria-label="Close simulated notification"
-            onClick={dismissScenario}
-          />
+          <div className="notification-modal__backdrop" aria-hidden="true" />
           <section
-            className={
-              activeScenario.kind === 'scam'
-                ? 'notification-modal__panel notification-modal__panel--scam'
-                : 'notification-modal__panel notification-modal__panel--safe'
-            }
+            className="notification-modal__panel"
             aria-label="Simulated notification preview"
           >
             <div className="notification-modal__window-bar">
@@ -149,34 +142,28 @@ function AppContent() {
             <div className="notification-modal__source">
               <img className="notification-modal__logo" src={logo} alt="" />
               <div className="notification-modal__source-copy">
-                {showDistinctNotificationBranding ? (
-                  <p className="notification-modal__eyebrow">{activeScenario.branding}</p>
-                ) : null}
-                <p className="notification-modal__source-name">{activeScenario.sender}</p>
+                <p className="notification-modal__source-name">ScamSafe practice alert</p>
               </div>
             </div>
             <div className="notification-modal__header">
-              <h2 className="notification-modal__title">{activeScenario.title}</h2>
-              <span className="notification-modal__kind" aria-label="Scenario type">
-                {activeScenario.kind === 'scam'
-                  ? notificationStrings.suspiciousLabel
-                  : notificationStrings.trustedLabel}
-              </span>
+              <h2 className="notification-modal__title">Check this notification carefully</h2>
             </div>
-            <p className="notification-modal__body">{activeScenario.body}</p>
-            <div className="notification-modal__meta">
-              <div className="notification-modal__meta-row">
+            <div className="notification-modal__message-box">
+              <p className="notification-modal__body">{activeScenario.message}</p>
+            </div>
+            <div className="notification-modal__meta-grid">
+              <div className="notification-modal__meta-card">
                 <span className="notification-modal__meta-label">{notificationStrings.sourceLabel}</span>
-                <span>{activeScenario.sender}</span>
+                <span>ScamSafe notification queue</span>
               </div>
-              <div className="notification-modal__meta-row">
+              <div className="notification-modal__meta-card">
                 <span className="notification-modal__meta-label">{notificationStrings.linkLabel}</span>
-                <span>{activeScenario.url}</span>
+                <span>Hidden until you open the result</span>
               </div>
             </div>
             <p className="notification-modal__hint">{notificationStrings.previewHint}</p>
             <div className="notification-modal__actions">
-              <Button onClick={() => openScenario()}>{activeScenario.actionLabel}</Button>
+              <Button onClick={() => openScenario()}>Open</Button>
               <Button variant="secondary" onClick={dismissScenario}>
                 {notificationStrings.dismiss}
               </Button>

@@ -124,8 +124,8 @@
   overflow: hidden;
   width: min(100%, 430px);
   display: grid;
-  gap: 14px;
-  padding: 16px;
+  gap: 12px;
+  padding: 15px;
   border-radius: 16px;
   border: 1px solid rgba(17, 38, 58, 0.12);
   background: #ffffff;
@@ -165,6 +165,7 @@
 .notification-modal__window-time {
   flex-shrink: 0;
   color: var(--muted-strong);
+  font-size: 0.88rem;
 }
 
 .notification-modal__source {
@@ -190,14 +191,6 @@
   min-width: 0;
 }
 
-.notification-modal__eyebrow {
-  color: var(--muted-strong);
-  font-size: 0.82rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 .notification-modal__source-name {
   color: var(--text);
   font-size: 1rem;
@@ -207,7 +200,7 @@
 
 .notification-modal__header {
   display: grid;
-  gap: 10px;
+  gap: 8px;
 }
 
 .notification-modal__title {
@@ -218,48 +211,33 @@
   line-height: 1.16;
 }
 
-.notification-modal__kind {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: fit-content;
-  min-height: 34px;
-  padding: 7px 10px;
-  border-radius: 10px;
-  background: rgba(17, 38, 58, 0.06);
-  color: var(--muted-strong);
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.notification-modal__panel--scam .notification-modal__kind {
-  background: rgba(187, 46, 46, 0.08);
-  color: #8f2d2d;
-}
-
-.notification-modal__panel--safe .notification-modal__kind {
-  background: rgba(47, 138, 74, 0.1);
-  color: #2b6e3e;
-}
-
 .notification-modal__body {
   color: var(--text);
   font-size: 1.02rem;
   line-height: 1.65;
 }
 
-.notification-modal__meta {
+.notification-modal__message-box {
   display: grid;
-  gap: 10px;
-  padding: 14px 15px;
+  gap: 6px;
+  padding: 12px 14px;
   border-radius: 14px;
-  background: rgba(244, 247, 251, 0.96);
-  border: 1px solid rgba(17, 38, 58, 0.08);
+  background: linear-gradient(180deg, rgba(255, 246, 220, 0.92), rgba(255, 238, 196, 0.9));
+  border: 1px solid rgba(181, 124, 18, 0.22);
 }
 
-.notification-modal__meta-row {
+.notification-modal__meta-grid {
   display: grid;
-  gap: 4px;
+  gap: 8px;
+}
+
+.notification-modal__meta-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(232, 241, 255, 0.94), rgba(220, 234, 255, 0.92));
+  border: 1px solid rgba(19, 108, 242, 0.14);
 }
 
 .notification-modal__meta-label {
@@ -270,7 +248,7 @@
   text-transform: uppercase;
 }
 
-.notification-modal__meta span {
+.notification-modal__meta-card span {
   overflow-wrap: anywhere;
 }
 
@@ -284,7 +262,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding-top: 4px;
 }
 
 .feature-launchpad-shell {
