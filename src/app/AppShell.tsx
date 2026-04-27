@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { CSSProperties, PropsWithChildren } from 'react'
 import { primaryNavItems, type AppRoute, appRoutes } from '@/app/routes'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useI18n, type Language } from '@/lib/i18n'
 import logo from '@/assets/scamsafe-logo.png'
 import homeHeroBackground from '@/assets/home-hero-background.png'
@@ -67,44 +68,14 @@ function titleTokensToText(tokens: HeroTitleToken[]) {
 
 export function AppShell({ children, currentRoute, onNavigate }: AppShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 767px)').matches)
-  const [isDesktop, setIsDesktop] = useState(() => window.matchMedia('(min-width: 1200px)').matches)
+  const isMobile = useMediaQuery('(max-width: 767px)')
+  const isDesktop = useMediaQuery('(min-width: 1200px)')
   const isHome = currentRoute === appRoutes.home
   const { language, setLanguage, strings } = useI18n()
 
   useEffect(() => {
     setIsMenuOpen(false)
   }, [currentRoute])
-
-  useEffect(() => {
-    const mobileQuery = window.matchMedia('(max-width: 767px)')
-    const desktopQuery = window.matchMedia('(min-width: 1200px)')
-    const handleChange = () => {
-      setIsMobile(mobileQuery.matches)
-      setIsDesktop(desktopQuery.matches)
-    }
-
-    handleChange()
-
-    if (
-      typeof mobileQuery.addEventListener === 'function' &&
-      typeof desktopQuery.addEventListener === 'function'
-    ) {
-      mobileQuery.addEventListener('change', handleChange)
-      desktopQuery.addEventListener('change', handleChange)
-      return () => {
-        mobileQuery.removeEventListener('change', handleChange)
-        desktopQuery.removeEventListener('change', handleChange)
-      }
-    }
-
-    mobileQuery.addListener(handleChange)
-    desktopQuery.addListener(handleChange)
-    return () => {
-      mobileQuery.removeListener(handleChange)
-      desktopQuery.removeListener(handleChange)
-    }
-  }, [])
 
   const languageLabel = (value: Language) => {
     if (!isMobile) return strings.ui.languageOption[value]

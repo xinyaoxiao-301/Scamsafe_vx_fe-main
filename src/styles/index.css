@@ -1,9 +1,9 @@
 @import './tokens.css';
 @import './base.css';
 @import './layout.css';
-@import './feature-page.css';
 @import './home.css';
 @import './knowledge-hub.css';
+@import './notification-reveal.css';
 @import './post-scam-support.css';
 @import './scam-detection.css';
 @import './scam-simulation.css';

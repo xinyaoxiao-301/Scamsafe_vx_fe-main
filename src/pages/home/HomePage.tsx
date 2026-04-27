@@ -48,7 +48,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       icon: 'study',
       title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.knowledgeHub,
-      route: appRoutes.aboutUs,
+      route: appRoutes.knowledgeHub,
       tooltip: strings.homeFeatures.tooltips.knowledgeHub,
     },
   ] as const

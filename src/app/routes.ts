@@ -7,16 +7,21 @@ export const appRoutes = {
   simulation: '#/scam-simulation',
   studyCenter: '#/study-center',
   support: '#/post-scam-support',
-  aboutUs: '#/about-us',
+  knowledgeHub: '#/knowledge-hub',
+  notificationReveal: '#/notification-reveal',
 } as const
 
 export type AppRoute = (typeof appRoutes)[keyof typeof appRoutes]
+
+const legacyRoutes = {
+  aboutUs: '#/about-us',
+} as const
 
 export const primaryNavItems = [
   { route: appRoutes.detection, label: 'Scam Detection' },
   { route: appRoutes.simulation, label: 'Scam Simulation' },
   { route: appRoutes.studyCenter, label: 'Study Center' },
-  { route: appRoutes.aboutUs, label: 'Knowledge Hub' },
+  { route: appRoutes.knowledgeHub, label: 'Knowledge Hub' },
   { route: appRoutes.support, label: 'Support' },
 ] as const
 
@@ -33,8 +38,12 @@ export function getRouteFromHash(hash: string): AppRoute {
       return appRoutes.studyCenter
     case appRoutes.support:
       return appRoutes.support
-    case appRoutes.aboutUs:
-      return appRoutes.aboutUs
+    case appRoutes.knowledgeHub:
+      return appRoutes.knowledgeHub
+    case appRoutes.notificationReveal:
+      return appRoutes.notificationReveal
+    case legacyRoutes.aboutUs:
+      return appRoutes.knowledgeHub
     case appRoutes.home:
     case '':
       return appRoutes.home

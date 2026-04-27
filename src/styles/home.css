@@ -6,6 +6,287 @@
   padding-top: 0;
 }
 
+.entry-consent-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  z-index: 45;
+}
+
+.entry-consent-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(17, 38, 58, 0.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.entry-consent-modal__card {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 500px);
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow:
+    0 20px 48px rgba(17, 38, 58, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.entry-consent-modal__eyebrow {
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.entry-consent-modal__title {
+  color: var(--text);
+  font-size: clamp(1.45rem, 2.6vw, 2rem);
+  font-weight: 950;
+  letter-spacing: -0.04em;
+  line-height: 1.12;
+}
+
+.entry-consent-modal__description {
+  color: var(--text);
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.entry-consent-modal__points {
+  display: grid;
+  gap: 8px;
+}
+
+.entry-consent-modal__point {
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.46);
+  background: rgba(244, 247, 251, 0.58);
+}
+
+.entry-consent-modal__point-title {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.entry-consent-modal__point-text {
+  color: var(--muted-strong);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.entry-consent-modal__helper {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.entry-consent-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.notification-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  z-index: 40;
+}
+
+.notification-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(17, 38, 58, 0.28);
+}
+
+.notification-modal__panel {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  width: min(100%, 430px);
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(17, 38, 58, 0.12);
+  background: #ffffff;
+  box-shadow:
+    0 24px 50px rgba(17, 38, 58, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.notification-modal__panel--scam {
+  border-color: rgba(187, 46, 46, 0.18);
+}
+
+.notification-modal__panel--safe {
+  border-color: rgba(47, 138, 74, 0.16);
+}
+
+.notification-modal__window-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(17, 38, 58, 0.08);
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.notification-modal__window-label {
+  flex: 1;
+  min-width: 0;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+.notification-modal__window-time {
+  flex-shrink: 0;
+  color: var(--muted-strong);
+}
+
+.notification-modal__source {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.notification-modal__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid rgba(19, 108, 242, 0.12);
+  padding: 4px;
+}
+
+.notification-modal__source-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.notification-modal__eyebrow {
+  color: var(--muted-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.notification-modal__source-name {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.3;
+}
+
+.notification-modal__header {
+  display: grid;
+  gap: 10px;
+}
+
+.notification-modal__title {
+  color: var(--text);
+  font-size: 1.34rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1.16;
+}
+
+.notification-modal__kind {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 34px;
+  padding: 7px 10px;
+  border-radius: 10px;
+  background: rgba(17, 38, 58, 0.06);
+  color: var(--muted-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.notification-modal__panel--scam .notification-modal__kind {
+  background: rgba(187, 46, 46, 0.08);
+  color: #8f2d2d;
+}
+
+.notification-modal__panel--safe .notification-modal__kind {
+  background: rgba(47, 138, 74, 0.1);
+  color: #2b6e3e;
+}
+
+.notification-modal__body {
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.notification-modal__meta {
+  display: grid;
+  gap: 10px;
+  padding: 14px 15px;
+  border-radius: 14px;
+  background: rgba(244, 247, 251, 0.96);
+  border: 1px solid rgba(17, 38, 58, 0.08);
+}
+
+.notification-modal__meta-row {
+  display: grid;
+  gap: 4px;
+}
+
+.notification-modal__meta-label {
+  color: var(--muted-strong);
+  font-size: 0.76rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.notification-modal__meta span {
+  overflow-wrap: anywhere;
+}
+
+.notification-modal__hint {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.notification-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 4px;
+}
+
 .feature-launchpad-shell {
   border: 1px solid rgba(19, 108, 242, 0.14);
   border-radius: 26px;
@@ -241,6 +522,25 @@
     padding-top: 0;
   }
 
+  .entry-consent-modal {
+    padding: 28px;
+  }
+
+  .entry-consent-modal__card {
+    padding: 26px;
+  }
+
+  .notification-modal {
+    justify-items: end;
+    align-items: end;
+    padding: 28px;
+  }
+
+  .notification-modal__panel {
+    width: min(420px, 100%);
+    padding: 16px;
+  }
+
   .feature-launchpad-shell {
     padding: 16px;
     gap: 16px;
@@ -272,6 +572,22 @@
 
   .feature-launchpad__subtitle {
     font-size: 1.28rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .entry-consent-modal__card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .entry-consent-modal__description,
+  .entry-consent-modal__point-text {
+    font-size: 1rem;
+  }
+
+  .entry-consent-modal__actions {
+    display: grid;
   }
 }
 

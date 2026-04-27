@@ -2,15 +2,15 @@
  * services/scamDetection.ts
  * ─────────────────────────
  * Calls the FastAPI /api/detect endpoint backed by scam_detector.py / Groq.
- * Configure the backend URL via VITE_API_BASE_URL (defaults to localhost:8000).
+ * Configure the backend URL via VITE_API_BASE_URL. When it is empty, the app
+ * falls back to same-origin requests so the Vite dev proxy can handle `/api`.
  */
 
+import { env } from '@/lib/env'
 import type { Language } from '@/lib/i18n'
 import type { ScamAnalysis, ScamRiskLevel, ScamType } from '@/types/scamDetection'
 
-const API_BASE =
-  (import.meta as unknown as { env: Record<string, string> }).env
-    ?.VITE_API_BASE_URL ?? 'http://localhost:8000'
+const API_BASE = env.apiBaseUrl
 
 const VALID_RISK_LEVELS: ScamRiskLevel[] = ['Very Low', 'Low', 'Medium', 'High', 'Very High']
 const VALID_SCAM_TYPES: ScamType[] = ['Phishing', 'Impersonation', 'Investment Scam',

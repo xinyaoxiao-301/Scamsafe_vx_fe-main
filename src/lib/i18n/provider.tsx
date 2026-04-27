@@ -1,243 +1,8 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { PropsWithChildren } from 'react'
-import { appRoutes, type AppRoute } from '@/app/routes'
-import type { ScamRiskLevel, ScamType } from '@/types/scamDetection'
-
-export type Language = 'en' | 'ms' | 'zh'
-
-type HeroTitleToken = {
-  id: string
-  tone: 'plain' | 'highlight'
-  text: string
-  spaceAfter: boolean
-}
-
-type Strings = {
-  nav: Record<AppRoute, string>
-  ui: {
-    openMenu: string
-    language: string
-    languageOption: Record<Language, string>
-  }
-  common: {
-    backToHome: string
-    completed: string
-    safe: string
-    risky: string
-  }
-  footer: {
-    title: string
-    sourcesTitle: string
-    sourcesHint: string
-    aboutTitle: string
-    aboutHint: string
-    riskTitle: string
-    riskHint: string
-  }
-  homeCard: {
-    eyebrow: string
-    title: string
-    helper: string
-    helperBefore: string
-    helperAction: string
-    helperAfter: string
-  }
-  homeFeatures: {
-    scam: string
-    detection: string
-    simulation: string
-    studyCenter: string
-    support: string
-    knowledgeHub: string
-    open: string
-    tooltips: {
-      detection: string
-      simulation: string
-      studyCenter: string
-      support: string
-      knowledgeHub: string
-    }
-  }
-  homeStats: {
-    eyebrow: string
-    title: string
-    description: string
-    cards: {
-      monthlyExposure: { value: string; label: string; hint: string }
-      totalLosses: { value: string; label: string; hint: string }
-      gdpShare: { value: string; label: string; hint: string }
-      seniorsAffected: { value: string; label: string; hint: string }
-    }
-    sources: string
-  }
-  hero: {
-    titleTokens: HeroTitleToken[]
-    subtitle: string
-    pills: {
-      detection: string
-      chat: string
-      senior: string
-      steps: string
-    }
-    modules: {
-      detectionTitle: string
-      detectionSubtitle: string
-      practiceTitle: string
-      practiceSubtitle: string
-      supportTitle: string
-      supportSubtitle: string
-    }
-    video: {
-      label: string
-      hint: string
-    }
-  }
-  featurePage: {
-    currentFocusEyebrow: string
-    currentFocusTitle: string
-    currentFocusDescription: string
-    nextStepEyebrow: string
-    nextStepTitle: string
-    supportText: string
-  }
-  aboutUs: {
-    eyebrow: string
-    title: string
-    description: string
-    missionEyebrow: string
-    missionTitle: string
-    missionDescription: string
-    missionPoints: string[]
-    teamEyebrow: string
-    teamTitle: string
-    teamDescription: string
-    teamSupport: string
-  }
-  postScamSupport: {
-    eyebrow: string
-    title: string
-    description: string
-    highlights: string[]
-    supportNote: string
-  }
-  studyCenter: {
-    pageLabel: string
-    eyebrow: string
-    title: string
-    lede: string
-    step1Eyebrow: string
-    step1Title: string
-    step1Description: string
-    step2Eyebrow: string
-    step2Title: string
-    step2Description: string
-    chooseTopicLabel: string
-    startQuiz: string
-    loadingLabel: string
-    questionCountLabel: string
-    submitAnswer: string
-    errorPickAnswer: string
-    nextQuestion: string
-    finishQuiz: string
-    restart: string
-    correct: string
-    incorrect: string
-    explanationTitle: string
-    yourAnswerLabel: string
-    correctAnswerLabel: string
-    moreInfoLabel: string
-    tipsTitle: string
-    progressEyebrow: string
-    progressTitle: string
-    progressDescription: string
-    pointsLabel: string
-    sessionsLabel: string
-    breakdownLabel: string
-    emptyProgress: string
-  }
-  scamDetection: {
-    pageLabel: string
-    headerEyebrow: string
-    title: string
-    lede: string
-    workspaceLabel: string
-    step1Eyebrow: string
-    step1Title: string
-    step1Description: string
-    step2Eyebrow: string
-    step2Title: string
-    step2Description: string
-    clear: string
-    paste: string
-    analyze: string
-    analyzing: string
-    messageLabel: string
-    messagePlaceholder: string
-    wordsLabel: string
-    errorEmpty: string
-    errorPasteUnavailable: string
-    errorPasteEmpty: string
-    wordLimitExceeded: (limit: number, current: number) => string
-    loadingLabel: string
-    emptyState: string
-    modalTitle: string
-    modalText: string
-    modalConfirm: string
-    resultRiskLabel: string
-    resultTypeLabel: string
-    resultVerdictScam: string
-    resultVerdictNotScam: string
-    indicatorsTitle: string
-    indicatorsEmpty: string
-    guidanceEyebrow: string
-    guidanceTitle: string
-    guidanceDescription: string
-    riskLabels: Record<ScamRiskLevel, string>
-    typeLabels: Record<ScamType, string>
-    highlightPrefixes: string[]
-  }
-  scamSimulation: {
-    pageLabel: string
-    eyebrow: string
-    title: string
-    lede: string
-    workspaceLabel: string
-    step1Eyebrow: string
-    step1Title: string
-    step1Description: string
-    step2Eyebrow: string
-    step2Title: string
-    step2Description: string
-    reset: string
-    messagesLabel: string
-    phoneDefaultTitle: string
-    emptyState: string
-    inputPlaceholderActive: string
-    inputPlaceholderInactive: string
-    composerLabel: string
-    micUnsupported: string
-    mic: string
-    send: string
-    typingLabel: string
-    feedbackLabel: string
-    whyTitle: string
-    nextTitle: string
-    performanceLabel: string
-    progressEyebrow: string
-    progressTitle: string
-    progressDescription: string
-    startScenario: (title: string) => string
-    scenarioUnavailable: string
-  }
-}
-
-type I18nContextValue = {
-  language: Language
-  setLanguage: (language: Language) => void
-  strings: Strings
-}
-
-const I18nContext = createContext<I18nContextValue | null>(null)
+import { appRoutes } from '@/app/routes'
+import { I18nContext } from './context'
+import type { I18nContextValue, Language, Strings } from './types'
 
 function getInitialLanguage(): Language {
   // Prefer the user's saved language, then fall back to the browser locale.
@@ -258,7 +23,8 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.simulation]: 'Simulation',
       [appRoutes.studyCenter]: 'Study Center',
       [appRoutes.support]: 'Support',
-      [appRoutes.aboutUs]: 'Knowledge Hub',
+      [appRoutes.knowledgeHub]: 'Knowledge Hub',
+      [appRoutes.notificationReveal]: 'Notification Result',
     },
     ui: {
       openMenu: 'Open navigation menu',
@@ -291,6 +57,30 @@ const STRINGS: Record<Language, Strings> = {
       helperBefore: 'Tap one option below to',
       helperAction: 'begin',
       helperAfter: '',
+    },
+    siteDisclaimer: {
+      consentEyebrow: 'Important notice',
+      consentTitle: 'Website disclaimer',
+      consentDescription: 'Please review this short notice before continuing.',
+      privacyTitle: 'Privacy notice',
+      privacyText:
+        'ScamSafe does not ask for passwords, OTPs, or banking details through this website. Please do not share sensitive information here.',
+      referenceTitle: 'Important note',
+      referenceText:
+        'The content, results, and explanations on this website are provided for education and general guidance only. Final decisions remain your responsibility.',
+      permissionText: 'Choose whether to continue into the website.',
+      agree: 'I agree',
+      disagree: 'I do not agree',
+    },
+    notificationTraining: {
+      browserAlertLabel: 'Browser alert',
+      justNow: 'just now',
+      suspiciousLabel: 'Suspicious alert',
+      trustedLabel: 'Trusted-style alert',
+      sourceLabel: 'Message source',
+      linkLabel: 'Link shown in notification',
+      previewHint: 'This is a training popup that copies how a real browser notification may appear.',
+      dismiss: 'Dismiss',
     },
     homeFeatures: {
       scam: 'Scam',
@@ -378,7 +168,7 @@ const STRINGS: Record<Language, Strings> = {
       nextStepTitle: 'Ready for detailed UI design.',
       supportText: 'We can continue with forms, results panels, call-to-action areas, and mobile-first layouts directly inside this page.',
     },
-    aboutUs: {
+    knowledgeHub: {
       eyebrow: 'Knowledge Hub',
       title: 'Knowledge Hub',
       description: 'Browse ScamSafe learning resources, practical scam-awareness guidance, and support information in one place.',
@@ -540,7 +330,8 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.simulation]: 'Simulasi',
       [appRoutes.studyCenter]: 'Pusat Pembelajaran',
       [appRoutes.support]: 'Sokongan',
-      [appRoutes.aboutUs]: 'Pusat Pengetahuan',
+      [appRoutes.knowledgeHub]: 'Pusat Pengetahuan',
+      [appRoutes.notificationReveal]: 'Hasil Pemberitahuan',
     },
     ui: {
       openMenu: 'Buka menu navigasi',
@@ -573,6 +364,30 @@ const STRINGS: Record<Language, Strings> = {
       helperBefore: 'Tekan satu pilihan di bawah untuk',
       helperAction: 'bermula',
       helperAfter: '',
+    },
+    siteDisclaimer: {
+      consentEyebrow: 'Notis penting',
+      consentTitle: 'Penafian laman web',
+      consentDescription: 'Sila baca notis ringkas ini sebelum anda teruskan.',
+      privacyTitle: 'Notis privasi',
+      privacyText:
+        'ScamSafe tidak meminta kata laluan, OTP, atau maklumat bank melalui laman web ini. Sila jangan kongsi maklumat sensitif di sini.',
+      referenceTitle: 'Perhatian penting',
+      referenceText:
+        'Kandungan, keputusan, dan penjelasan di laman web ini disediakan untuk pendidikan dan panduan umum sahaja. Keputusan akhir tetap di bawah tanggungjawab anda sendiri.',
+      permissionText: 'Pilih sama ada anda mahu terus masuk ke laman web ini.',
+      agree: 'Saya setuju',
+      disagree: 'Saya tidak setuju',
+    },
+    notificationTraining: {
+      browserAlertLabel: 'Amaran pelayar',
+      justNow: 'baru sahaja',
+      suspiciousLabel: 'Amaran mencurigakan',
+      trustedLabel: 'Amaran yang kelihatan sah',
+      sourceLabel: 'Sumber mesej',
+      linkLabel: 'Pautan yang dipaparkan',
+      previewHint: 'Ini ialah popup latihan yang meniru cara pemberitahuan pelayar sebenar mungkin dipaparkan.',
+      dismiss: 'Tutup',
     },
     homeFeatures: {
       scam: 'Penipuan',
@@ -658,7 +473,7 @@ const STRINGS: Record<Language, Strings> = {
       nextStepTitle: 'Sedia untuk reka bentuk UI terperinci.',
       supportText: 'Kita boleh terus bina borang, panel hasil, kawasan tindakan, dan susun atur mobile-first terus di halaman ini.',
     },
-    aboutUs: {
+    knowledgeHub: {
       eyebrow: 'Pusat Pengetahuan',
       title: 'Pusat Pengetahuan',
       description: 'Terokai bahan pembelajaran ScamSafe, panduan kesedaran penipuan, dan maklumat sokongan dalam satu tempat.',
@@ -820,7 +635,8 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.simulation]: '模拟',
       [appRoutes.studyCenter]: '学习中心',
       [appRoutes.support]: '事后支援',
-      [appRoutes.aboutUs]: '知识中心',
+      [appRoutes.knowledgeHub]: '知识中心',
+      [appRoutes.notificationReveal]: '通知结果',
     },
     ui: {
       openMenu: '打开导航菜单',
@@ -853,6 +669,30 @@ const STRINGS: Record<Language, Strings> = {
       helperBefore: '点击下方任一选项',
       helperAction: '开始',
       helperAfter: '',
+    },
+    siteDisclaimer: {
+      consentEyebrow: '重要说明',
+      consentTitle: '网站免责声明',
+      consentDescription: '继续访问前，请先阅读这则简短说明。',
+      privacyTitle: '隐私说明',
+      privacyText:
+        'ScamSafe 不会通过本网站索取密码、OTP、银行资料等敏感信息，也请不要在这里提交这类资料。',
+      referenceTitle: '重要提示',
+      referenceText:
+        '本网站中的内容、结果与解释仅用于教育和一般参考，不构成最终建议；如你据此作出决定，仍需自行判断并承担责任。',
+      permissionText: '请选择是否继续进入网站。',
+      agree: '我同意',
+      disagree: '我不同意',
+    },
+    notificationTraining: {
+      browserAlertLabel: '浏览器提醒',
+      justNow: '刚刚',
+      suspiciousLabel: '可疑提醒',
+      trustedLabel: '看起来可信的提醒',
+      sourceLabel: '消息来源',
+      linkLabel: '通知中显示的链接',
+      previewHint: '这是一个训练弹窗，用来模拟真实浏览器通知可能出现的样子。',
+      dismiss: '关闭',
     },
     homeFeatures: {
       scam: '诈骗',
@@ -936,7 +776,7 @@ const STRINGS: Record<Language, Strings> = {
       nextStepTitle: '可以继续细化界面设计。',
       supportText: '我们可以直接在这个页面继续做表单、结果面板、操作区，以及移动端优先布局。',
     },
-    aboutUs: {
+    knowledgeHub: {
       eyebrow: '知识中心',
       title: '知识中心',
       description: '在这里集中浏览 ScamSafe 的学习资源、反诈指引与支援信息。',
@@ -1111,12 +951,4 @@ export function I18nProvider({ children }: PropsWithChildren) {
   const value = useMemo<I18nContextValue>(() => ({ language, setLanguage, strings: STRINGS[language] }), [language])
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>
-}
-
-export function useI18n() {
-  const value = useContext(I18nContext)
-  if (!value) {
-    throw new Error('useI18n must be used within I18nProvider')
-  }
-  return value
 }

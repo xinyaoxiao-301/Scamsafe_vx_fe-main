@@ -87,12 +87,11 @@ This project is organized as a mobile-first frontend scaffold with tablet and de
 src/
   app/            Application shell
   assets/         Static assets
-  components/     Shared UI and layout pieces
-  components/layout/
+  components/     Shared UI pieces
   components/ui/  Reusable UI components
   hooks/          Shared React hooks
-  lib/            Shared helpers and utilities
-  pages/home/     Page-level content
+  lib/            Shared helpers, env config, and i18n
+  pages/          Feature pages and page-scoped helpers
   services/       API calls and data access
   styles/         Global styles and design tokens
   types/          Shared TypeScript types
@@ -113,21 +112,13 @@ src/
 - Frontend runtime setup
 - Application provider entry
 - Application shell and page entry
+- Hash-based routing for static deployment
 - Mobile-first style baseline
 - Tablet and desktop breakpoints
 - Environment config entry
 - Reusable card, button, and status pill components
+- API service wrappers for the existing backend
 - Extendable homepage scaffold
-- Starter folders for assets, hooks, services, shared utilities, and shared types
-
-### Intentionally not added yet
-
-- Routing
-- API wrappers
-- State management
-- Test framework
-
-These are not missing by mistake. They are intentionally left out to keep the scaffold light at this stage. Add them later when the real page flow becomes clear.
 
 ### Study Center (Quiz) backend notes
 
@@ -170,21 +161,5 @@ npm run lint
 npm run format
 npm run typecheck
 ```
-
-## License and Academic Use
-
-This repository is part of the ScamSafe academic project developed by Team TM08 for FIT5120 at Monash University.
-
-Project team: `Team TM08`  
-Student authors: `Vaibhavi Vijayakumar`, `Zheng Sun`, `Huanheng Luo`, `Yanchen Geng`, `Xinyao Xiao`
-
-- Copyright in the original project materials is held by Team TM08 unless otherwise stated.
-- The deployed ScamSafe website may be publicly accessible for demonstration, academic presentation, portfolio review, and related project purposes for at least six months.
-- Public access to the website does not grant reuse, redistribution, commercial, or derivative rights over the source code, design assets, documentation, or other protected project materials.
-- Monash University staff and authorized academic reviewers may access and evaluate the project for academic, administrative, and record-keeping purposes.
-- No open-source license is granted for this repository.
-- Third-party datasets, libraries, and external resources remain subject to their own licenses and terms.
-
-For the full licensing terms, see [LICENSE](/Users/swenson/Downloads/FIT5120%20IE/Real_project/ScamSafe/LICENSE). For a short-form project notice, see [NOTICE](/Users/swenson/Downloads/FIT5120%20IE/Real_project/ScamSafe/NOTICE).
 
 last update 17/04/2026 2:42am
