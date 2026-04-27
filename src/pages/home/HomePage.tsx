@@ -17,6 +17,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.detection,
       route: appRoutes.detection,
+      tooltip: strings.homeFeatures.tooltips.detection,
     },
     {
       id: 'scam-simulation',
@@ -24,6 +25,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.simulation,
       route: appRoutes.simulation,
+      tooltip: strings.homeFeatures.tooltips.simulation,
     },
     {
       id: 'anti-scam-study-center',
@@ -31,6 +33,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.studyCenter,
       route: appRoutes.studyCenter,
+      tooltip: strings.homeFeatures.tooltips.studyCenter,
     },
     {
       id: 'post-scam-support',
@@ -38,6 +41,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.support,
       route: appRoutes.support,
+      tooltip: strings.homeFeatures.tooltips.support,
     },
     {
       id: 'knowledge-hub',
@@ -45,6 +49,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
       title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.knowledgeHub,
       route: appRoutes.aboutUs,
+      tooltip: strings.homeFeatures.tooltips.knowledgeHub,
     },
   ] as const
 
@@ -63,32 +68,44 @@ export function HomePage({ onNavigate }: HomePageProps) {
           </p>
         </header>
         <div className="feature-launchpad" role="list">
-          {features.map((feature) => (
-            <article className="feature-launchpad__item" key={feature.id} role="listitem">
-              <div className="feature-launchpad__icon">
-                <FeatureIcon name={feature.icon} />
-              </div>
-              <div className="feature-launchpad__heading">
-                <p className="feature-launchpad__title">{feature.title}</p>
-                <p
-                  className={
-                    feature.id === 'anti-scam-study-center'
-                      ? 'feature-launchpad__subtitle feature-launchpad__subtitle--wide'
-                      : 'feature-launchpad__subtitle'
-                  }
-                  >
-                  {feature.subtitle}
-                </p>
-              </div>
-              <Button
-                fullWidth
-                onClick={() => onNavigate(feature.route)}
-                className="feature-launchpad__button"
+          {features.map((feature) => {
+            const tooltipId = `feature-tip-${feature.id}`
+
+            return (
+              <article
+                className={`feature-launchpad__item feature-launchpad__item--${feature.id}`}
+                key={feature.id}
+                role="listitem"
               >
-                {strings.homeFeatures.open}
-              </Button>
-            </article>
-          ))}
+                <div className="feature-launchpad__icon">
+                  <FeatureIcon name={feature.icon} />
+                </div>
+                <div className="feature-launchpad__heading">
+                  <p className="feature-launchpad__title">{feature.title}</p>
+                  <p
+                    className={
+                      feature.id === 'anti-scam-study-center'
+                        ? 'feature-launchpad__subtitle feature-launchpad__subtitle--wide'
+                        : 'feature-launchpad__subtitle'
+                    }
+                  >
+                    {feature.subtitle}
+                  </p>
+                </div>
+                <Button
+                  fullWidth
+                  onClick={() => onNavigate(feature.route)}
+                  className="feature-launchpad__button"
+                  aria-describedby={tooltipId}
+                >
+                  {strings.homeFeatures.open}
+                </Button>
+                <span id={tooltipId} className="feature-launchpad__tooltip" role="tooltip">
+                  {feature.tooltip}
+                </span>
+              </article>
+            )
+          })}
         </div>
       </section>
     </main>

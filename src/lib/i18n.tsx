@@ -50,6 +50,13 @@ type Strings = {
     support: string
     knowledgeHub: string
     open: string
+    tooltips: {
+      detection: string
+      simulation: string
+      studyCenter: string
+      support: string
+      knowledgeHub: string
+    }
   }
   homeStats: {
     eyebrow: string
@@ -293,6 +300,13 @@ const STRINGS: Record<Language, Strings> = {
       support: 'Support',
       knowledgeHub: 'Knowledge Hub',
       open: 'Open',
+      tooltips: {
+        detection: 'Check suspicious messages in a few simple steps.',
+        simulation: 'Practice scam scenarios before they happen.',
+        studyCenter: 'Learn common scam signs with guided lessons.',
+        support: 'Find calm next steps after a scam incident.',
+        knowledgeHub: 'Browse simple tips and scam awareness guides.',
+      },
     },
     homeStats: {
       eyebrow: 'Real-world data',
@@ -568,6 +582,13 @@ const STRINGS: Record<Language, Strings> = {
       support: 'Sokongan',
       knowledgeHub: 'Pusat Pengetahuan',
       open: 'Buka',
+      tooltips: {
+        detection: 'Semak mesej mencurigakan dengan beberapa langkah mudah.',
+        simulation: 'Berlatih menghadapi senario scam sebelum ia berlaku.',
+        studyCenter: 'Pelajari tanda scam biasa melalui panduan ringkas.',
+        support: 'Cari langkah seterusnya dengan tenang selepas terkena scam.',
+        knowledgeHub: 'Lihat tip mudah dan panduan kesedaran scam.',
+      },
     },
     homeStats: {
       eyebrow: 'Data dunia nyata',
@@ -841,6 +862,13 @@ const STRINGS: Record<Language, Strings> = {
       support: '支援',
       knowledgeHub: '知识中心',
       open: '进入',
+      tooltips: {
+        detection: '用几个简单步骤检查可疑信息。',
+        simulation: '在真实发生前练习常见诈骗情境。',
+        studyCenter: '通过引导内容学习常见诈骗迹象。',
+        support: '在遇骗后查看冷静清晰的下一步建议。',
+        knowledgeHub: '浏览简明提示与防骗知识指南。',
+      },
     },
     homeStats: {
       eyebrow: '真实数据',

@@ -16,8 +16,8 @@ export const primaryNavItems = [
   { route: appRoutes.detection, label: 'Scam Detection' },
   { route: appRoutes.simulation, label: 'Scam Simulation' },
   { route: appRoutes.studyCenter, label: 'Study Center' },
-  { route: appRoutes.support, label: 'Support' },
   { route: appRoutes.aboutUs, label: 'Knowledge Hub' },
+  { route: appRoutes.support, label: 'Support' },
 ] as const
 
 export function getRouteFromHash(hash: string): AppRoute {

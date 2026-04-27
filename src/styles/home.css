@@ -104,6 +104,7 @@
 }
 
 .feature-launchpad__item {
+  position: relative;
   display: grid;
   gap: 12px;
   align-content: start;
@@ -115,6 +116,50 @@
   box-shadow:
     0 12px 24px rgba(17, 38, 61, 0.07),
     inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.feature-launchpad__tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%) translateY(6px);
+  width: max-content;
+  max-width: min(32ch, 280px);
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(19, 108, 242, 0.14);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 16px 28px rgba(17, 38, 61, 0.12);
+  color: var(--muted-strong);
+  font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+  z-index: 10;
+}
+
+.feature-launchpad__tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: 10px;
+  height: 10px;
+  transform: translateX(-50%) rotate(45deg);
+  background: rgba(255, 255, 255, 0.98);
+  border-right: 1px solid rgba(19, 108, 242, 0.14);
+  border-bottom: 1px solid rgba(19, 108, 242, 0.14);
+}
+
+.feature-launchpad__item:hover .feature-launchpad__tooltip,
+.feature-launchpad__item:focus-within .feature-launchpad__tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .feature-launchpad__heading {
@@ -238,7 +283,8 @@
     border-radius: 22px;
     margin-top: 0;
     height: 100%;
-    width: 100%;
+    width: calc(100% + 6%);
+    margin-right: -5%;
     justify-self: stretch;
     transform: none;
   }
@@ -274,6 +320,55 @@
     min-height: 118px;
     padding: 10px 10px 10px;
     border-radius: 18px;
+  }
+
+  .feature-launchpad__button {
+    justify-self: center;
+    width: min(100%, 148px);
+  }
+
+  .feature-launchpad__item--scam-detection {
+    grid-row: span 2;
+    min-height: 246px;
+    align-content: center;
+    justify-items: center;
+    gap: 18px;
+    padding: 16px 14px 14px;
+  }
+
+  .feature-launchpad__item--post-scam-support {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .feature-launchpad__item--scam-detection .feature-launchpad__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+  }
+
+  .feature-launchpad__item--scam-detection .feature-launchpad__icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .feature-launchpad__item--scam-detection .feature-launchpad__heading {
+    align-content: center;
+    gap: 8px;
+    justify-items: center;
+  }
+
+  .feature-launchpad__item--scam-detection .feature-launchpad__title {
+    font-size: 0.86rem;
+  }
+
+  .feature-launchpad__item--scam-detection .feature-launchpad__subtitle {
+    font-size: 1.26rem;
+    line-height: 1.08;
+  }
+
+  .feature-launchpad__item--scam-detection .feature-launchpad__button {
+    align-self: center;
   }
 
   .feature-launchpad__icon {

@@ -183,19 +183,26 @@
   height: 52px;
   border-radius: 18px;
   border: 1px solid rgba(19, 108, 242, 0.18);
-  background: linear-gradient(180deg, rgba(19, 108, 242, 0.14), rgba(19, 108, 242, 0.04));
+  background:
+    radial-gradient(circle at 30% 20%, rgba(191, 219, 254, 0.65), rgba(191, 219, 254, 0) 34%),
+    #ffffff;
   display: grid;
   place-items: center;
   color: var(--accent-strong);
-  font-weight: 950;
-  letter-spacing: -0.03em;
-  box-shadow: 0 12px 22px rgba(17, 38, 61, 0.06);
+  box-shadow:
+    0 12px 22px rgba(17, 38, 61, 0.06),
+    inset 0 0 0 1px rgba(147, 197, 253, 0.26);
 }
 
 .scam-simulation-page__bot-icon {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: block;
+  stroke: currentColor;
+  stroke-width: 2.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .scam-simulation-page__phone {
@@ -239,7 +246,7 @@
   font-weight: 950;
   letter-spacing: -0.03em;
   line-height: 1.15;
-  font-size: calc(1rem * var(--sim-scale));
+  font-size: calc(0.84rem * var(--sim-scale));
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -254,7 +261,7 @@
   margin: 0;
   color: rgba(17, 38, 58, 0.72);
   font-weight: 800;
-  font-size: calc(0.92rem * var(--sim-scale));
+  font-size: calc(0.76rem * var(--sim-scale));
   letter-spacing: -0.02em;
   white-space: nowrap;
   flex-shrink: 0;
@@ -287,8 +294,44 @@
   justify-content: flex-start;
 }
 
+.scam-simulation-page__msg--bot {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  justify-content: start;
+  gap: 8px;
+}
+
 .scam-simulation-page__msg--user {
   justify-content: flex-end;
+}
+
+.scam-simulation-page__msg-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(19, 108, 242, 0.18);
+  background:
+    radial-gradient(circle at 30% 20%, rgba(191, 219, 254, 0.65), rgba(191, 219, 254, 0) 34%),
+    #ffffff;
+  display: grid;
+  place-items: center;
+  color: var(--accent-strong);
+  box-shadow:
+    0 8px 16px rgba(17, 38, 61, 0.06),
+    inset 0 0 0 1px rgba(147, 197, 253, 0.22);
+  flex-shrink: 0;
+}
+
+.scam-simulation-page__msg-bot-icon {
+  width: 20px;
+  height: 20px;
+  display: block;
+  stroke: currentColor;
+  stroke-width: 2.8;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .scam-simulation-page__bubble {
@@ -302,9 +345,9 @@
   border: 1px solid rgba(17, 38, 58, 0.12);
   background: #ffffff;
   color: var(--text);
-  font-size: calc(1rem * var(--sim-scale));
+  font-size: calc(0.672rem * var(--sim-scale));
   line-height: 1.45;
-  font-weight: 650;
+  font-weight: 500;
   position: relative;
   white-space: break-spaces;
   overflow-wrap: anywhere;
@@ -390,11 +433,40 @@
 
 .scam-simulation-page__empty {
   color: var(--muted);
-  line-height: 1.6;
-  font-size: calc(0.98rem * var(--sim-scale));
+  line-height: 1.55;
+  font-size: calc(0.84rem * var(--sim-scale));
   margin: auto;
   text-align: center;
   max-width: 32ch;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+}
+
+.scam-simulation-page__empty-avatar {
+  width: 118px;
+  height: 118px;
+  border-radius: 32px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(191, 219, 254, 0.65), rgba(191, 219, 254, 0) 34%),
+    #ffffff;
+  border: 1px solid rgba(19, 108, 242, 0.16);
+  box-shadow:
+    0 18px 30px rgba(17, 38, 61, 0.08),
+    inset 0 0 0 1px rgba(147, 197, 253, 0.22);
+}
+
+.scam-simulation-page__empty-bot-icon {
+  width: 76px;
+  height: 76px;
+  display: block;
+  stroke: var(--accent-strong);
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .scam-simulation-page__composer {
@@ -415,8 +487,8 @@
   border-radius: clamp(14px, calc(16px * var(--sim-scale)), 18px);
   background: #ffffff;
   color: var(--text);
-  font-weight: 650;
-  font-size: calc(1rem * var(--sim-scale));
+  font-weight: 500;
+  font-size: calc(0.672rem * var(--sim-scale));
   text-align: left;
   word-spacing: 0.14em;
   letter-spacing: 0;

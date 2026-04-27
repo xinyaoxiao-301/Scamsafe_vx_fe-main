@@ -333,7 +333,15 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
               <header className="scam-simulation-page__phone-header">
                 <div className="scam-simulation-page__phone-left" aria-hidden="true">
                   <div className="scam-simulation-page__bot-avatar">
-                    <span className="scam-simulation-page__bot-face">AI</span>
+                    <svg className="scam-simulation-page__bot-icon" viewBox="0 0 48 48">
+                      <path d="M24 8v5" />
+                      <path d="M14 18a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v9a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6v-9Z" />
+                      <circle cx="20" cy="22" r="1.8" />
+                      <circle cx="28" cy="22" r="1.8" />
+                      <path d="M19.2 28c1.4 1.2 3 1.8 4.8 1.8 1.8 0 3.4-.6 4.8-1.8" />
+                      <path d="M14 21h-3" />
+                      <path d="M37 21h-3" />
+                    </svg>
                   </div>
                   <p className="scam-simulation-page__phone-title">
                     {scenarioType ? SCENARIO_LABELS[scenarioType] : s.phoneDefaultTitle}
@@ -353,9 +361,22 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                         className={
                           message.from === 'user'
                             ? 'scam-simulation-page__msg scam-simulation-page__msg--user'
-                            : 'scam-simulation-page__msg'
+                            : 'scam-simulation-page__msg scam-simulation-page__msg--bot'
                         }
                       >
+                        {message.from === 'bot' ? (
+                          <span className="scam-simulation-page__msg-avatar" aria-hidden="true">
+                            <svg className="scam-simulation-page__msg-bot-icon" viewBox="0 0 48 48">
+                              <path d="M24 8v5" />
+                              <path d="M14 18a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v9a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6v-9Z" />
+                              <circle cx="20" cy="22" r="1.8" />
+                              <circle cx="28" cy="22" r="1.8" />
+                              <path d="M19.2 28c1.4 1.2 3 1.8 4.8 1.8 1.8 0 3.4-.6 4.8-1.8" />
+                              <path d="M14 21h-3" />
+                              <path d="M37 21h-3" />
+                            </svg>
+                          </span>
+                        ) : null}
                         <div
                           className={
                             message.from === 'user'
@@ -368,7 +389,18 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                       </div>
                     ))}
                     {isBotTyping && (
-                      <div className="scam-simulation-page__msg">
+                      <div className="scam-simulation-page__msg scam-simulation-page__msg--bot">
+                        <span className="scam-simulation-page__msg-avatar" aria-hidden="true">
+                          <svg className="scam-simulation-page__msg-bot-icon" viewBox="0 0 48 48">
+                            <path d="M24 8v5" />
+                            <path d="M14 18a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v9a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6v-9Z" />
+                            <circle cx="20" cy="22" r="1.8" />
+                            <circle cx="28" cy="22" r="1.8" />
+                            <path d="M19.2 28c1.4 1.2 3 1.8 4.8 1.8 1.8 0 3.4-.6 4.8-1.8" />
+                            <path d="M14 21h-3" />
+                            <path d="M37 21h-3" />
+                          </svg>
+                        </span>
                         <div className="scam-simulation-page__bubble scam-simulation-page__bubble--bot">
                           <span className="scam-simulation-page__typing" aria-label={s.typingLabel}>
                             <span /><span /><span />
@@ -379,6 +411,17 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                   </>
                 ) : (
                   <div className="scam-simulation-page__empty">
+                    <div className="scam-simulation-page__empty-avatar" aria-hidden="true">
+                      <svg className="scam-simulation-page__empty-bot-icon" viewBox="0 0 64 64">
+                        <path d="M32 11v8" />
+                        <path d="M18 24a8 8 0 0 1 8-8h12a8 8 0 0 1 8 8v12a8 8 0 0 1-8 8H26a8 8 0 0 1-8-8V24Z" />
+                        <circle cx="27" cy="29.5" r="2.6" />
+                        <circle cx="37" cy="29.5" r="2.6" />
+                        <path d="M26 37c1.8 1.6 3.8 2.4 6 2.4 2.2 0 4.2-.8 6-2.4" />
+                        <path d="M18 28h-5" />
+                        <path d="M51 28h-5" />
+                      </svg>
+                    </div>
                     <p>{s.emptyState}</p>
                   </div>
                 )}
