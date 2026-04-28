@@ -51,6 +51,9 @@ export type Strings = {
     permissionText: string
     agree: string
     disagree: string
+    exitTitle: string
+    exitDescription: string
+    returnToNotice: string
   }
   notificationTraining: {
     browserAlertLabel: string

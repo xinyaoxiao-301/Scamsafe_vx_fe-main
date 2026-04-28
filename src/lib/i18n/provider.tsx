@@ -71,6 +71,9 @@ const STRINGS: Record<Language, Strings> = {
       permissionText: 'Choose whether to continue into the website.',
       agree: 'I agree',
       disagree: 'I do not agree',
+      exitTitle: 'You have exited ScamSafe',
+      exitDescription: 'Because you did not agree to the disclaimer, this website will stay closed in this tab.',
+      returnToNotice: 'Back to notice',
     },
     notificationTraining: {
       browserAlertLabel: 'Browser alert',
@@ -378,6 +381,9 @@ const STRINGS: Record<Language, Strings> = {
       permissionText: 'Pilih sama ada anda mahu terus masuk ke laman web ini.',
       agree: 'Saya setuju',
       disagree: 'Saya tidak setuju',
+      exitTitle: 'Anda telah keluar dari ScamSafe',
+      exitDescription: 'Kerana anda tidak bersetuju dengan penafian ini, laman web akan kekal ditutup dalam tab ini.',
+      returnToNotice: 'Kembali ke notis',
     },
     notificationTraining: {
       browserAlertLabel: 'Amaran pelayar',
@@ -683,6 +689,9 @@ const STRINGS: Record<Language, Strings> = {
       permissionText: '请选择是否继续进入网站。',
       agree: '我同意',
       disagree: '我不同意',
+      exitTitle: '你已退出 ScamSafe',
+      exitDescription: '由于你没有同意免责声明，本网站将在当前标签页中保持关闭状态。',
+      returnToNotice: '返回说明',
     },
     notificationTraining: {
       browserAlertLabel: '浏览器提醒',
