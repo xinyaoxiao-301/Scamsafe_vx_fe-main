@@ -138,7 +138,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
             onClick={() => setShowModal(false)}
           />
           <div className="scam-detection-page__modal-card">
-            <div className="scam-detection-page__modal-icon" aria-hidden="true">⚠</div>
+            <div className="scam-detection-page__modal-icon" aria-hidden="true">!</div>
             <p className="scam-detection-page__modal-title">{s.modalTitle}</p>
             <p className="scam-detection-page__modal-text">{s.modalText}</p>
             <div className="scam-detection-page__modal-actions">
