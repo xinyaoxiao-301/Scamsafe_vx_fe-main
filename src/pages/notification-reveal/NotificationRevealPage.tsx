@@ -52,10 +52,6 @@ function getVerdictCopy(isScam: boolean) {
   }
 }
 
-function formatBackendLabel(label: string) {
-  return label === 'scam' ? 'scam' : label === 'not_scam' ? 'not_scam' : label
-}
-
 export function NotificationRevealPage({ onBackHome }: NotificationRevealPageProps) {
   const [storedScenario] = useState(() => readStoredNotificationScenario())
   const [result, setResult] = useState<NotificationReveal | null>(null)
