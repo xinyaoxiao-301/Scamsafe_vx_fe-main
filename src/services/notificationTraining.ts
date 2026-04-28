@@ -13,6 +13,7 @@ type NotificationRevealResponse = {
   message: string
   label: string
   is_scam: boolean
+  explanations: string[]   // added — backend returns list[str] from the explanation table
 }
 
 async function parseError(res: Response) {
@@ -42,6 +43,7 @@ export async function fetchNotificationReveal(notificationId: number): Promise<N
     message: data.message,
     label: data.label,
     isScam: data.is_scam,
+    explanations: data.explanations ?? [],   // added — forwarded to NotificationReveal
     triggeredAt: Date.now(),
   }
 }

@@ -9,13 +9,6 @@ type NotificationRevealPageProps = {
   onBackHome: () => void
 }
 
-type NotificationReason = {
-  id: string
-  tone: 'danger' | 'safe'
-  title: string
-  description: string
-}
-
 function ReasonBadge({ tone }: { tone: 'danger' | 'safe' }) {
   return (
     <span
@@ -29,52 +22,6 @@ function ReasonBadge({ tone }: { tone: 'danger' | 'safe' }) {
       {tone === 'danger' ? '!' : '✓'}
     </span>
   )
-}
-
-function buildReasons(isScam: boolean): NotificationReason[] {
-  if (isScam) {
-    return [
-      {
-        id: 'scam-verdict',
-        tone: 'danger',
-        title: 'The backend classified this as a scam',
-        description: 'This notification was marked risky in the backend data source and should not be trusted at face value.',
-      },
-      {
-        id: 'scam-verify',
-        tone: 'danger',
-        title: 'Verify outside the notification',
-        description: 'If a message creates pressure or asks for quick action, confirm it through the official website or app instead.',
-      },
-      {
-        id: 'scam-caution',
-        tone: 'danger',
-        title: 'Do not rely on the popup alone',
-        description: 'Unexpected alerts can be spoofed. Treat links and prompts in notifications carefully before opening anything.',
-      },
-    ]
-  }
-
-  return [
-    {
-      id: 'safe-verdict',
-      tone: 'safe',
-      title: 'The backend classified this as genuine',
-      description: 'This notification was stored as a non-scam example in the backend and was meant to look routine and trustworthy.',
-    },
-    {
-      id: 'safe-tone',
-      tone: 'safe',
-      title: 'Safe notifications still deserve a quick check',
-      description: 'Even when a message is genuine, it is still smart to pause and make sure it matches the product or service you expect.',
-    },
-    {
-      id: 'safe-habit',
-      tone: 'safe',
-      title: 'Keep using the same verification habit',
-      description: 'A calm double-check helps with both real notifications and fake ones, so the same habit keeps you safer over time.',
-    },
-  ]
 }
 
 function getVerdictCopy(isScam: boolean) {
@@ -189,7 +136,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
   }
 
   const copy = getVerdictCopy(result.isScam)
-  const reasons = buildReasons(result.isScam)
+  const tone = result.isScam ? 'danger' : 'safe'
 
   return (
     <main className="notification-reveal-page" aria-label="Notification training result">
@@ -212,19 +159,11 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
               <span className="notification-reveal-page__summary-label">Verdict</span>
               <strong>{copy.verdictLabel}</strong>
             </div>
-            <div className="notification-reveal-page__summary-row">
-              <span className="notification-reveal-page__summary-label">Backend label</span>
-              <strong>{formatBackendLabel(result.label)}</strong>
-            </div>
-            <div className="notification-reveal-page__summary-row">
-              <span className="notification-reveal-page__summary-label">Notification ID</span>
-              <strong>{result.id}</strong>
-            </div>
+
           </div>
           <div className="notification-reveal-page__body-preview">
             <div className="notification-reveal-page__body-topline">
-              <span className="notification-reveal-page__body-badge">Backend response</span>
-              <span className="notification-reveal-page__body-caption">{copy.summary}</span>
+              <span className="notification-reveal-page__body-badge">Message</span>
             </div>
             <p className="notification-reveal-page__body-text">{result.message}</p>
             <span
@@ -246,12 +185,11 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
           description={copy.reasonsDescription}
         >
           <ul className="notification-reveal-page__reasons" aria-label="Notification explanations">
-            {reasons.map((reason) => (
-              <li className="notification-reveal-page__reason" key={reason.id}>
-                <ReasonBadge tone={reason.tone} />
+            {result.explanations.map((text, index) => (
+              <li className="notification-reveal-page__reason" key={index}>
+                <ReasonBadge tone={tone} />
                 <div className="notification-reveal-page__reason-copy">
-                  <strong>{reason.title}</strong>
-                  <p>{reason.description}</p>
+                  <p>{text}</p>
                 </div>
               </li>
             ))}
