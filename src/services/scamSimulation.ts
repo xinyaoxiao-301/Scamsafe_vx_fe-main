@@ -56,7 +56,7 @@ export const API_SCENARIO_SLUGS: ApiScenarioType[] = [
 export const SCENARIO_SLUGS: ScamScenarioType[] = ['mixed-scams', ...API_SCENARIO_SLUGS]
 
 export const SCENARIO_LABELS: Record<ScamScenarioType, string> = {
-  'mixed-scams':            'Mix scams',
+  'mixed-scams':            'Random Category',
   'romance-scams':          'Romance scams',
   'investment-scams':       'Investment scams',
   'tech-support-scams':     'Tech support scams',
