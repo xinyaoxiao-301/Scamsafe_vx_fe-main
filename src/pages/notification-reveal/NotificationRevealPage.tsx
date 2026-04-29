@@ -27,28 +27,28 @@ function ReasonBadge({ tone }: { tone: 'danger' | 'safe' }) {
 function getVerdictCopy(isScam: boolean) {
   if (isScam) {
     return {
-      title: 'This was a scam notification.',
-      lede: 'The backend marked this alert as a scam example. Treat surprise notifications carefully and verify them through a trusted channel.',
+      title: 'This was a scam notification!.',
+      lede: 'This is an example of a scam SMS you might receive on your phone. Treat surprise notifications carefully and if in doubt, verify them through our scam detection tool.',
       summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
-      cardTitle: 'Scam verdict',
-      cardDescription: 'Review the original message and the backend classification below.',
-      reasonsTitle: 'Why it matters',
-      reasonsDescription: 'These are the main safety lessons to take away from this backend verdict.',
+      cardTitle: 'Scam',
+      cardDescription: 'Review the original message below.',
+      reasonsTitle: 'You allowed notifications on this site.',
+      reasonsDescription: 'Here are reasons why this message is a scam:',
       actionLabel: 'Scam example',
       verdictLabel: 'Scam',
     }
   }
 
   return {
-    title: 'This was a genuine notification.',
-    lede: 'The backend marked this alert as a non-scam example. It is still worth checking calmly, but this one was stored as safe.',
+    title: 'This was a non-scam notification.',
+    lede: 'This is an example of a non-scam SMS you recieve on your phone. It is still worth checking calmly, but messages like this are generally safe.',
     summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
-    cardTitle: 'Genuine verdict',
-    cardDescription: 'Review the original message and the backend classification below.',
-    reasonsTitle: 'Why it mattered',
-    reasonsDescription: 'These are the main lessons to keep from a safe notification example.',
+    cardTitle: 'Non-scam',
+    cardDescription: 'Review the original message below.',
+    reasonsTitle: 'You allowed notifications on this site.',
+    reasonsDescription: 'Here are reasons why this message is safe:',
     actionLabel: 'Safe example',
-    verdictLabel: 'Genuine',
+    verdictLabel: 'Non-scam',
   }
 }
 
@@ -91,7 +91,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
 
   if (!storedScenario) {
     return (
-      <main className="notification-reveal-page" aria-label="Notification training result">
+      <main className="notification-reveal-page" aria-label="Notification result">
         <SectionCard
           className="notification-reveal-page__card"
           eyebrow="Notification Training"
@@ -176,7 +176,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
 
         <SectionCard
           className="notification-reveal-page__card"
-          eyebrow="Why it mattered"
+          eyebrow="Why did I get this notification?"
           title={copy.reasonsTitle}
           description={copy.reasonsDescription}
         >
