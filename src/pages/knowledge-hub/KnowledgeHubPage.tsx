@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
@@ -6,6 +6,8 @@ import { CategoryIcon } from '@/pages/knowledge-hub/components/CategoryIcon'
 import { ExampleMockup } from '@/pages/knowledge-hub/components/ExampleMockup'
 import { knowledgeHubCategories } from '@/pages/knowledge-hub/data'
 import type { KnowledgeHubCategory } from '@/pages/knowledge-hub/types'
+import { fetchNewsList, fetchNewsDetail } from '@/services/scamNews'
+import type { NewsListItem, NewsDetail } from '@/services/scamNews'
 
 type KnowledgeHubPageProps = {
   onBackHome: () => void
@@ -16,6 +18,43 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
   const [selectedCategoryId, setSelectedCategoryId] = useState(knowledgeHubCategories[0].id)
   const [selectedArticleId, setSelectedArticleId] = useState(knowledgeHubCategories[0].articles[0].id)
   const [openExampleId, setOpenExampleId] = useState<string | null>(null)
+
+  // Live news feed state
+  const [newsItems, setNewsItems] = useState<NewsListItem[]>([])
+  const [newsLoading, setNewsLoading] = useState(true)
+  const [newsError, setNewsError] = useState<string | null>(null)
+  const [selectedNewsId, setSelectedNewsId] = useState<number | null>(null)
+  const [newsDetail, setNewsDetail] = useState<NewsDetail | null>(null)
+  const [newsDetailLoading, setNewsDetailLoading] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchNewsList(10)
+      .then((items) => {
+        if (cancelled) return
+        setNewsItems(items)
+        if (items.length > 0) setSelectedNewsId(items[0].article_id)
+      })
+      .catch((err: unknown) => {
+        if (!cancelled) setNewsError(err instanceof Error ? err.message : 'Failed to load news')
+      })
+      .finally(() => {
+        if (!cancelled) setNewsLoading(false)
+      })
+    return () => { cancelled = true }
+  }, [])
+
+  useEffect(() => {
+    if (selectedNewsId === null) return
+    let cancelled = false
+    setNewsDetailLoading(true)
+    setNewsDetail(null)
+    fetchNewsDetail(selectedNewsId)
+      .then((detail) => { if (!cancelled) setNewsDetail(detail) })
+      .catch(() => { /* detail errors are non-critical; list still visible */ })
+      .finally(() => { if (!cancelled) setNewsDetailLoading(false) })
+    return () => { cancelled = true }
+  }, [selectedNewsId])
 
   const selectedCategory =
     knowledgeHubCategories.find((category) => category.id === selectedCategoryId) ??
@@ -198,6 +237,115 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
               </section>
             </article>
           </div>
+        </SectionCard>
+      </section>
+
+      <section className="knowledge-hub-page__news-section" aria-label="Latest scam news">
+        <SectionCard
+          className="knowledge-hub-page__card knowledge-hub-page__card--news"
+          eyebrow="Live feed"
+          title="Latest scam news"
+          description="Recent scam alerts fetched directly from our database — updated as new reports come in."
+        >
+          {newsLoading && (
+            <p className="knowledge-hub-page__news-status">Loading latest news…</p>
+          )}
+          {newsError && (
+            <p className="knowledge-hub-page__news-status knowledge-hub-page__news-status--error">
+              Could not load news: {newsError}
+            </p>
+          )}
+          {!newsLoading && !newsError && newsItems.length === 0 && (
+            <p className="knowledge-hub-page__news-status">No news articles available yet.</p>
+          )}
+          {!newsLoading && !newsError && newsItems.length > 0 && (
+            <div className="knowledge-hub-page__workspace">
+              <div
+                className="knowledge-hub-page__article-list"
+                role="list"
+                aria-label="News articles"
+              >
+                {newsItems.map((item) => {
+                  const isActive = item.article_id === selectedNewsId
+                  const dateLabel = item.published
+                    ? new Date(item.published).toLocaleDateString('en-MY', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })
+                    : ''
+                  return (
+                    <button
+                      key={item.article_id}
+                      type="button"
+                      role="listitem"
+                      aria-pressed={isActive}
+                      className={
+                        isActive
+                          ? 'knowledge-hub-page__article-card knowledge-hub-page__article-card--active'
+                          : 'knowledge-hub-page__article-card'
+                      }
+                      onClick={() => setSelectedNewsId(item.article_id)}
+                    >
+                      <span className="knowledge-hub-page__article-date">{dateLabel}</span>
+                      <strong className="knowledge-hub-page__article-title">{item.title}</strong>
+                      <span className="knowledge-hub-page__article-source">{item.source}</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              <article className="knowledge-hub-page__reader" aria-label="Selected news article">
+                {newsDetailLoading && (
+                  <p className="knowledge-hub-page__news-status">Loading article…</p>
+                )}
+                {!newsDetailLoading && newsDetail && (
+                  <>
+                    <div className="knowledge-hub-page__reader-top">
+                      <p className="knowledge-hub-page__reader-eyebrow">Live article</p>
+                      <h2 className="knowledge-hub-page__reader-title">{newsDetail.title}</h2>
+                      <div className="knowledge-hub-page__reader-meta">
+                        <span>
+                          {newsDetail.published
+                            ? new Date(newsDetail.published).toLocaleDateString('en-MY', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                              })
+                            : ''}
+                        </span>
+                        <a
+                          className="knowledge-hub-page__source-link"
+                          href={newsDetail.url}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Read source
+                        </a>
+                      </div>
+                    </div>
+
+                    <div className="knowledge-hub-page__reader-body">
+                      <p>{newsDetail.article_content}</p>
+                    </div>
+
+                    {newsDetail.tips.length > 0 && (
+                      <div className="knowledge-hub-page__reader-grid">
+                        <section className="knowledge-hub-page__reader-panel">
+                          <p className="knowledge-hub-page__panel-title">Simple prevention tips</p>
+                          <ul className="knowledge-hub-page__panel-list">
+                            {newsDetail.tips.map((tip) => (
+                              <li key={tip}>{tip}</li>
+                            ))}
+                          </ul>
+                        </section>
+                      </div>
+                    )}
+                  </>
+                )}
+              </article>
+            </div>
+          )}
         </SectionCard>
       </section>
 
