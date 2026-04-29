@@ -15,6 +15,13 @@ import { StudyCenterPage } from '@/pages/study-center'
 
 type SiteEntryState = 'pending' | 'accepted' | 'declined'
 
+function formatNotificationTime(date: Date) {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date)
+}
+
 export default function App() {
   return (
     <I18nProvider>
@@ -27,6 +34,7 @@ function AppContent() {
   const { strings } = useI18n()
   const [currentRoute, setCurrentRoute] = useState<AppRoute>(() => getRouteFromHash(window.location.hash))
   const [siteEntryState, setSiteEntryState] = useState<SiteEntryState>('pending')
+  const [notificationTime, setNotificationTime] = useState(() => formatNotificationTime(new Date()))
   const hasAcceptedSiteDisclaimer = siteEntryState === 'accepted'
   const hasDeclinedSiteDisclaimer = siteEntryState === 'declined'
   const { activeScenario, dismissScenario, openScenario } = useNotificationTraining(hasAcceptedSiteDisclaimer)
@@ -51,6 +59,22 @@ function AppContent() {
       window.removeEventListener('hashchange', handleHashChange)
     }
   }, [])
+
+  useEffect(() => {
+    if (!activeScenario) {
+      return
+    }
+
+    setNotificationTime(formatNotificationTime(new Date()))
+
+    const intervalId = window.setInterval(() => {
+      setNotificationTime(formatNotificationTime(new Date()))
+    }, 1000)
+
+    return () => {
+      window.clearInterval(intervalId)
+    }
+  }, [activeScenario])
 
   // Hash routing keeps the static build deployable without server-side rewrite
   // rules while still allowing direct feature navigation inside the app.
@@ -186,20 +210,12 @@ function AppContent() {
                 <div className="notification-modal__header">
                   <h2 className="notification-modal__title">Check this notification carefully</h2>
                 </div>
+                <p className="notification-modal__message-time">Today {notificationTime}</p>
                 <div className="notification-modal__message-box">
+                  <p className="notification-modal__message-label">{notificationStrings.messageLabel}</p>
                   <p className="notification-modal__body">{activeScenario.message}</p>
                 </div>
-                <div className="notification-modal__meta-grid">
-                  <div className="notification-modal__meta-card">
-                    <span className="notification-modal__meta-label">{notificationStrings.sourceLabel}</span>
-                    <span>ScamSafe notification queue</span>
-                  </div>
-                  <div className="notification-modal__meta-card">
-                    <span className="notification-modal__meta-label">{notificationStrings.linkLabel}</span>
-                    <span>Hidden until you open the result</span>
-                  </div>
-                </div>
-                <p className="notification-modal__hint">{notificationStrings.previewHint}</p>
+                <p className="notification-modal__scope-note">{notificationStrings.scopeNote}</p>
                 <div className="notification-modal__actions">
                   <Button onClick={() => openScenario()}>Open</Button>
                   <Button variant="secondary" onClick={dismissScenario}>

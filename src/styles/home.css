@@ -10,7 +10,8 @@
   position: fixed;
   inset: 0;
   display: grid;
-  place-items: center;
+  justify-items: center;
+  align-items: center;
   padding: 18px;
   z-index: 45;
 }
@@ -27,6 +28,7 @@
   position: relative;
   z-index: 1;
   width: min(100%, 500px);
+  margin: auto;
   display: grid;
   gap: 10px;
   padding: 16px;
@@ -38,6 +40,10 @@
   box-shadow:
     0 20px 48px rgba(17, 38, 58, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.entry-consent-modal__card :where(p, h2, h3) {
+  margin: 0;
 }
 
 .entry-consent-modal__eyebrow {
@@ -121,7 +127,7 @@
 .notification-modal__panel {
   position: relative;
   z-index: 1;
-  overflow: hidden;
+  overflow: visible;
   width: min(100%, 430px);
   display: grid;
   gap: 12px;
@@ -132,6 +138,10 @@
   box-shadow:
     0 24px 50px rgba(17, 38, 58, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.notification-modal__panel :where(p, h2) {
+  margin: 0;
 }
 
 .notification-modal__panel--scam {
@@ -201,6 +211,8 @@
 .notification-modal__header {
   display: grid;
   gap: 8px;
+  justify-items: center;
+  text-align: center;
 }
 
 .notification-modal__title {
@@ -213,34 +225,43 @@
 
 .notification-modal__body {
   color: var(--text);
-  font-size: 1.02rem;
-  line-height: 1.65;
+  font-size: 1.04rem;
+  line-height: 1.62;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.notification-modal__message-time {
+  justify-self: center;
+  color: var(--muted-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
 }
 
 .notification-modal__message-box {
+  position: relative;
   display: grid;
   gap: 6px;
   padding: 12px 14px;
-  border-radius: 14px;
+  margin-bottom: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  isolation: isolate;
   background: linear-gradient(180deg, rgba(255, 246, 220, 0.92), rgba(255, 238, 196, 0.9));
   border: 1px solid rgba(181, 124, 18, 0.22);
+  box-shadow:
+    0 10px 22px rgba(181, 124, 18, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
-.notification-modal__meta-grid {
-  display: grid;
-  gap: 8px;
+.notification-modal__message-box::before,
+.notification-modal__message-box::after {
+  content: none !important;
 }
 
-.notification-modal__meta-card {
-  display: grid;
-  gap: 8px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(232, 241, 255, 0.94), rgba(220, 234, 255, 0.92));
-  border: 1px solid rgba(19, 108, 242, 0.14);
-}
-
-.notification-modal__meta-label {
+.notification-modal__message-label {
   color: var(--muted-strong);
   font-size: 0.76rem;
   font-weight: 850;
@@ -248,14 +269,22 @@
   text-transform: uppercase;
 }
 
-.notification-modal__meta-card span {
-  overflow-wrap: anywhere;
+.notification-modal__scope-note {
+  position: relative;
+  padding: 12px 14px;
+  border-radius: 14px;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, rgba(232, 241, 255, 0.94), rgba(220, 234, 255, 0.92));
+  border: 1px solid rgba(19, 108, 242, 0.14);
+  color: var(--muted-strong);
+  font-size: 0.92rem;
+  line-height: 1.55;
 }
 
-.notification-modal__hint {
-  color: var(--muted);
-  font-size: 0.92rem;
-  line-height: 1.6;
+.notification-modal__scope-note::before,
+.notification-modal__scope-note::after {
+  content: none !important;
 }
 
 .notification-modal__actions {

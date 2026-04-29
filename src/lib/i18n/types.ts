@@ -60,8 +60,8 @@ export type Strings = {
     justNow: string
     suspiciousLabel: string
     trustedLabel: string
-    sourceLabel: string
-    linkLabel: string
+    messageLabel: string
+    scopeNote: string
     previewHint: string
     dismiss: string
   }
@@ -127,14 +127,6 @@ export type Strings = {
     eyebrow: string
     title: string
     description: string
-    missionEyebrow: string
-    missionTitle: string
-    missionDescription: string
-    missionPoints: string[]
-    teamEyebrow: string
-    teamTitle: string
-    teamDescription: string
-    teamSupport: string
   }
   postScamSupport: {
     eyebrow: string

@@ -30,7 +30,6 @@ function getVerdictCopy(isScam: boolean) {
       title: 'This was a scam notification!',
       lede: 'This is an example of a scam SMS you might receive on your phone. Treat surprise notifications carefully and if in doubt, verify them through our scam detection tool.',
       summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
-      cardTitle: 'Scam',
       cardDescription: 'Review the original message below.',
       reasonsTitle: 'You allowed notifications on this site.',
       reasonsDescription: 'Here are reasons why this message is a scam:',
@@ -43,7 +42,6 @@ function getVerdictCopy(isScam: boolean) {
     title: 'This was a non-scam notification.',
     lede: 'This is an example of a non-scam SMS you recieve on your phone. It is still worth checking calmly, but messages like this are generally safe.',
     summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
-    cardTitle: 'Non-scam',
     cardDescription: 'Review the original message below.',
     reasonsTitle: 'You allowed notifications on this site.',
     reasonsDescription: 'Here are reasons why this message is safe:',
@@ -110,7 +108,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
           className="notification-reveal-page__card"
           eyebrow="Notification Training"
           title="Loading notification result"
-          description="Fetching the backend verdict for this practice notification."
+          description="Checking this practice notification now."
           footer={<Button onClick={onBackHome}>Back to Home</Button>}
         />
       </main>
@@ -146,14 +144,21 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
         <SectionCard
           className="notification-reveal-page__card"
           eyebrow="Observed notification"
-          title={copy.cardTitle}
-          description={copy.cardDescription}
+          title={copy.cardDescription}
           footer={<Button onClick={onBackHome}>Back to Home</Button>}
         >
           <div className="notification-reveal-page__summary">
             <div className="notification-reveal-page__summary-row">
               <span className="notification-reveal-page__summary-label">Verdict</span>
-              <strong>{copy.verdictLabel}</strong>
+              <strong
+                className={
+                  result.isScam
+                    ? 'notification-reveal-page__verdict-pill notification-reveal-page__verdict-pill--danger'
+                    : 'notification-reveal-page__verdict-pill notification-reveal-page__verdict-pill--safe'
+                }
+              >
+                {copy.verdictLabel}
+              </strong>
             </div>
 
           </div>
