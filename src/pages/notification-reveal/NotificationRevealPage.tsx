@@ -27,7 +27,7 @@ function ReasonBadge({ tone }: { tone: 'danger' | 'safe' }) {
 function getVerdictCopy(isScam: boolean) {
   if (isScam) {
     return {
-      title: 'This was a scam notification!.',
+      title: 'This was a scam notification!',
       lede: 'This is an example of a scam SMS you might receive on your phone. Treat surprise notifications carefully and if in doubt, verify them through our scam detection tool.',
       summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
       cardTitle: 'Scam',
