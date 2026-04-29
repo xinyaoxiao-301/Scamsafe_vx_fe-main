@@ -114,6 +114,13 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
     setCompletedCount(0)
     setIsCurrentStepConfirmed(false)
     setReviewingStepIndex(null)
+
+    requestAnimationFrame(() => {
+      trackerRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    })
   }
 
   const completeCurrentStep = () => {
@@ -160,7 +167,7 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                   : 'support-recovery-page__start-button'
               }
             >
-              I transferred money, start recovery now
+              I transferred money, try to recovery now
             </Button>
             <p className="support-recovery-page__start-hint">
               This page is for one case only: money has already been sent. Follow it in order, and unlock the next step only after doing the current one in real life.
