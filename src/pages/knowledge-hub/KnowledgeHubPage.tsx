@@ -66,6 +66,12 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
         })
       : ''
 
+  const stripBrTags = (value: string) =>
+    value
+      .replace(/<br\s*\/?>/gi, ' ')
+      .replace(/\s{2,}/g, ' ')
+      .trim()
+
   return (
     <main className="knowledge-hub-page" aria-label={strings.knowledgeHub.title}>
       <section className="knowledge-hub-page__hero">
@@ -193,7 +199,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     </div>
 
                     <div className="knowledge-hub-page__reader-body">
-                      <p>{newsDetail.article_content}</p>
+                      <p>{stripBrTags(newsDetail.article_content)}</p>
                     </div>
 
                     {newsDetail.tips.length > 0 ? (
