@@ -210,7 +210,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     ) : null}
 
                     <div className="knowledge-hub-page__reader-footer">
-                      <Button variant="ghost" onClick={() => setIsReadingArticle(false)}>
+                      <Button variant="secondary" onClick={() => setIsReadingArticle(false)}>
                         Choose another article
                       </Button>
                       <Button variant="secondary" onClick={onBackHome}>
