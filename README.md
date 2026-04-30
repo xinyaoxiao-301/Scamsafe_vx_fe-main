@@ -68,6 +68,8 @@ The goal of ScamSafe is to create a simplified and trustworthy tool that helps e
 
 - [Kaggle call transcript scam determinations dataset](https://www.kaggle.com/datasets/mealss/call-transcripts-scam-determinations?resource=download)
 - [SMS scam detection dataset](https://github.com/vinit9638/SMS-scam-detection-dataset/blob/main/sms_scam_detection_dataset_merged_with_lang.csv)
+- [SMS Spam Collection Dataset] (https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset)
+- [SMS Spam Dataset] (https://www.kaggle.com/datasets/tapakah68/spam-text-messages-dataset)
 
 #### Key Design Direction
 
