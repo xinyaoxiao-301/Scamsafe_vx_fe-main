@@ -9,6 +9,66 @@ type KnowledgeHubPageProps = {
   onBackHome: () => void
 }
 
+const htmlEntityMap: Record<string, string> = {
+  amp: '&',
+  apos: '\'',
+  bull: '•',
+  copy: '©',
+  emsp: ' ',
+  ensp: ' ',
+  gt: '>',
+  hellip: '...',
+  ldquo: '"',
+  lsquo: '\'',
+  lt: '<',
+  mdash: '-',
+  middot: '·',
+  nbsp: ' ',
+  ndash: '-',
+  quot: '"',
+  rdquo: '"',
+  reg: '®',
+  rsquo: '\'',
+  trade: '™',
+}
+
+function decodeHtmlEntities(value: string): string {
+  return value.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (match, entity: string) => {
+    const normalizedEntity = entity.toLowerCase()
+    if (normalizedEntity.startsWith('#x')) {
+      const codePoint = Number.parseInt(normalizedEntity.slice(2), 16)
+      return Number.isNaN(codePoint) ? match : String.fromCodePoint(codePoint)
+    }
+    if (normalizedEntity.startsWith('#')) {
+      const codePoint = Number.parseInt(normalizedEntity.slice(1), 10)
+      return Number.isNaN(codePoint) ? match : String.fromCodePoint(codePoint)
+    }
+    return htmlEntityMap[normalizedEntity] ?? match
+  })
+}
+
+function formatArticleContent(value: string): string[] {
+  const normalizedText = value
+    .replace(/<\/p>\s*<p>/gi, '\n\n')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<(li)\b[^>]*>/gi, '\n• ')
+    .replace(/<\/li>/gi, '')
+    .replace(/<\/?(p|div|section|article|blockquote|ul|ol|h[1-6])>/gi, '\n\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/\t/g, ' ')
+    .replace(/\r\n/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n[ \t]+/g, '\n')
+    .replace(/\u00a0/g, ' ')
+    .replace(/[ ]{2,}/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+
+  return decodeHtmlEntities(normalizedText)
+    .split('\n\n')
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean)
+}
+
 export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
   const { strings } = useI18n()
   const [newsItems, setNewsItems] = useState<NewsListItem[]>([])
@@ -66,12 +126,6 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
         })
       : ''
 
-  const stripBrTags = (value: string) =>
-    value
-      .replace(/<br\s*\/?>/gi, ' ')
-      .replace(/\s{2,}/g, ' ')
-      .trim()
-
   return (
     <main className="knowledge-hub-page" aria-label={strings.knowledgeHub.title}>
       <section className="knowledge-hub-page__hero">
@@ -89,6 +143,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
         <SectionCard
           className="knowledge-hub-page__card knowledge-hub-page__card--news"
           eyebrow="Live feed"
+          eyebrowClassName="knowledge-hub-page__kicker"
           title="Read the latest scam reports"
           description="Open a recent article to review its title, source, full text, and linked prevention tips."
           footer={
@@ -161,7 +216,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
               >
                 {!isReadingArticle ? (
                   <div className="knowledge-hub-page__reader-empty">
-                    <p className="knowledge-hub-page__reader-eyebrow">Step 1</p>
+                    <p className="knowledge-hub-page__kicker knowledge-hub-page__reader-eyebrow">Step 1</p>
                     <h2 className="knowledge-hub-page__reader-title">Choose one article to open the reading view</h2>
                     <p className="knowledge-hub-page__reader-empty-copy">
                       Pick any report on the left and the selected article will expand across this card.
@@ -182,7 +237,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                 {isReadingArticle && !newsDetailLoading && newsDetail ? (
                   <>
                     <div className="knowledge-hub-page__reader-top">
-                      <p className="knowledge-hub-page__reader-eyebrow">Article detail</p>
+                      <p className="knowledge-hub-page__kicker knowledge-hub-page__reader-eyebrow">Article detail</p>
                       <h2 className="knowledge-hub-page__reader-title">{newsDetail.title}</h2>
                       <div className="knowledge-hub-page__reader-meta">
                         <span>{formatLongDate(newsDetail.published)}</span>
@@ -199,7 +254,9 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     </div>
 
                     <div className="knowledge-hub-page__reader-body">
-                      <p>{stripBrTags(newsDetail.article_content)}</p>
+                      {formatArticleContent(newsDetail.article_content).map((paragraph, index) => (
+                        <p key={`${newsDetail.article_id}-${index}`}>{paragraph}</p>
+                      ))}
                     </div>
 
                     {newsDetail.tips.length > 0 ? (
@@ -216,7 +273,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     ) : null}
 
                     <div className="knowledge-hub-page__reader-footer">
-                      <Button variant="secondary" onClick={() => setIsReadingArticle(false)}>
+                      <Button variant="primary" onClick={() => setIsReadingArticle(false)}>
                         Choose another article
                       </Button>
                       <Button variant="secondary" onClick={onBackHome}>

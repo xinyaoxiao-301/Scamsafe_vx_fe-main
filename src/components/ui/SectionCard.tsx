@@ -2,6 +2,7 @@ import type { PropsWithChildren, ReactNode } from 'react'
 
 type SectionCardProps = PropsWithChildren<{
   eyebrow?: string
+  eyebrowClassName?: string
   title: string
   description?: string
   footer?: ReactNode
@@ -10,6 +11,7 @@ type SectionCardProps = PropsWithChildren<{
 
 export function SectionCard({
   eyebrow,
+  eyebrowClassName,
   title,
   description,
   footer,
@@ -18,7 +20,11 @@ export function SectionCard({
 }: SectionCardProps) {
   return (
     <section className={className ? `section-card ${className}` : 'section-card'}>
-      {eyebrow ? <p className="section-card__eyebrow">{eyebrow}</p> : null}
+      {eyebrow ? (
+        <p className={eyebrowClassName ? `section-card__eyebrow ${eyebrowClassName}` : 'section-card__eyebrow'}>
+          {eyebrow}
+        </p>
+      ) : null}
       <header className="section-card__header">
         <h2>{title}</h2>
         {description ? <p>{description}</p> : null}
