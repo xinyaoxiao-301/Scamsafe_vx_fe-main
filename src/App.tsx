@@ -36,8 +36,8 @@ function AppContent() {
   const [currentRoute, setCurrentRoute] = useState<AppRoute>(() => getRouteFromHash(window.location.hash))
   const [siteEntryState, setSiteEntryState] = useState<SiteEntryState>('pending')
   const [notificationTime, setNotificationTime] = useState(() => formatNotificationTime(new Date()))
-  const [isDismissingNotification, setIsDismissingNotification] = useState(false)
-  const [showDismissedScamModal, setShowDismissedScamModal] = useState(false)
+  const [prefetchedNotificationReveal, setPrefetchedNotificationReveal] = useState<Record<number, { isScam: boolean }>>({})
+  const [showDismissedScamToast, setShowDismissedScamToast] = useState(false)
   const hasAcceptedSiteDisclaimer = siteEntryState === 'accepted'
   const hasDeclinedSiteDisclaimer = siteEntryState === 'declined'
   const { activeScenario, dismissScenario, openScenario } = useNotificationTraining(hasAcceptedSiteDisclaimer)
@@ -78,6 +78,46 @@ function AppContent() {
       window.clearInterval(intervalId)
     }
   }, [activeScenario])
+
+  useEffect(() => {
+    if (!activeScenario || prefetchedNotificationReveal[activeScenario.id]) {
+      return
+    }
+
+    let isCancelled = false
+
+    void (async () => {
+      try {
+        const reveal = await fetchNotificationReveal(activeScenario.id)
+        if (isCancelled) return
+
+        setPrefetchedNotificationReveal((current) => ({
+          ...current,
+          [activeScenario.id]: { isScam: reveal.isScam },
+        }))
+      } catch {
+        // Keep the preview visible even if the background reveal request fails.
+      }
+    })()
+
+    return () => {
+      isCancelled = true
+    }
+  }, [activeScenario, prefetchedNotificationReveal])
+
+  useEffect(() => {
+    if (!showDismissedScamToast) {
+      return
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setShowDismissedScamToast(false)
+    }, 3200)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+    }
+  }, [showDismissedScamToast])
 
   // Hash routing keeps the static build deployable without server-side rewrite
   // rules while still allowing direct feature navigation inside the app.
@@ -135,23 +175,33 @@ function AppContent() {
 
   const handleDismissNotification = async () => {
     const scenario = activeScenario
-    if (!scenario || isDismissingNotification) {
+    if (!scenario) {
       return
     }
 
-    setIsDismissingNotification(true)
     dismissScenario()
+
+    const cachedReveal = prefetchedNotificationReveal[scenario.id]
+    if (cachedReveal) {
+      if (cachedReveal.isScam) {
+        setShowDismissedScamToast(true)
+      }
+      return
+    }
 
     try {
       const reveal = await fetchNotificationReveal(scenario.id)
+      setPrefetchedNotificationReveal((current) => ({
+        ...current,
+        [scenario.id]: { isScam: reveal.isScam },
+      }))
+
       if (reveal.isScam) {
-        setShowDismissedScamModal(true)
+        setShowDismissedScamToast(true)
       }
     } catch {
       // If reveal data is unavailable, keep the dismiss behaviour silent so the
       // training flow still feels responsive.
-    } finally {
-      setIsDismissingNotification(false)
     }
   }
 
@@ -243,31 +293,31 @@ function AppContent() {
                 <p className="notification-modal__scope-note">{notificationStrings.scopeNote}</p>
                 <div className="notification-modal__actions">
                   <Button onClick={() => openScenario()}>Open</Button>
-                  <Button variant="secondary" onClick={() => void handleDismissNotification()} disabled={isDismissingNotification}>
+                  <Button variant="secondary" onClick={() => void handleDismissNotification()}>
                     {notificationStrings.dismiss}
                   </Button>
                 </div>
               </section>
             </div>
           ) : null}
-          {showDismissedScamModal ? (
-            <div className="notification-modal notification-modal--center" role="dialog" aria-modal="true" aria-labelledby="notification-dismiss-success-title">
-              <div className="notification-modal__backdrop" aria-hidden="true" />
-              <section className="notification-modal__panel notification-modal__panel--safe notification-modal__panel--result">
-                <div className="notification-modal__result-icon" aria-hidden="true">
+          {showDismissedScamToast ? (
+            <div className="notification-toast" role="status" aria-live="polite" aria-atomic="true">
+              <section className="notification-toast__panel notification-toast__panel--safe">
+                <div className="notification-toast__icon" aria-hidden="true">
                   ✓
                 </div>
-                <div className="notification-modal__header">
-                  <h2 id="notification-dismiss-success-title" className="notification-modal__title">
-                    {notificationStrings.dismissedScamTitle}
-                  </h2>
+                <div className="notification-toast__copy">
+                  <h2 className="notification-toast__title">{notificationStrings.dismissedScamTitle}</h2>
+                  <p className="notification-toast__text">{notificationStrings.dismissedScamDescription}</p>
                 </div>
-                <p className="notification-modal__result-text">{notificationStrings.dismissedScamDescription}</p>
-                <div className="notification-modal__actions">
-                  <Button onClick={() => setShowDismissedScamModal(false)}>
-                    {notificationStrings.dismissedScamConfirm}
-                  </Button>
-                </div>
+                <button
+                  type="button"
+                  className="notification-toast__close"
+                  aria-label={notificationStrings.dismissedScamConfirm}
+                  onClick={() => setShowDismissedScamToast(false)}
+                >
+                  ×
+                </button>
               </section>
             </div>
           ) : null}
