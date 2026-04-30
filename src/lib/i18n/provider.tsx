@@ -84,6 +84,9 @@ const STRINGS: Record<Language, Strings> = {
       scopeNote: 'This training popup copies a real browser notification.',
       previewHint: 'This is a training popup that copies how a real browser notification may appear.',
       dismiss: 'Dismiss',
+      dismissedScamTitle: 'You successfully avoided a scam message',
+      dismissedScamDescription: 'This practice notification was a scam, and dismissing it was the safer choice.',
+      dismissedScamConfirm: 'OK',
     },
     homeFeatures: {
       scam: 'Scam',
@@ -382,6 +385,9 @@ const STRINGS: Record<Language, Strings> = {
       scopeNote: 'Popup latihan ini meniru pemberitahuan pelayar sebenar, tetapi langkah ini hanya memfokuskan kandungan mesej.',
       previewHint: 'Ini ialah popup latihan yang meniru cara pemberitahuan pelayar sebenar mungkin dipaparkan.',
       dismiss: 'Tutup',
+      dismissedScamTitle: 'Anda berjaya mengelakkan mesej penipuan',
+      dismissedScamDescription: 'Notifikasi latihan ini ialah penipuan, dan menutupnya ialah pilihan yang lebih selamat.',
+      dismissedScamConfirm: 'OK',
     },
     homeFeatures: {
       scam: 'Penipuan',
@@ -678,6 +684,9 @@ const STRINGS: Record<Language, Strings> = {
       scopeNote: '这个训练弹窗会模拟真实浏览器通知，但这个练习步骤目前只聚焦通知正文。',
       previewHint: '这是一个训练弹窗，用来模拟真实浏览器通知可能出现的样子。',
       dismiss: '关闭',
+      dismissedScamTitle: '你成功避免了诈骗消息',
+      dismissedScamDescription: '这条练习通知被判定为诈骗，选择关闭是更安全的做法。',
+      dismissedScamConfirm: '知道了',
     },
     homeFeatures: {
       scam: '诈骗',

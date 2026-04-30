@@ -5,6 +5,7 @@ import { appRoutes, getRouteFromHash, type AppRoute } from '@/app/routes'
 import { Button } from '@/components/ui/Button'
 import { useNotificationTraining } from '@/hooks/useNotificationTraining'
 import { I18nProvider, useI18n } from '@/lib/i18n'
+import { fetchNotificationReveal } from '@/services/notificationTraining'
 import { HomePage } from '@/pages/home'
 import { KnowledgeHubPage } from '@/pages/knowledge-hub'
 import { NotificationRevealPage } from '@/pages/notification-reveal'
@@ -35,6 +36,8 @@ function AppContent() {
   const [currentRoute, setCurrentRoute] = useState<AppRoute>(() => getRouteFromHash(window.location.hash))
   const [siteEntryState, setSiteEntryState] = useState<SiteEntryState>('pending')
   const [notificationTime, setNotificationTime] = useState(() => formatNotificationTime(new Date()))
+  const [isDismissingNotification, setIsDismissingNotification] = useState(false)
+  const [showDismissedScamModal, setShowDismissedScamModal] = useState(false)
   const hasAcceptedSiteDisclaimer = siteEntryState === 'accepted'
   const hasDeclinedSiteDisclaimer = siteEntryState === 'declined'
   const { activeScenario, dismissScenario, openScenario } = useNotificationTraining(hasAcceptedSiteDisclaimer)
@@ -130,6 +133,28 @@ function AppContent() {
     setSiteEntryState('pending')
   }
 
+  const handleDismissNotification = async () => {
+    const scenario = activeScenario
+    if (!scenario || isDismissingNotification) {
+      return
+    }
+
+    setIsDismissingNotification(true)
+    dismissScenario()
+
+    try {
+      const reveal = await fetchNotificationReveal(scenario.id)
+      if (reveal.isScam) {
+        setShowDismissedScamModal(true)
+      }
+    } catch {
+      // If reveal data is unavailable, keep the dismiss behaviour silent so the
+      // training flow still feels responsive.
+    } finally {
+      setIsDismissingNotification(false)
+    }
+  }
+
   return (
     <>
       {hasDeclinedSiteDisclaimer ? (
@@ -218,8 +243,29 @@ function AppContent() {
                 <p className="notification-modal__scope-note">{notificationStrings.scopeNote}</p>
                 <div className="notification-modal__actions">
                   <Button onClick={() => openScenario()}>Open</Button>
-                  <Button variant="secondary" onClick={dismissScenario}>
+                  <Button variant="secondary" onClick={() => void handleDismissNotification()} disabled={isDismissingNotification}>
                     {notificationStrings.dismiss}
+                  </Button>
+                </div>
+              </section>
+            </div>
+          ) : null}
+          {showDismissedScamModal ? (
+            <div className="notification-modal notification-modal--center" role="dialog" aria-modal="true" aria-labelledby="notification-dismiss-success-title">
+              <div className="notification-modal__backdrop" aria-hidden="true" />
+              <section className="notification-modal__panel notification-modal__panel--safe notification-modal__panel--result">
+                <div className="notification-modal__result-icon" aria-hidden="true">
+                  ✓
+                </div>
+                <div className="notification-modal__header">
+                  <h2 id="notification-dismiss-success-title" className="notification-modal__title">
+                    {notificationStrings.dismissedScamTitle}
+                  </h2>
+                </div>
+                <p className="notification-modal__result-text">{notificationStrings.dismissedScamDescription}</p>
+                <div className="notification-modal__actions">
+                  <Button onClick={() => setShowDismissedScamModal(false)}>
+                    {notificationStrings.dismissedScamConfirm}
                   </Button>
                 </div>
               </section>

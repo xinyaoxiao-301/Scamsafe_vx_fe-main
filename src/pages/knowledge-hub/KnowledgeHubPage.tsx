@@ -143,7 +143,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
         <SectionCard
           className="knowledge-hub-page__card knowledge-hub-page__card--news"
           eyebrow="Live feed"
-          eyebrowClassName="knowledge-hub-page__kicker"
+          eyebrowClassName="knowledge-hub-page__section-eyebrow"
           title="Read the latest scam reports"
           description="Open a recent article to review its title, source, full text, and linked prevention tips."
           footer={
@@ -216,7 +216,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
               >
                 {!isReadingArticle ? (
                   <div className="knowledge-hub-page__reader-empty">
-                    <p className="knowledge-hub-page__kicker knowledge-hub-page__reader-eyebrow">Step 1</p>
+                    <p className="knowledge-hub-page__section-eyebrow">Step 1</p>
                     <h2 className="knowledge-hub-page__reader-title">Choose one article to open the reading view</h2>
                     <p className="knowledge-hub-page__reader-empty-copy">
                       Pick any report on the left and the selected article will expand across this card.
@@ -237,7 +237,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                 {isReadingArticle && !newsDetailLoading && newsDetail ? (
                   <>
                     <div className="knowledge-hub-page__reader-top">
-                      <p className="knowledge-hub-page__kicker knowledge-hub-page__reader-eyebrow">Article detail</p>
+                      <p className="knowledge-hub-page__reader-eyebrow">Article detail</p>
                       <h2 className="knowledge-hub-page__reader-title">{newsDetail.title}</h2>
                       <div className="knowledge-hub-page__reader-meta">
                         <span>{formatLongDate(newsDetail.published)}</span>

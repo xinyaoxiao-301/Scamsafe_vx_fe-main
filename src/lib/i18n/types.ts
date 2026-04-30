@@ -64,6 +64,9 @@ export type Strings = {
     scopeNote: string
     previewHint: string
     dismiss: string
+    dismissedScamTitle: string
+    dismissedScamDescription: string
+    dismissedScamConfirm: string
   }
   homeFeatures: {
     scam: string
