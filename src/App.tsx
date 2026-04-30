@@ -272,9 +272,16 @@ function AppContent() {
                 className="notification-modal__panel"
                 aria-label="Simulated notification preview"
               >
+                <button
+                  type="button"
+                  className="notification-close-button notification-close-button--modal"
+                  aria-label={notificationStrings.dismiss}
+                  onClick={() => void handleDismissNotification()}
+                >
+                  ×
+                </button>
                 <div className="notification-modal__window-bar">
-                  <span className="notification-modal__window-label">{notificationStrings.browserAlertLabel}</span>
-                  <span className="notification-modal__window-time">{notificationStrings.justNow}</span>
+                  <span className="notification-modal__window-label">{notificationStrings.justNow}</span>
                 </div>
                 <div className="notification-modal__source">
                   <img className="notification-modal__logo" src={logo} alt="" />
@@ -312,7 +319,7 @@ function AppContent() {
                 </div>
                 <button
                   type="button"
-                  className="notification-toast__close"
+                  className="notification-close-button notification-close-button--toast"
                   aria-label={notificationStrings.dismissedScamConfirm}
                   onClick={() => setShowDismissedScamToast(false)}
                 >

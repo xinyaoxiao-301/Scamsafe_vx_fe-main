@@ -65,12 +65,14 @@
 .app-shell__brand-copy {
   display: flex;
   align-items: center;
+  /* Nudge the logo + wordmark a touch left without shifting the whole header layout. */
+  margin-left: -6px;
 }
 
 .app-shell__brand-home {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -321,7 +323,8 @@
   margin: 0 auto;
   padding: calc(var(--hero-gap) * 1.2) var(--space-5) 0;
   display: grid;
-  gap: var(--hero-gap);
+  /* Keep subtitle closer to the slogan on tablet-sized screens. */
+  gap: calc(var(--hero-gap) * 0.78);
 }
 
 .app-shell__hero-header {
@@ -338,6 +341,7 @@
   display: grid;
   gap: clamp(16px, 3vw, 24px);
   align-items: center;
+  margin-top: -8px;
 }
 
 .app-shell__hero-copy {
@@ -400,12 +404,16 @@
 
 .app-shell__hero-subtitle {
   max-width: 44rem;
-  color: #0b0b0b;
-  font-size: clamp(1.1rem, 1.6vw, 1.32rem);
-  line-height: 1.55;
+  color: var(--muted-strong);
+  font-size: clamp(1.12rem, 1.5vw, 1.34rem);
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  line-height: 1.28;
   text-align: left;
-  hyphens: auto;
-  overflow-wrap: break-word;
+  text-wrap: balance;
+  hyphens: none;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .app-shell__hero-copy > * {
@@ -901,7 +909,7 @@
   }
 
   .app-shell__brand-home {
-    gap: 6px;
+    gap: 5px;
   }
 
   .app-shell__brand-logo {
@@ -963,6 +971,7 @@
 
   .app-shell__hero-body {
     gap: var(--space-6);
+    margin-top: -5px;
   }
 
   .app-shell__hero-copy {
@@ -982,7 +991,9 @@
 
   .app-shell__hero-subtitle {
     max-width: none;
-    font-size: 0.94rem;
+    font-size: 1.1rem;
+    font-weight: 850;
+    line-height: 1.32;
     text-align: left;
     hyphens: none;
     overflow-wrap: normal;
@@ -1046,6 +1057,7 @@
   .app-shell__hero-body {
     gap: clamp(18px, 3vw, 28px);
     align-items: start;
+    margin-top: -12px;
   }
 
   .app-shell__hero-copy {
@@ -1110,14 +1122,14 @@
 
   .app-shell__brand-copy {
     margin-right: 0;
-    margin-left: 0;
+    margin-left: -10px;
     justify-self: start;
     position: relative;
     z-index: 1;
   }
 
   .app-shell__brand-home {
-    gap: 6px;
+    gap: 5px;
   }
 
   .app-shell__brand-logo {
@@ -1131,14 +1143,18 @@
   }
 
   .app-shell__nav--desktop {
+    --nav-tile-width: clamp(132px, 11.2vw, 148px);
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    /* Center the 5 nav "tiles" as a group (not stretched edge-to-edge). */
+    grid-template-columns: repeat(5, var(--nav-tile-width));
     align-items: stretch;
     gap: 8px;
     position: static;
     left: auto;
     transform: none;
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
+    justify-content: center;
     justify-self: center;
     z-index: 1;
   }
@@ -1146,18 +1162,12 @@
   .app-shell__nav--desktop .app-shell__nav-link {
     width: 100%;
     min-width: 0;
-    min-height: 58px;
-  }
-
-  .app-shell__nav--desktop .app-shell__nav-link--study-center {
+    /* Keep the 5 top nav buttons compact: only slightly taller than the text. */
+    min-height: 50px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     padding-left: 12px;
     padding-right: 12px;
-    line-height: 1;
-    white-space: nowrap;
-    text-wrap: nowrap;
-  }
-
-  .app-shell__nav--desktop .app-shell__nav-link--knowledge-hub {
     white-space: nowrap;
     text-wrap: nowrap;
   }
@@ -1193,7 +1203,7 @@
 
   .app-shell__hero-body {
     /* Pull subtitle closer to the slogan. */
-    margin-top: clamp(-180px, -17.4vh, -20px);
+    margin-top: clamp(-216px, -20.88vh, -24px);
   }
 
   .app-shell__hero-copy {

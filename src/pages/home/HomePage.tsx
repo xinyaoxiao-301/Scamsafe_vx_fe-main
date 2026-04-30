@@ -14,7 +14,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
     {
       id: 'scam-detection',
       icon: 'detection',
-      title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.detection,
       route: appRoutes.detection,
       tooltip: strings.homeFeatures.tooltips.detection,
@@ -22,7 +21,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
     {
       id: 'scam-simulation',
       icon: 'simulation',
-      title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.simulation,
       route: appRoutes.simulation,
       tooltip: strings.homeFeatures.tooltips.simulation,
@@ -30,7 +28,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
     {
       id: 'anti-scam-study-center',
       icon: 'study',
-      title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.studyCenter,
       route: appRoutes.studyCenter,
       tooltip: strings.homeFeatures.tooltips.studyCenter,
@@ -38,7 +35,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
     {
       id: 'post-scam-support',
       icon: 'support',
-      title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.support,
       route: appRoutes.support,
       tooltip: strings.homeFeatures.tooltips.support,
@@ -46,7 +42,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
     {
       id: 'knowledge-hub',
       icon: 'study',
-      title: strings.homeFeatures.scam,
       subtitle: strings.homeFeatures.knowledgeHub,
       route: appRoutes.knowledgeHub,
       tooltip: strings.homeFeatures.tooltips.knowledgeHub,
@@ -81,7 +76,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
                   <FeatureIcon name={feature.icon} />
                 </div>
                 <div className="feature-launchpad__heading">
-                  <p className="feature-launchpad__title">{feature.title}</p>
                   <p
                     className={
                       feature.id === 'anti-scam-study-center'

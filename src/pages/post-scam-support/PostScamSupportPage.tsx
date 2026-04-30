@@ -148,15 +148,14 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
       <section className="support-recovery-page__hero">
         <p className="support-recovery-page__eyebrow">{strings.postScamSupport.eyebrow}</p>
         <h1>{strings.postScamSupport.title}</h1>
-        <p className="support-recovery-page__description">{strings.postScamSupport.description}</p>
       </section>
 
       <section className="support-recovery-page__grid">
         <SectionCard
-          className="support-recovery-page__card"
+          className="support-recovery-page__card support-recovery-page__card--start"
           eyebrow="Step 1"
           title="Transferred money recovery"
-          description="Use this guided flow only if you have already sent money to a scammer or suspicious recipient."
+          description="Use this only if money has already been sent."
         >
           <div className="support-recovery-page__start-panel">
             <Button
@@ -167,28 +166,27 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                   : 'support-recovery-page__start-button'
               }
             >
-              I transferred money, try to recovery now
+              I transferred money, try to recover now
             </Button>
-            <p className="support-recovery-page__start-hint">
-              This page is for one case only: money has already been sent. Follow it in order, and unlock the next step only after doing the current one in real life.
-            </p>
+            <div className="support-recovery-page__quick-steps" aria-label="Quick guide">
+              <div className="support-recovery-page__quick-step">
+                <p className="support-recovery-page__quick-step-title">Start</p>
+                <p className="support-recovery-page__quick-step-text">Press Start once.</p>
+              </div>
+              <div className="support-recovery-page__quick-step">
+                <p className="support-recovery-page__quick-step-title">Read</p>
+                <p className="support-recovery-page__quick-step-text">Read the current step only.</p>
+              </div>
+              <div className="support-recovery-page__quick-step">
+                <p className="support-recovery-page__quick-step-title">Do</p>
+                <p className="support-recovery-page__quick-step-text">Do it in real life.</p>
+              </div>
+              <div className="support-recovery-page__quick-step">
+                <p className="support-recovery-page__quick-step-title">Next</p>
+                <p className="support-recovery-page__quick-step-text">Mark done. Next opens.</p>
+              </div>
+            </div>
           </div>
-        </SectionCard>
-
-        <SectionCard
-          className="support-recovery-page__card"
-          eyebrow="How to use"
-          title="A simple recovery roadmap"
-          description="This page is made for high-stress moments. It keeps your attention on one urgent task at a time, starting with the most time-sensitive action."
-          footer={<Button variant="secondary" onClick={onBackHome}>{strings.common.backToHome}</Button>}
-        >
-          <ul className="support-recovery-page__bullet-list">
-            <li>Press the large start button once.</li>
-            <li>Read only the current step on screen.</li>
-            <li>Do the action first in real life.</li>
-            <li>Then mark it done to unlock the next step.</li>
-            <li>The next step will open automatically.</li>
-          </ul>
         </SectionCard>
 
         {selectedIncident ? (
@@ -197,7 +195,7 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
               className="support-recovery-page__card support-recovery-page__card--tracker"
               eyebrow="Step 2"
               title="Follow these steps in order"
-              description="You are on a guided recovery path. Future steps stay locked until the current step is done."
+              description="Finish each step to unlock the next."
             >
               <div className="support-recovery-page__selected-case">
                 <span className="support-recovery-page__selected-case-label">Selected case</span>

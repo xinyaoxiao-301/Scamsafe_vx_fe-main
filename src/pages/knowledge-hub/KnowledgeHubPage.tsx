@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
@@ -71,6 +71,7 @@ function formatArticleContent(value: string): string[] {
 
 export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
   const { strings } = useI18n()
+  const newsSectionRef = useRef<HTMLElement | null>(null)
   const [newsItems, setNewsItems] = useState<NewsListItem[]>([])
   const [newsLoading, setNewsLoading] = useState(true)
   const [newsError, setNewsError] = useState<string | null>(null)
@@ -78,6 +79,16 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
   const [newsDetail, setNewsDetail] = useState<NewsDetail | null>(null)
   const [newsDetailLoading, setNewsDetailLoading] = useState(false)
   const [isReadingArticle, setIsReadingArticle] = useState(false)
+
+  const returnToArticleList = () => {
+    setIsReadingArticle(false)
+    // Wait for the list to re-render, then scroll the Live feed card into view.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        newsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    })
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -131,15 +142,13 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
       <section className="knowledge-hub-page__hero">
         <p className="knowledge-hub-page__eyebrow">{strings.knowledgeHub.eyebrow}</p>
         <h1>{strings.knowledgeHub.title}</h1>
-        <p className="knowledge-hub-page__description">
-          {strings.knowledgeHub.description}
-        </p>
-        <div className="knowledge-hub-page__hero-note">
-          <span>Recent scam reports include source links, full article text, and prevention tips.</span>
-        </div>
       </section>
 
-      <section className="knowledge-hub-page__news-section" aria-label="Latest scam news">
+      <section
+        ref={newsSectionRef}
+        className="knowledge-hub-page__news-section"
+        aria-label="Latest scam news"
+      >
         <SectionCard
           className="knowledge-hub-page__card knowledge-hub-page__card--news"
           eyebrow="Live feed"
@@ -221,8 +230,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     <p className="knowledge-hub-page__reader-empty-copy">
                       Pick any report on the left and the selected article will expand across this card.
                     </p>
-                    <div className="knowledge-hub-page__reader-footer">
-                      <span />
+                    <div className="knowledge-hub-page__reader-footer knowledge-hub-page__reader-footer--single">
                       <Button variant="secondary" onClick={onBackHome}>
                         {strings.common.backToHome}
                       </Button>
@@ -273,7 +281,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     ) : null}
 
                     <div className="knowledge-hub-page__reader-footer">
-                      <Button variant="primary" onClick={() => setIsReadingArticle(false)}>
+                      <Button variant="primary" onClick={returnToArticleList}>
                         Choose another article
                       </Button>
                       <Button variant="secondary" onClick={onBackHome}>

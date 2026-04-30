@@ -111,6 +111,11 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
+.knowledge-hub-page__news-section {
+  /* Ensure scrollIntoView lands below the sticky header. */
+  scroll-margin-top: 110px;
+}
+
 .knowledge-hub-page__article-list {
   display: grid;
   gap: 12px;
@@ -166,15 +171,19 @@
   border: 1px solid rgba(17, 38, 58, 0.12);
   border-radius: 24px;
   background: rgba(255, 255, 255, 0.96);
-  min-height: 420px;
 }
 
 .knowledge-hub-page__reader--placeholder {
-  align-content: center;
+  align-content: start;
+  /* Keep the placeholder card close to text width instead of filling the whole column. */
+  width: min(100%, 60ch);
+  justify-self: start;
+  min-height: 260px;
 }
 
 .knowledge-hub-page__reader--expanded {
   animation: knowledge-hub-reader-open 240ms ease;
+  min-height: 420px;
 }
 
 .knowledge-hub-page__reader-top,
@@ -247,6 +256,10 @@
   min-height: 100%;
 }
 
+.knowledge-hub-page__reader--placeholder .knowledge-hub-page__reader-empty {
+  grid-template-rows: auto auto 1fr auto;
+}
+
 .knowledge-hub-page__reader-empty-copy {
   margin: 0;
   max-width: 42rem;
@@ -305,6 +318,10 @@
   padding-top: 8px;
 }
 
+.knowledge-hub-page__reader-footer--single {
+  justify-content: flex-end;
+}
+
 .knowledge-hub-page__news-status {
   margin: 0;
   color: var(--muted);
@@ -347,6 +364,10 @@
 
   .knowledge-hub-page__reader-footer {
     display: grid;
+  }
+
+  .knowledge-hub-page__reader-footer--single {
+    justify-items: end;
   }
 
   .knowledge-hub-page__reader-body p {

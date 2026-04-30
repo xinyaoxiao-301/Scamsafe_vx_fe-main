@@ -135,6 +135,12 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                   className={[
                     'app-shell__nav-link',
                     item.route === currentRoute ? 'app-shell__nav-link--active' : '',
+                    item.route === appRoutes.detection && language === 'en'
+                      ? 'app-shell__nav-link--scam-checker'
+                      : '',
+                    item.route === appRoutes.simulation && language === 'en'
+                      ? 'app-shell__nav-link--ai-scam-chat'
+                      : '',
                     item.route === appRoutes.studyCenter && language === 'en'
                       ? 'app-shell__nav-link--study-center'
                       : '',

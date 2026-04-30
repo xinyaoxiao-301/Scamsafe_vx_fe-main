@@ -137,6 +137,7 @@
   display: grid;
   gap: 12px;
   padding: 15px;
+  padding-right: 46px;
   border-radius: 16px;
   border: 1px solid rgba(17, 38, 58, 0.12);
   background: #ffffff;
@@ -324,6 +325,41 @@
   gap: 10px;
 }
 
+.notification-close-button {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1.5px solid var(--accent-strong);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--accent-strong);
+  font-size: 0.88rem;
+  line-height: 1;
+  box-shadow: 0 8px 16px rgba(30, 79, 176, 0.12);
+  cursor: pointer;
+}
+
+.notification-close-button:hover,
+.notification-close-button:focus-visible {
+  transform: translateY(-1px);
+  background: rgba(19, 108, 242, 0.08);
+  box-shadow: 0 10px 18px rgba(30, 79, 176, 0.16);
+  outline: none;
+}
+
+.notification-close-button:active {
+  transform: translateY(0);
+}
+
+.notification-close-button--modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+
 .notification-toast {
   position: fixed;
   right: 18px;
@@ -333,12 +369,13 @@
 }
 
 .notification-toast__panel {
+  position: relative;
   width: min(100vw - 36px, 420px);
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 12px;
   align-items: start;
-  padding: 16px 16px 16px 14px;
+  padding: 16px 42px 16px 14px;
   border-radius: 18px;
   border: 1px solid rgba(47, 138, 74, 0.16);
   background: rgba(255, 255, 255, 0.98);
@@ -382,24 +419,10 @@
   line-height: 1.5;
 }
 
-.notification-toast__close {
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(17, 38, 58, 0.06);
-  color: var(--muted-strong);
-  font-size: 1.3rem;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.notification-toast__close:hover,
-.notification-toast__close:focus-visible {
-  background: rgba(19, 108, 242, 0.12);
-  color: var(--accent-strong);
-  outline: none;
+.notification-close-button--toast {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .feature-launchpad-shell {
@@ -416,6 +439,11 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
+  justify-items: stretch;
+  justify-content: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .feature-launchpad__lead {
@@ -504,8 +532,9 @@
   display: grid;
   gap: 12px;
   align-content: start;
-  min-height: 146px;
-  padding: 14px 14px 14px;
+  width: 100%;
+  min-height: 104px;
+  padding: 12px 18px;
   border: 1px solid rgba(19, 108, 242, 0.14);
   border-radius: 24px;
   background: linear-gradient(180deg, #eef4ff 0%, #ffffff 100%);
@@ -599,11 +628,34 @@
 .feature-launchpad__subtitle {
   margin: 0;
   color: var(--text);
-  font-size: 1.22rem;
+  font-size: 1.06rem;
   font-weight: 900;
   letter-spacing: -0.04em;
   line-height: 1.06;
   text-transform: none;
+  white-space: nowrap;
+}
+
+.feature-launchpad__item--scam-detection,
+.feature-launchpad__item--scam-simulation {
+  grid-column: 1 / -1;
+  width: 100%;
+  max-width: min(100%, 380px);
+  justify-self: center;
+  padding: 12px 20px;
+  min-height: 104px;
+}
+
+.feature-launchpad__item--scam-detection .feature-launchpad__heading,
+.feature-launchpad__item--scam-simulation .feature-launchpad__heading {
+  justify-items: center;
+}
+
+.feature-launchpad__item--scam-detection .feature-launchpad__subtitle,
+.feature-launchpad__item--scam-simulation .feature-launchpad__subtitle {
+  white-space: nowrap;
+  font-size: 0.96rem;
+  line-height: 1.02;
 }
 
 .feature-launchpad__subtitle--wide {
@@ -662,8 +714,11 @@
   }
 
   .feature-launchpad {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, 240px);
     gap: 18px;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
   }
 
   .feature-launchpad__lead {
@@ -676,8 +731,20 @@
   }
 
   .feature-launchpad__item {
-    min-height: 160px;
-    padding: 16px;
+    min-height: 114px;
+    padding: 12px 18px;
+  }
+
+  .feature-launchpad__item--scam-detection,
+  .feature-launchpad__item--scam-simulation {
+    grid-column: 1 / -1;
+    max-width: min(100%, 420px);
+    min-height: 110px;
+  }
+
+  .feature-launchpad__item--scam-detection .feature-launchpad__subtitle,
+  .feature-launchpad__item--scam-simulation .feature-launchpad__subtitle {
+    font-size: 0.98rem;
   }
 
   .feature-launchpad__icon {
@@ -724,9 +791,9 @@
     border-radius: 22px;
     margin-top: 0;
     height: 100%;
-    width: calc(100% + 6%);
-    margin-right: -5%;
-    justify-self: stretch;
+    width: 100%;
+    margin-right: 0;
+    justify-self: center;
     transform: none;
   }
 
@@ -752,14 +819,18 @@
 
   /* Make the 5 feature cards very compact on desktop. */
   .feature-launchpad {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(3, 240px);
+    gap: 12px;
     align-content: start;
+    justify-content: center;
+    justify-items: stretch;
+    width: fit-content;
+    margin: 0 auto;
   }
 
   .feature-launchpad__item {
-    min-height: 118px;
-    padding: 10px 10px 10px;
+    min-height: 88px;
+    padding: 10px 18px;
     border-radius: 18px;
   }
 
@@ -769,12 +840,21 @@
   }
 
   .feature-launchpad__item--scam-detection {
+    grid-column: auto;
     grid-row: span 2;
-    min-height: 246px;
+    min-height: 190px;
+    max-width: none;
     align-content: center;
     justify-items: center;
     gap: 18px;
-    padding: 16px 14px 14px;
+    padding: 14px 18px;
+  }
+
+  .feature-launchpad__item--scam-simulation {
+    grid-column: auto;
+    max-width: none;
+    min-height: 114px;
+    padding: 10px 18px;
   }
 
   .feature-launchpad__item--post-scam-support {
@@ -804,8 +884,19 @@
   }
 
   .feature-launchpad__item--scam-detection .feature-launchpad__subtitle {
-    font-size: 1.26rem;
+    font-size: 0.94rem;
     line-height: 1.08;
+    white-space: nowrap;
+  }
+
+  .feature-launchpad__item--scam-simulation .feature-launchpad__heading {
+    justify-items: center;
+  }
+
+  .feature-launchpad__item--scam-simulation .feature-launchpad__subtitle {
+    font-size: 0.94rem;
+    line-height: 1.08;
+    white-space: nowrap;
   }
 
   .feature-launchpad__item--scam-detection .feature-launchpad__button {

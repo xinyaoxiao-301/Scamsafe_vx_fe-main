@@ -18,11 +18,11 @@ const legacyRoutes = {
 } as const
 
 export const primaryNavItems = [
-  { route: appRoutes.detection, label: 'Scam Detection' },
-  { route: appRoutes.simulation, label: 'Scam Simulation' },
-  { route: appRoutes.studyCenter, label: 'Study Center' },
-  { route: appRoutes.knowledgeHub, label: 'News Hub' },
-  { route: appRoutes.support, label: 'Support' },
+  { route: appRoutes.detection, label: 'Scam Checker' },
+  { route: appRoutes.simulation, label: 'AI Scam Chat' },
+  { route: appRoutes.studyCenter, label: 'Test Yourself' },
+  { route: appRoutes.knowledgeHub, label: 'Scam news' },
+  { route: appRoutes.support, label: 'Get help' },
 ] as const
 
 export function getRouteFromHash(hash: string): AppRoute {

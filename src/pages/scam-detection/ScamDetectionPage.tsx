@@ -127,7 +127,6 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
       <header className="scam-detection-page__header">
         <p className="scam-detection-page__eyebrow">{s.headerEyebrow}</p>
         <h1 className="scam-detection-page__title">{s.title}</h1>
-        <p className="scam-detection-page__lede">{s.lede}</p>
       </header>
 
       {/* ── High-risk modal ───────────────────────────────────────────── */}
@@ -294,7 +293,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                 ) : null}
               </>
             ) : (
-              <p className="scam-detection-page__empty">{s.emptyState}</p>
+              s.emptyState ? <p className="scam-detection-page__empty">{s.emptyState}</p> : null
             )}
           </div>
         </SectionCard>

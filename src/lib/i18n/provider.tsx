@@ -19,11 +19,11 @@ const STRINGS: Record<Language, Strings> = {
   en: {
     nav: {
       [appRoutes.home]: 'Home',
-      [appRoutes.detection]: 'Detection',
-      [appRoutes.simulation]: 'Simulation',
-      [appRoutes.studyCenter]: 'Study Center',
-      [appRoutes.support]: 'Support',
-      [appRoutes.knowledgeHub]: 'News Hub',
+      [appRoutes.detection]: 'Scam Checker',
+      [appRoutes.simulation]: 'AI Scam Chat',
+      [appRoutes.studyCenter]: 'Test Yourself',
+      [appRoutes.support]: 'Get Help',
+      [appRoutes.knowledgeHub]: 'Scam News',
       [appRoutes.notificationReveal]: 'Notification Result',
     },
     ui: {
@@ -90,11 +90,11 @@ const STRINGS: Record<Language, Strings> = {
     },
     homeFeatures: {
       scam: 'Scam',
-      detection: 'Detection',
-      simulation: 'Simulation',
-      studyCenter: 'Study Center',
-      support: 'Support',
-      knowledgeHub: 'News Hub',
+      detection: 'Scam Checker',
+      simulation: 'AI Scam Chat',
+      studyCenter: 'Test Yourself',
+      support: 'Get Help',
+      knowledgeHub: 'Scam News',
       open: 'Open',
       tooltips: {
         detection: 'Check suspicious messages in a few simple steps.',
@@ -138,7 +138,7 @@ const STRINGS: Record<Language, Strings> = {
         { id: 'safe', tone: 'highlight', text: 'Safe', spaceAfter: false },
         { id: 'comma', tone: 'plain', text: ',', spaceAfter: true },
         { id: 'stay-2', tone: 'plain', text: 'Stay', spaceAfter: true },
-        { id: 'confident', tone: 'highlight', text: 'Confident', spaceAfter: false },
+        { id: 'confident', tone: 'highlight', text: 'Calm', spaceAfter: false },
         { id: 'br-1', tone: 'plain', text: '\n', spaceAfter: false },
         { id: 'in', tone: 'plain', text: 'in', spaceAfter: true },
         { id: 'the', tone: 'plain', text: 'the', spaceAfter: true },
@@ -146,19 +146,19 @@ const STRINGS: Record<Language, Strings> = {
         { id: 'world', tone: 'plain', text: 'World', spaceAfter: false },
       ],
       subtitle:
-        'ScamSafe is an AI-powered website that helps elderly people in Malaysia check suspicious SMS scams and copy-pasted message content from emails or chats using large text, simple steps, and calm explanations.',
+        'Easy to understand · Simple to use · Realistic practice',
       pills: {
-        detection: 'Scam detection',
-        chat: 'AI chat',
+        detection: 'Scam Checker',
+        chat: 'AI Scam Chat',
         senior: 'Senior-friendly',
         steps: 'Guided actions',
       },
       modules: {
-        detectionTitle: 'Scam detection',
+        detectionTitle: 'Scam Checker',
         detectionSubtitle: 'SMS and pasted message checks',
-        practiceTitle: 'Practice mode',
+        practiceTitle: 'AI Scam Chat',
         practiceSubtitle: 'Learn safe replies step-by-step',
-        supportTitle: 'Study Center',
+        supportTitle: 'Test Yourself',
         supportSubtitle: 'Learn safe replies with short quizzes',
       },
       video: {
@@ -175,12 +175,12 @@ const STRINGS: Record<Language, Strings> = {
       supportText: 'We can continue with forms, results panels, call-to-action areas, and mobile-first layouts directly inside this page.',
     },
     knowledgeHub: {
-      eyebrow: 'News Hub',
+      eyebrow: 'Scam News',
       title: 'Explore real scam reports',
       description: 'Read recent scam news with clear source links, full article text, and practical prevention\u00A0tips.',
     },
     postScamSupport: {
-      eyebrow: 'Post-Scam Support',
+      eyebrow: 'Get Help',
       title: 'Get calm next-step support after a scam incident.',
       description: 'This page is prepared for recovery guidance, reporting actions, emergency contacts, and practical support after harm has already happened.',
       highlights: [
@@ -191,8 +191,8 @@ const STRINGS: Record<Language, Strings> = {
       supportNote: 'This area can later become a structured recovery checklist with support contacts and reporting tools.',
     },
     studyCenter: {
-      pageLabel: 'Anti-Scam Study Center',
-      eyebrow: 'Anti-Scam Study Center',
+      pageLabel: 'Test Yourself',
+      eyebrow: 'Test Yourself',
       title: 'Learn scam patterns through simple quizzes',
       lede: 'Take simple quizzes to learn scam patterns, get instant feedback, and track your progress.',
       step1Eyebrow: 'Step 1',
@@ -226,8 +226,8 @@ const STRINGS: Record<Language, Strings> = {
       emptyProgress: 'Complete a quiz to see your progress here.',
     },
     scamDetection: {
-      pageLabel: 'Scam Detection',
-      headerEyebrow: 'Scam Detection',
+      pageLabel: 'Scam Checker',
+      headerEyebrow: 'Scam Checker',
       title: 'Check a suspicious message',
       lede: 'Paste a message or SMS content and tap “Analyze Message”.',
       workspaceLabel: 'Scam detection analysis',
@@ -250,7 +250,7 @@ const STRINGS: Record<Language, Strings> = {
       wordLimitExceeded: (limit, current) =>
         `Word limit exceeded. Please keep your message under ${limit} words (currently ${current}).`,
       loadingLabel: 'Analyzing your message…',
-      emptyState: 'Paste a suspicious message on the left, then tap “Analyze Message”.',
+      emptyState: '',
       modalTitle: 'High risk detected',
       modalText: 'Stop and verify before you do anything. Do not click links, do not share OTPs, and do not send money.',
       modalConfirm: 'I Understand',
@@ -284,8 +284,8 @@ const STRINGS: Record<Language, Strings> = {
       highlightPrefixes: ['Do not'],
     },
     scamSimulation: {
-      pageLabel: 'Scam Simulation',
-      eyebrow: 'Scam Simulation',
+      pageLabel: 'AI Scam Chat',
+      eyebrow: 'AI Scam Chat',
       title: 'Practice with a safe chatbot',
       lede: 'Choose one scam category, then reply as you normally would. You will get feedback at the end.',
       workspaceLabel: 'Simulation workspace',
@@ -297,7 +297,7 @@ const STRINGS: Record<Language, Strings> = {
       step2Description: 'You are safe here. This is only practice.',
       reset: 'Restart chat',
       messagesLabel: 'Chat messages',
-      phoneDefaultTitle: 'Scam Simulation',
+      phoneDefaultTitle: 'AI Scam Chat',
       emptyState: 'Select a category to start. The chatbot will send the first message.',
       inputPlaceholderActive: 'Type your reply…',
       inputPlaceholderInactive: 'Pick a category first…',
@@ -320,11 +320,11 @@ const STRINGS: Record<Language, Strings> = {
   ms: {
     nav: {
       [appRoutes.home]: 'Laman Utama',
-      [appRoutes.detection]: 'Pengesanan',
-      [appRoutes.simulation]: 'Simulasi',
-      [appRoutes.studyCenter]: 'Pusat Pembelajaran',
-      [appRoutes.support]: 'Sokongan',
-      [appRoutes.knowledgeHub]: 'News Hub',
+      [appRoutes.detection]: 'Scam Checker',
+      [appRoutes.simulation]: 'AI Scam Chat',
+      [appRoutes.studyCenter]: 'Test Yourself',
+      [appRoutes.support]: 'Get Help',
+      [appRoutes.knowledgeHub]: 'Scam News',
       [appRoutes.notificationReveal]: 'Hasil Pemberitahuan',
     },
     ui: {
@@ -391,11 +391,11 @@ const STRINGS: Record<Language, Strings> = {
     },
     homeFeatures: {
       scam: 'Penipuan',
-      detection: 'Pengesanan',
-      simulation: 'Simulasi',
-      studyCenter: 'Pusat Pembelajaran',
-      support: 'Sokongan',
-      knowledgeHub: 'News Hub',
+      detection: 'Scam Checker',
+      simulation: 'AI Scam Chat',
+      studyCenter: 'Test Yourself',
+      support: 'Get Help',
+      knowledgeHub: 'Scam News',
       open: 'Buka',
       tooltips: {
         detection: 'Semak mesej mencurigakan dengan beberapa langkah mudah.',
@@ -447,17 +447,17 @@ const STRINGS: Record<Language, Strings> = {
       subtitle:
         'ScamSafe ialah laman web berkuasa AI yang membantu warga emas di Malaysia menyemak SMS mencurigakan dan kandungan mesej yang disalin daripada emel atau chat menggunakan tulisan besar, langkah mudah, dan penjelasan yang tenang.',
       pills: {
-        detection: 'Pengesanan penipuan',
-        chat: 'Sembang AI',
+        detection: 'Scam Checker',
+        chat: 'AI Scam Chat',
         senior: 'Mesra warga emas',
         steps: 'Tindakan berpandu',
       },
       modules: {
-        detectionTitle: 'Pengesanan penipuan',
+        detectionTitle: 'Scam Checker',
         detectionSubtitle: 'Semakan SMS dan mesej tampal',
-        practiceTitle: 'Mod latihan',
+        practiceTitle: 'AI Scam Chat',
         practiceSubtitle: 'Belajar membalas dengan selamat',
-        supportTitle: 'Pusat Pembelajaran',
+        supportTitle: 'Test Yourself',
         supportSubtitle: 'Belajar balasan selamat melalui kuiz ringkas',
       },
       video: {
@@ -474,12 +474,12 @@ const STRINGS: Record<Language, Strings> = {
       supportText: 'Kita boleh terus bina borang, panel hasil, kawasan tindakan, dan susun atur mobile-first terus di halaman ini.',
     },
     knowledgeHub: {
-      eyebrow: 'News Hub',
+      eyebrow: 'Scam News',
       title: 'Terokai laporan scam sebenar',
       description: 'Lihat artikel berita daripada backend dengan susun atur mudah dibaca, pautan sumber dipercayai, teks penuh artikel, dan tip pencegahan.',
     },
     postScamSupport: {
-      eyebrow: 'Sokongan Selepas Ditipu',
+      eyebrow: 'Get Help',
       title: 'Dapatkan sokongan langkah seterusnya dengan tenang selepas insiden penipuan.',
       description: 'Halaman ini disediakan untuk panduan pemulihan, tindakan pelaporan, hubungan kecemasan, dan sokongan praktikal selepas kerugian berlaku.',
       highlights: [
@@ -490,8 +490,8 @@ const STRINGS: Record<Language, Strings> = {
       supportNote: 'Ruang ini boleh menjadi senarai semak pemulihan berstruktur dengan hubungan sokongan dan alat pelaporan.',
     },
     studyCenter: {
-      pageLabel: 'Pusat Pembelajaran Anti-Penipuan',
-      eyebrow: 'Pusat Pembelajaran Anti-Penipuan',
+      pageLabel: 'Test Yourself',
+      eyebrow: 'Test Yourself',
       title: 'Berlatih dengan kuiz berpandu',
       lede: 'Jawab kuiz ringkas untuk belajar corak penipuan, dapat maklum balas segera, dan jejak kemajuan anda.',
       step1Eyebrow: 'Langkah 1',
@@ -525,8 +525,8 @@ const STRINGS: Record<Language, Strings> = {
       emptyProgress: 'Selesaikan satu kuiz untuk melihat kemajuan di sini.',
     },
     scamDetection: {
-      pageLabel: 'Pengesanan Penipuan',
-      headerEyebrow: 'Pengesanan Penipuan',
+      pageLabel: 'Scam Checker',
+      headerEyebrow: 'Scam Checker',
       title: 'Semak mesej yang mencurigakan',
       lede: 'Tampal mesej atau kandungan SMS dan tekan “Analisis Mesej”.',
       workspaceLabel: 'Analisis pengesanan penipuan',
@@ -583,8 +583,8 @@ const STRINGS: Record<Language, Strings> = {
       highlightPrefixes: ['Jangan'],
     },
     scamSimulation: {
-      pageLabel: 'Simulasi Penipuan',
-      eyebrow: 'Simulasi Penipuan',
+      pageLabel: 'AI Scam Chat',
+      eyebrow: 'AI Scam Chat',
       title: 'Berlatih dengan chatbot yang selamat',
       lede: 'Pilih satu kategori penipuan, kemudian balas seperti biasa. Anda akan menerima maklum balas pada akhir perbualan.',
       workspaceLabel: 'Ruang kerja simulasi',
@@ -596,7 +596,7 @@ const STRINGS: Record<Language, Strings> = {
       step2Description: 'Anda selamat di sini. Ini hanyalah latihan.',
       reset: 'Mulakan semula chat',
       messagesLabel: 'Mesej chat',
-      phoneDefaultTitle: 'Simulasi Penipuan',
+      phoneDefaultTitle: 'AI Scam Chat',
       emptyState: 'Pilih kategori untuk mula. Chatbot akan menghantar mesej pertama.',
       inputPlaceholderActive: 'Taip balasan anda…',
       inputPlaceholderInactive: 'Pilih kategori dahulu…',
@@ -619,11 +619,11 @@ const STRINGS: Record<Language, Strings> = {
   zh: {
     nav: {
       [appRoutes.home]: '首页',
-      [appRoutes.detection]: '检测',
-      [appRoutes.simulation]: '模拟',
-      [appRoutes.studyCenter]: '学习中心',
-      [appRoutes.support]: '事后支援',
-      [appRoutes.knowledgeHub]: 'News Hub',
+      [appRoutes.detection]: 'Scam Checker',
+      [appRoutes.simulation]: 'AI Scam Chat',
+      [appRoutes.studyCenter]: 'Test Yourself',
+      [appRoutes.support]: 'Get Help',
+      [appRoutes.knowledgeHub]: 'Scam News',
       [appRoutes.notificationReveal]: '通知结果',
     },
     ui: {
@@ -690,11 +690,11 @@ const STRINGS: Record<Language, Strings> = {
     },
     homeFeatures: {
       scam: '诈骗',
-      detection: '检测',
-      simulation: '模拟',
-      studyCenter: '学习中心',
-      support: '支援',
-      knowledgeHub: 'News Hub',
+      detection: 'Scam Checker',
+      simulation: 'AI Scam Chat',
+      studyCenter: 'Test Yourself',
+      support: 'Get Help',
+      knowledgeHub: 'Scam News',
       open: '进入',
       tooltips: {
         detection: '用几个简单步骤检查可疑信息。',
@@ -744,17 +744,17 @@ const STRINGS: Record<Language, Strings> = {
       subtitle:
         'ScamSafe 是一款 AI 反诈网站，帮助马来西亚的老年人检查可疑诈骗短信，以及复制粘贴的邮件和聊天消息内容，采用大字显示、步骤清晰、解释安心的方式。',
       pills: {
-        detection: '诈骗检测',
-        chat: 'AI 聊天',
+        detection: 'Scam Checker',
+        chat: 'AI Scam Chat',
         senior: '老年友好',
         steps: '行动指引',
       },
       modules: {
-        detectionTitle: '诈骗检测',
+        detectionTitle: 'Scam Checker',
         detectionSubtitle: '短信与粘贴内容检查',
-        practiceTitle: '练习模式',
+        practiceTitle: 'AI Scam Chat',
         practiceSubtitle: '一步步学会安全回应',
-        supportTitle: '学习中心',
+        supportTitle: 'Test Yourself',
         supportSubtitle: '通过简短测验学习安全回应',
       },
       video: {
@@ -771,12 +771,12 @@ const STRINGS: Record<Language, Strings> = {
       supportText: '我们可以直接在这个页面继续做表单、结果面板、操作区，以及移动端优先布局。',
     },
     knowledgeHub: {
-      eyebrow: 'News Hub',
+      eyebrow: 'Scam News',
       title: '查看真实诈骗案例',
       description: '浏览后端新闻文章，查看可信来源链接、完整正文和防范提示，整体阅读更清晰。',
     },
     postScamSupport: {
-      eyebrow: '事后支援',
+      eyebrow: 'Get Help',
       title: '在诈骗事件发生后，获得冷静清晰的下一步支援。',
       description: '这个页面用于放置恢复指引、举报步骤、紧急联系人，以及已经受害后的实用支持内容。',
       highlights: [
@@ -787,8 +787,8 @@ const STRINGS: Record<Language, Strings> = {
       supportNote: '这里后续可以发展为结构化的恢复清单，包含支持联系方式与举报工具。',
     },
     studyCenter: {
-      pageLabel: '反诈学习中心',
-      eyebrow: '反诈学习中心',
+      pageLabel: 'Test Yourself',
+      eyebrow: 'Test Yourself',
       title: '通过引导式测验练习',
       lede: '通过选择题练习识别诈骗模式，获得即时反馈，并查看学习进度。',
       step1Eyebrow: '步骤 1',
@@ -822,8 +822,8 @@ const STRINGS: Record<Language, Strings> = {
       emptyProgress: '完成一次测验后，这里会显示你的进度。',
     },
     scamDetection: {
-      pageLabel: '诈骗检测',
-      headerEyebrow: '诈骗检测',
+      pageLabel: 'Scam Checker',
+      headerEyebrow: 'Scam Checker',
       title: '检查可疑消息',
       lede: '粘贴一段消息或短信内容，然后点击“分析消息”。',
       workspaceLabel: '诈骗检测分析',
@@ -879,8 +879,8 @@ const STRINGS: Record<Language, Strings> = {
       highlightPrefixes: ['不要'],
     },
     scamSimulation: {
-      pageLabel: '诈骗模拟',
-      eyebrow: '诈骗模拟',
+      pageLabel: 'AI Scam Chat',
+      eyebrow: 'AI Scam Chat',
       title: '与安全聊天机器人练习',
       lede: '选择一个诈骗类别，然后像平常一样回复。对话结束后会给你反馈。',
       workspaceLabel: '模拟练习区',
@@ -892,7 +892,7 @@ const STRINGS: Record<Language, Strings> = {
       step2Description: '这里是安全的。这只是练习。',
       reset: '重新开始聊天',
       messagesLabel: '聊天消息',
-      phoneDefaultTitle: '诈骗模拟',
+      phoneDefaultTitle: 'AI Scam Chat',
       emptyState: '先选择一个类别开始。聊天机器人会先发送第一条消息。',
       inputPlaceholderActive: '输入你的回复…',
       inputPlaceholderInactive: '请先选择类别…',
