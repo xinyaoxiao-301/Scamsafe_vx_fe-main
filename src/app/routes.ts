@@ -21,7 +21,7 @@ export const primaryNavItems = [
   { route: appRoutes.detection, label: 'Scam Detection' },
   { route: appRoutes.simulation, label: 'Scam Simulation' },
   { route: appRoutes.studyCenter, label: 'Study Center' },
-  { route: appRoutes.knowledgeHub, label: 'Knowledge Hub' },
+  { route: appRoutes.knowledgeHub, label: 'News Hub' },
   { route: appRoutes.support, label: 'Support' },
 ] as const
 

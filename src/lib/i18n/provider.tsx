@@ -23,7 +23,7 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.simulation]: 'Simulation',
       [appRoutes.studyCenter]: 'Study Center',
       [appRoutes.support]: 'Support',
-      [appRoutes.knowledgeHub]: 'Knowledge Hub',
+      [appRoutes.knowledgeHub]: 'News Hub',
       [appRoutes.notificationReveal]: 'Notification Result',
     },
     ui: {
@@ -94,7 +94,7 @@ const STRINGS: Record<Language, Strings> = {
       simulation: 'Simulation',
       studyCenter: 'Study Center',
       support: 'Support',
-      knowledgeHub: 'Knowledge Hub',
+      knowledgeHub: 'News Hub',
       open: 'Open',
       tooltips: {
         detection: 'Check suspicious messages in a few simple steps.',
@@ -175,7 +175,7 @@ const STRINGS: Record<Language, Strings> = {
       supportText: 'We can continue with forms, results panels, call-to-action areas, and mobile-first layouts directly inside this page.',
     },
     knowledgeHub: {
-      eyebrow: 'Knowledge Hub',
+      eyebrow: 'News Hub',
       title: 'Explore real scam reports',
       description: 'Read recent scam news with clear source links, full article text, and practical prevention\u00A0tips.',
     },
@@ -324,7 +324,7 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.simulation]: 'Simulasi',
       [appRoutes.studyCenter]: 'Pusat Pembelajaran',
       [appRoutes.support]: 'Sokongan',
-      [appRoutes.knowledgeHub]: 'Pusat Pengetahuan',
+      [appRoutes.knowledgeHub]: 'News Hub',
       [appRoutes.notificationReveal]: 'Hasil Pemberitahuan',
     },
     ui: {
@@ -395,7 +395,7 @@ const STRINGS: Record<Language, Strings> = {
       simulation: 'Simulasi',
       studyCenter: 'Pusat Pembelajaran',
       support: 'Sokongan',
-      knowledgeHub: 'Pusat Pengetahuan',
+      knowledgeHub: 'News Hub',
       open: 'Buka',
       tooltips: {
         detection: 'Semak mesej mencurigakan dengan beberapa langkah mudah.',
@@ -474,7 +474,7 @@ const STRINGS: Record<Language, Strings> = {
       supportText: 'Kita boleh terus bina borang, panel hasil, kawasan tindakan, dan susun atur mobile-first terus di halaman ini.',
     },
     knowledgeHub: {
-      eyebrow: 'Pusat Pengetahuan',
+      eyebrow: 'News Hub',
       title: 'Terokai laporan scam sebenar',
       description: 'Lihat artikel berita daripada backend dengan susun atur mudah dibaca, pautan sumber dipercayai, teks penuh artikel, dan tip pencegahan.',
     },
@@ -623,7 +623,7 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.simulation]: '模拟',
       [appRoutes.studyCenter]: '学习中心',
       [appRoutes.support]: '事后支援',
-      [appRoutes.knowledgeHub]: '知识中心',
+      [appRoutes.knowledgeHub]: 'News Hub',
       [appRoutes.notificationReveal]: '通知结果',
     },
     ui: {
@@ -694,7 +694,7 @@ const STRINGS: Record<Language, Strings> = {
       simulation: '模拟',
       studyCenter: '学习中心',
       support: '支援',
-      knowledgeHub: '知识中心',
+      knowledgeHub: 'News Hub',
       open: '进入',
       tooltips: {
         detection: '用几个简单步骤检查可疑信息。',
@@ -771,7 +771,7 @@ const STRINGS: Record<Language, Strings> = {
       supportText: '我们可以直接在这个页面继续做表单、结果面板、操作区，以及移动端优先布局。',
     },
     knowledgeHub: {
-      eyebrow: '知识中心',
+      eyebrow: 'News Hub',
       title: '查看真实诈骗案例',
       description: '浏览后端新闻文章，查看可信来源链接、完整正文和防范提示，整体阅读更清晰。',
     },
