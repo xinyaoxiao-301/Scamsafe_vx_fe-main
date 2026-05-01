@@ -52,7 +52,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
     <main className="home-page" id="top" aria-label="Homepage">
       <section className="feature-launchpad-shell" aria-label="Main feature launch buttons">
         <header className="feature-launchpad__lead" aria-label="Choose a service">
-          <p className="feature-launchpad__lead-eyebrow">{strings.homeCard.eyebrow}</p>
           <p className="feature-launchpad__lead-title">{strings.homeCard.title}</p>
           <p className="feature-launchpad__lead-helper">
             <span className="feature-launchpad__lead-helper-before">{strings.homeCard.helperBefore}</span>{' '}

@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
 import {
-  SCENARIO_SLUGS,
   SCENARIO_LABELS,
   SCENARIO_DESCRIPTIONS,
   API_SCENARIO_SLUGS,
@@ -40,6 +39,8 @@ type SpeechRecognitionLike = {
 type SpeechRecognitionCtor = new () => SpeechRecognitionLike
 
 export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
+  const specificScenarioToggleLabel = 'Choose a scam type'
+  const hideSpecificScenarioToggleLabel = 'Hide scam types'
   const { language, strings } = useI18n()
   const s = strings.scamSimulation
 
@@ -53,6 +54,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const [lastOutcome,   setLastOutcome]   = useState<'safe' | 'risky' | null>(null)
   const [isListening,   setIsListening]   = useState(false)
   const [now,           setNow]           = useState(() => new Date())
+  const [showSpecificScenarios, setShowSpecificScenarios] = useState(false)
 
   const listRef        = useRef<HTMLDivElement | null>(null)
   const feedbackRef    = useRef<HTMLElement | null>(null)
@@ -88,6 +90,12 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     const id = window.setInterval(() => setNow(new Date()), 30_000)
     return () => window.clearInterval(id)
   }, [])
+
+  useEffect(() => {
+    if (scenarioType && scenarioType !== 'mixed-scams') {
+      setShowSpecificScenarios(true)
+    }
+  }, [scenarioType])
 
   const timeLocale = language === 'ms' ? 'ms-MY' : language === 'zh' ? 'zh-Hans-MY' : 'en-MY'
   const timeLabel  = new Intl.DateTimeFormat(timeLocale, {
@@ -278,34 +286,96 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
           {!isApiMode ? (
             <p className="scam-simulation-page__unavailable">{s.scenarioUnavailable}</p>
           ) : (
-            <div className="scam-simulation-page__types" role="list">
-              {SCENARIO_SLUGS.map((slug) => {
-                const tooltipId = `sim-scenario-tip-${slug}`
-                return (
-                  <button
-                    key={slug}
-                    type="button"
-                    className={
-                      [
-                        'scam-simulation-page__type',
-                        slug === 'mixed-scams' ? 'scam-simulation-page__type--wide' : '',
-                        scenarioType === slug ? 'scam-simulation-page__type--active' : '',
-                      ]
-                        .filter(Boolean)
-                        .join(' ')
-                    }
-                    onClick={() => startScenario(slug)}
-                    aria-label={s.startScenario(SCENARIO_LABELS[slug])}
-                    aria-describedby={tooltipId}
-                    disabled={isBotTyping}
+            <div className="scam-simulation-page__picker-stack">
+              <div className="scam-simulation-page__types scam-simulation-page__types--primary" role="list">
+                {(() => {
+                  const slug: ScamScenarioType = 'mixed-scams'
+                  const tooltipId = `sim-scenario-tip-${slug}`
+                  return (
+                    <button
+                      key={slug}
+                      type="button"
+                      className={
+                        [
+                          'scam-simulation-page__type',
+                          scenarioType === slug ? 'scam-simulation-page__type--active' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')
+                      }
+                      onClick={() => startScenario(slug)}
+                      aria-label={s.startScenario(SCENARIO_LABELS[slug])}
+                      aria-describedby={tooltipId}
+                      disabled={isBotTyping}
+                    >
+                      <p className="scam-simulation-page__type-title">{SCENARIO_LABELS[slug]}</p>
+                      <span id={tooltipId} className="scam-simulation-page__type-tooltip" role="tooltip">
+                        {SCENARIO_DESCRIPTIONS[slug]}
+                      </span>
+                    </button>
+                  )
+                })()}
+              </div>
+
+              <div className="scam-simulation-page__specific-picker">
+                <button
+                  type="button"
+                  className={
+                    [
+                      'scam-simulation-page__specific-toggle',
+                      showSpecificScenarios ? 'scam-simulation-page__specific-toggle--open' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')
+                  }
+                  aria-expanded={showSpecificScenarios}
+                  aria-controls="sim-specific-scenarios"
+                  onClick={() => setShowSpecificScenarios((value) => !value)}
+                >
+                  <span>
+                    {showSpecificScenarios ? hideSpecificScenarioToggleLabel : specificScenarioToggleLabel}
+                  </span>
+                  <span className="scam-simulation-page__specific-toggle-icon" aria-hidden="true">
+                    ▾
+                  </span>
+                </button>
+
+                {showSpecificScenarios ? (
+                  <div
+                    id="sim-specific-scenarios"
+                    className="scam-simulation-page__types scam-simulation-page__types--specific"
+                    role="list"
+                    aria-label={specificScenarioToggleLabel}
                   >
-                    <p className="scam-simulation-page__type-title">{SCENARIO_LABELS[slug]}</p>
-                    <span id={tooltipId} className="scam-simulation-page__type-tooltip" role="tooltip">
-                      {SCENARIO_DESCRIPTIONS[slug]}
-                    </span>
-                  </button>
-                )
-              })}
+                    {API_SCENARIO_SLUGS.map((slug) => {
+                      const tooltipId = `sim-scenario-tip-${slug}`
+                      return (
+                        <button
+                          key={slug}
+                          type="button"
+                          className={
+                            [
+                              'scam-simulation-page__type',
+                              scenarioType === slug ? 'scam-simulation-page__type--active' : '',
+                            ]
+                              .filter(Boolean)
+                              .join(' ')
+                          }
+                          onClick={() => startScenario(slug)}
+                          aria-label={s.startScenario(SCENARIO_LABELS[slug])}
+                          aria-describedby={tooltipId}
+                          disabled={isBotTyping}
+                        >
+                          <p className="scam-simulation-page__type-title">{SCENARIO_LABELS[slug]}</p>
+                          <span id={tooltipId} className="scam-simulation-page__type-tooltip" role="tooltip">
+                            {SCENARIO_DESCRIPTIONS[slug]}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                ) : null}
+              </div>
             </div>
           )}
         </SectionCard>

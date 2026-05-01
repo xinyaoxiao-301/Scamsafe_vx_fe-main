@@ -181,7 +181,7 @@ const STRINGS: Record<Language, Strings> = {
     },
     postScamSupport: {
       eyebrow: 'Get Help',
-      title: 'Get calm next-step support after a scam incident.',
+      title: 'Get calm support after a scam.',
       description: 'This page is prepared for recovery guidance, reporting actions, emergency contacts, and practical support after harm has already happened.',
       highlights: [
         'Show urgent steps in a calm and readable order.',

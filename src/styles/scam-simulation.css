@@ -77,6 +77,66 @@
   gap: 12px;
 }
 
+.scam-simulation-page__picker-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.scam-simulation-page__types--primary {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.scam-simulation-page__specific-picker {
+  display: grid;
+  gap: 12px;
+}
+
+.scam-simulation-page__specific-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(19, 108, 242, 0.14);
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--accent-strong);
+  font-size: calc(1rem * var(--sim-scale));
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.scam-simulation-page__specific-toggle:hover {
+  transform: translateY(-1px);
+  border-color: rgba(19, 108, 242, 0.22);
+  background: rgba(19, 108, 242, 0.08);
+  box-shadow: 0 14px 26px rgba(17, 38, 61, 0.08);
+}
+
+.scam-simulation-page__specific-toggle--open {
+  border-color: rgba(19, 108, 242, 0.24);
+  background: rgba(19, 108, 242, 0.1);
+}
+
+.scam-simulation-page__specific-toggle-icon {
+  position: absolute;
+  right: 14px;
+  font-size: 0.95em;
+  transition: transform 180ms ease;
+}
+
+.scam-simulation-page__specific-toggle--open .scam-simulation-page__specific-toggle-icon {
+  transform: rotate(180deg);
+}
+
 .scam-simulation-page__type {
   display: grid;
   gap: 8px;

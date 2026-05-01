@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
@@ -51,7 +51,22 @@ function splitExplanation(text: string): string[] {
 }
 
 export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
+  const specificTopicToggleLabel = 'Choose a scam type'
+  const hideSpecificTopicToggleLabel = 'Hide scam types'
   const { language, strings } = useI18n()
+  const [showSpecificTopics, setShowSpecificTopics] = useState(false)
+  const progressLockedNote =
+    language === 'ms'
+      ? 'Selesaikan satu kuiz untuk buka progress.'
+      : language === 'zh'
+        ? '完成一次测验后，这里会显示进度。'
+        : 'Finish one quiz to unlock progress.'
+  const singleScoreNote =
+    language === 'ms'
+      ? 'Selesaikan satu lagi kuiz untuk lihat garisan skor.'
+      : language === 'zh'
+        ? '再完成一次测验后，这里会显示折线。'
+        : 'Finish one more quiz to see the line.'
 
   const [selectedTopic,   setSelectedTopic]   = useState<QuizTopic>('mixed')
   const [questionCount]                        = useState(DEFAULT_QUESTION_COUNT)
@@ -67,6 +82,8 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const [isLoadingQuiz,   setIsLoadingQuiz]   = useState(false)
 
   const topics    = useMemo(() => getTopics(language), [language])
+  const featuredTopic = topics.find((item) => item.topic === 'mixed') ?? topics[0]
+  const specificTopics = topics.filter((item) => item.topic !== 'mixed')
   const [sessions, setSessions] = useState<QuizSessionRecord[]>(() => getSessions())
   const [points,   setPoints]   = useState(() => getTotalPoints())
 
@@ -79,6 +96,12 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
 
   const topicStats = useMemo(() => buildSessionStats(sessions), [sessions])
   const current    = quizQuestions ? quizQuestions[index] : null
+
+  useEffect(() => {
+    if (selectedTopic !== 'mixed') {
+      setShowSpecificTopics(true)
+    }
+  }, [selectedTopic])
 
   // ── Quiz lifecycle ────────────────────────────────────────────────────────────
   const startQuiz = async () => {
@@ -253,37 +276,99 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
             </div>
           }
         >
-          <div className="study-center-page__topics" role="list" aria-label={strings.studyCenter.chooseTopicLabel}>
-            {topics.map((item) => {
-              const tooltipId = `sc-topic-tip-${item.topic}`
-              return (
+          <div className="study-center-page__picker-stack">
+            <div className="study-center-page__topics study-center-page__topics--primary" role="list" aria-label={strings.studyCenter.chooseTopicLabel}>
+              {featuredTopic ? (
                 <button
-                  key={item.topic}
+                  key={featuredTopic.topic}
                   type="button"
                   className={
                     [
                       'study-center-page__topic',
-                      item.topic === 'mixed' ? 'study-center-page__topic--wide' : '',
-                      selectedTopic === item.topic ? 'study-center-page__topic--active' : '',
+                      selectedTopic === featuredTopic.topic ? 'study-center-page__topic--active' : '',
                     ]
                       .filter(Boolean)
                       .join(' ')
                   }
-                  onClick={() => setSelectedTopic(item.topic)}
-                  aria-label={item.title}
-                  aria-describedby={tooltipId}
+                  onClick={() => setSelectedTopic(featuredTopic.topic)}
+                  aria-label={featuredTopic.title}
+                  aria-describedby={`sc-topic-tip-${featuredTopic.topic}`}
                 >
-                  <p className="study-center-page__topic-title">{item.title}</p>
+                  <p className="study-center-page__topic-title">{featuredTopic.title}</p>
                   <span
-                    id={tooltipId}
+                    id={`sc-topic-tip-${featuredTopic.topic}`}
                     className="study-center-page__topic-tooltip"
                     role="tooltip"
                   >
-                    {item.description}
+                    {featuredTopic.description}
                   </span>
                 </button>
-              )
-            })}
+              ) : null}
+            </div>
+
+            <div className="study-center-page__specific-picker">
+              <button
+                type="button"
+                className={
+                  [
+                    'study-center-page__specific-toggle',
+                    showSpecificTopics ? 'study-center-page__specific-toggle--open' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')
+                }
+                aria-expanded={showSpecificTopics}
+                aria-controls="study-specific-topics"
+                onClick={() => setShowSpecificTopics((value) => !value)}
+              >
+                <span>{showSpecificTopics ? hideSpecificTopicToggleLabel : specificTopicToggleLabel}</span>
+                <span className="study-center-page__specific-toggle-icon" aria-hidden="true">
+                  ▾
+                </span>
+              </button>
+
+              {showSpecificTopics ? (
+                <div
+                  id="study-specific-topics"
+                  className="study-center-page__topics study-center-page__topics--specific"
+                  role="list"
+                  aria-label={specificTopicToggleLabel}
+                >
+                  {specificTopics.map((item) => {
+                    const tooltipId = `sc-topic-tip-${item.topic}`
+                    return (
+                      <button
+                        key={item.topic}
+                        type="button"
+                        className={
+                          [
+                            'study-center-page__topic',
+                            selectedTopic === item.topic ? 'study-center-page__topic--active' : '',
+                          ]
+                            .filter(Boolean)
+                            .join(' ')
+                        }
+                        onClick={() => {
+                          setSelectedTopic(item.topic)
+                          setShowSpecificTopics(true)
+                        }}
+                        aria-label={item.title}
+                        aria-describedby={tooltipId}
+                      >
+                        <p className="study-center-page__topic-title">{item.title}</p>
+                        <span
+                          id={tooltipId}
+                          className="study-center-page__topic-tooltip"
+                          role="tooltip"
+                        >
+                          {item.description}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              ) : null}
+            </div>
           </div>
         </SectionCard>
 
@@ -425,27 +510,30 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
         </SectionCard>
       </section>
 
-      <section className="study-center-page__progress" aria-label={strings.studyCenter.progressTitle}>
-        <SectionCard
-          className="study-center-page__progress-card"
-          eyebrow={strings.studyCenter.progressEyebrow}
-          title={strings.studyCenter.progressTitle}
-          description={strings.studyCenter.progressDescription}
-        >
-          {sessions.length ? (
-            <>
-              <div className="study-center-page__progress-top">
-                <span className="study-center-page__pill">
-                  {strings.studyCenter.pointsLabel}: <strong>{points}</strong>
-                </span>
-                <span className="study-center-page__pill">
-                  {strings.common.completed}: <strong>{sessions.length}</strong>
-                </span>
-              </div>
+      {!sessions.length ? (
+        <p className="study-center-page__progress-note">{progressLockedNote}</p>
+      ) : null}
 
-              <div className="study-center-page__charts">
-                <div className="study-center-page__chart" aria-label={strings.studyCenter.sessionsLabel}>
-                  <h3 className="study-center-page__h3">{strings.studyCenter.sessionsLabel}</h3>
+      {sessions.length ? (
+        <section className="study-center-page__progress" aria-label={strings.studyCenter.progressTitle}>
+          <SectionCard
+            className="study-center-page__progress-card"
+            eyebrow={strings.studyCenter.progressEyebrow}
+            title={strings.studyCenter.progressTitle}
+          >
+            <div className="study-center-page__progress-top">
+              <span className="study-center-page__pill">
+                {strings.studyCenter.pointsLabel}: <strong>{points}</strong>
+              </span>
+              <span className="study-center-page__pill">
+                {strings.common.completed}: <strong>{sessions.length}</strong>
+              </span>
+            </div>
+
+            <div className="study-center-page__charts">
+              <div className="study-center-page__chart" aria-label={strings.studyCenter.sessionsLabel}>
+                <h3 className="study-center-page__h3">{strings.studyCenter.sessionsLabel}</h3>
+                {lastScores.length > 1 ? (
                   <svg viewBox="0 0 320 120" role="img" aria-label={strings.studyCenter.sessionsLabel}>
                     <defs>
                       <linearGradient id="sc-line" x1="0" y1="0" x2="0" y2="1">
@@ -462,39 +550,39 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                       points={buildPolylinePoints(lastScores, 320, 120)}
                     />
                   </svg>
-                </div>
+                ) : (
+                  <p className="study-center-page__chart-note">{singleScoreNote}</p>
+                )}
+              </div>
 
-                <div className="study-center-page__chart" aria-label={strings.studyCenter.breakdownLabel}>
-                  <h3 className="study-center-page__h3">{strings.studyCenter.breakdownLabel}</h3>
-                  <div className="study-center-page__bars">
-                    {TOPIC_ORDER.map((topic) => {
-                      const stat  = topicStats[topic]
-                      const rate  = stat.total ? (stat.correct / stat.total) * 100 : 0
-                      const label = topics.find((t) => t.topic === topic)?.title ?? topic
-                      return (
-                        <div className="study-center-page__bar" key={topic}>
-                          <div className="study-center-page__bar-top">
-                            <span>{label}</span>
-                            <span>{stat.total ? formatPercent(rate) : '—'}</span>
-                          </div>
-                          <div className="study-center-page__bar-track" aria-hidden="true">
-                            <div
-                              className="study-center-page__bar-fill"
-                              style={{ width: `${Math.min(100, Math.max(0, rate))}%` }}
-                            />
-                          </div>
+              <div className="study-center-page__chart" aria-label={strings.studyCenter.breakdownLabel}>
+                <h3 className="study-center-page__h3">{strings.studyCenter.breakdownLabel}</h3>
+                <div className="study-center-page__bars">
+                  {TOPIC_ORDER.map((topic) => {
+                    const stat  = topicStats[topic]
+                    const rate  = stat.total ? (stat.correct / stat.total) * 100 : 0
+                    const label = topics.find((t) => t.topic === topic)?.title ?? topic
+                    return (
+                      <div className="study-center-page__bar" key={topic}>
+                        <div className="study-center-page__bar-top">
+                          <span>{label}</span>
+                          <span>{stat.total ? formatPercent(rate) : '—'}</span>
                         </div>
-                      )
-                    })}
-                  </div>
+                        <div className="study-center-page__bar-track" aria-hidden="true">
+                          <div
+                            className="study-center-page__bar-fill"
+                            style={{ width: `${Math.min(100, Math.max(0, rate))}%` }}
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
-            </>
-          ) : (
-            <p className="study-center-page__empty-progress">{strings.studyCenter.emptyProgress}</p>
-          )}
-        </SectionCard>
-      </section>
+            </div>
+          </SectionCard>
+        </section>
+      ) : null}
     </main>
   )
 }

@@ -28,7 +28,7 @@ function getVerdictCopy(isScam: boolean) {
   if (isScam) {
     return {
       title: 'This was a scam notification!',
-      lede: 'This is an example of a scam SMS you might receive on your phone. Treat surprise notifications carefully and if in doubt, verify them through our scam detection tool.',
+      lede: '',
       summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
       cardDescription: 'Review the original message below.',
       reasonsTitle: 'You allowed notifications on this site.',
@@ -40,7 +40,7 @@ function getVerdictCopy(isScam: boolean) {
 
   return {
     title: 'This was a non-scam notification.',
-    lede: 'This is an example of a non-scam SMS you recieve on your phone. It is still worth checking calmly, but messages like this are generally safe.',
+    lede: '',
     summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
     cardDescription: 'Review the original message below.',
     reasonsTitle: 'You allowed notifications on this site.',
@@ -108,7 +108,6 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
           className="notification-reveal-page__card"
           eyebrow="Notification Training"
           title="Loading notification result"
-          description="Checking this practice notification now."
           footer={<Button onClick={onBackHome}>Back to Home</Button>}
         />
       </main>
@@ -137,19 +136,18 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
       <section className="notification-reveal-page__hero">
         <p className="notification-reveal-page__eyebrow">Notification Training Result</p>
         <h1 className="notification-reveal-page__title">{copy.title}</h1>
-        <p className="notification-reveal-page__lede">{copy.lede}</p>
+        {copy.lede ? <p className="notification-reveal-page__lede">{copy.lede}</p> : null}
       </section>
 
       <section className="notification-reveal-page__grid">
         <SectionCard
-          className="notification-reveal-page__card"
+          className="notification-reveal-page__card notification-reveal-page__card--observed"
           eyebrow="Observed notification"
           title={copy.cardDescription}
           footer={<Button onClick={onBackHome}>Back to Home</Button>}
         >
           <div className="notification-reveal-page__summary">
             <div className="notification-reveal-page__summary-row">
-              <span className="notification-reveal-page__summary-label">Verdict</span>
               <strong
                 className={
                   result.isScam
@@ -180,7 +178,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
         </SectionCard>
 
         <SectionCard
-          className="notification-reveal-page__card"
+          className="notification-reveal-page__card notification-reveal-page__card--reasons"
           eyebrow="Why did I get this notification?"
           title={copy.reasonsTitle}
           description={copy.reasonsDescription}

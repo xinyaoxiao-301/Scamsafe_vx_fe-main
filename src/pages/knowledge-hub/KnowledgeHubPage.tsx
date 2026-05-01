@@ -157,9 +157,13 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
           description="Open a recent article to review its title, source, full text, and linked prevention tips."
           footer={
             <div className="knowledge-hub-page__overview-footer">
-              <p className="knowledge-hub-page__overview-note">
-                {isReadingArticle ? 'You are now reading one selected article.' : 'Choose one article to open the reading view.'}
-              </p>
+              {!newsLoading && !newsError && newsItems.length > 0 ? (
+                <p className="knowledge-hub-page__overview-note">
+                  {isReadingArticle
+                    ? 'You are now reading one selected article.'
+                    : 'Choose one article to open the reading view.'}
+                </p>
+              ) : null}
             </div>
           }
         >
