@@ -164,5 +164,4 @@ npm run format
 npm run typecheck
 ```
 
-last update 17/04/2026 2:42am
-ab
+last update 3/05/2026 12:23am, consolidated
