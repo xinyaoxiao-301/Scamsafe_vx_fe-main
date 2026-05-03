@@ -55,12 +55,16 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const [isListening,   setIsListening]   = useState(false)
   const [now,           setNow]           = useState(() => new Date())
   const [showSpecificScenarios, setShowSpecificScenarios] = useState(false)
+  const [isCategoryBreakdownOpen, setIsCategoryBreakdownOpen] = useState(false)
 
   const listRef        = useRef<HTMLDivElement | null>(null)
   const feedbackRef    = useRef<HTMLElement | null>(null)
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null)
+  const inputRef       = useRef<HTMLInputElement | null>(null)
 
   const performance = getPerformance()
+  const featuredPerformance = performance.find((row) => row.type === 'mixed-scams') ?? performance[0]
+  const categoryPerformance = performance.filter((row) => row.type !== 'mixed-scams')
 
   // The backend returns a prose feedback report. Normalizing it here keeps the
   // display clean without requiring a stricter response shape from the API.
@@ -92,6 +96,11 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   }, [])
 
   useEffect(() => {
+    if (!scenarioType || !sessionId || isBotTyping || isFinished) return
+    inputRef.current?.focus()
+  }, [scenarioType, sessionId, isBotTyping, isFinished])
+
+  useEffect(() => {
     if (scenarioType && scenarioType !== 'mixed-scams') {
       setShowSpecificScenarios(true)
     }
@@ -101,6 +110,16 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const timeLabel  = new Intl.DateTimeFormat(timeLocale, {
     month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit',
   }).format(now)
+
+  const renderPerformanceRow = (row: (typeof performance)[number], className?: string) => (
+    <div className={className ? `scam-simulation-page__perf ${className}` : 'scam-simulation-page__perf'} key={row.type}>
+      <p className="scam-simulation-page__perf-title">{row.label}</p>
+      <p className="scam-simulation-page__perf-meta">
+        {strings.common.completed}: <strong>{row.completed}</strong> · {strings.common.safe}:{' '}
+        <strong>{row.safe}</strong> · {strings.common.risky}: <strong>{row.risky}</strong>
+      </p>
+    </div>
+  )
 
   // ── Voice input ─────────────────────────────────────────────────────────────
   const handleVoiceInput = () => {
@@ -498,6 +517,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
               <div className="scam-simulation-page__composer" aria-label={s.composerLabel}>
                 <input
+                  ref={inputRef}
                   className="scam-simulation-page__input"
                   type="text"
                   inputMode="text"
@@ -555,7 +575,13 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 : 'scam-simulation-page__feedback-banner'
             }
           >
-            <p className="scam-simulation-page__feedback-title">
+            <p
+              className={
+                lastOutcome === 'risky'
+                  ? 'scam-simulation-page__feedback-title'
+                  : 'scam-simulation-page__feedback-title scam-simulation-page__feedback-title--safe'
+              }
+            >
               {lastOutcome === 'risky'
                 ? 'You fell for the scam — here is what happened'
                 : 'Well done — you avoided the scam!'}
@@ -586,18 +612,48 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
           className="scam-simulation-page__performance-card"
           eyebrow={s.progressEyebrow}
           title={s.progressTitle}
-          description={s.progressDescription}
         >
-          <div className="scam-simulation-page__perf-grid">
-            {performance.map((row) => (
-              <div className="scam-simulation-page__perf" key={row.type}>
-                <p className="scam-simulation-page__perf-title">{row.label}</p>
-                <p className="scam-simulation-page__perf-meta">
-                  {strings.common.completed}: <strong>{row.completed}</strong> · {strings.common.safe}:{' '}
-                  <strong>{row.safe}</strong> · {strings.common.risky}: <strong>{row.risky}</strong>
-                </p>
-              </div>
-            ))}
+          <div className="scam-simulation-page__perf-stack">
+            {featuredPerformance ? renderPerformanceRow(featuredPerformance, 'scam-simulation-page__perf--featured') : null}
+
+            <div className="scam-simulation-page__perf-breakdown">
+              <button
+                type="button"
+                className="scam-simulation-page__perf-toggle"
+                aria-expanded={isCategoryBreakdownOpen}
+                aria-controls="simulation-category-breakdown"
+                onClick={() => setIsCategoryBreakdownOpen((open) => !open)}
+              >
+                <span className="scam-simulation-page__perf-toggle-label">
+                  {isCategoryBreakdownOpen ? s.progressHideCategories : s.progressShowCategories}
+                </span>
+                <span
+                  className={
+                    isCategoryBreakdownOpen
+                      ? 'scam-simulation-page__perf-toggle-icon scam-simulation-page__perf-toggle-icon--open'
+                      : 'scam-simulation-page__perf-toggle-icon'
+                  }
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="m6.5 9.5 5.5 5 5.5-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+
+              {isCategoryBreakdownOpen ? (
+                <div className="scam-simulation-page__perf-grid" id="simulation-category-breakdown">
+                  {categoryPerformance.map((row) => renderPerformanceRow(row))}
+                </div>
+              ) : null}
+            </div>
           </div>
         </SectionCard>
       </section>

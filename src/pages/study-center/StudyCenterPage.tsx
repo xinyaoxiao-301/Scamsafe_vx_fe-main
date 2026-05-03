@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
@@ -21,20 +21,6 @@ const DEFAULT_QUESTION_COUNT = 6
 
 function formatPercent(value: number) {
   return `${Math.round(value)}%`
-}
-
-function buildPolylinePoints(values: number[], width: number, height: number) {
-  if (values.length === 0) return ''
-  const max    = 100
-  const min    = 0
-  const stepX  = values.length === 1 ? 0 : width / (values.length - 1)
-  return values
-    .map((value, index) => {
-      const x = index * stepX
-      const y = height - ((value - min) / (max - min)) * height
-      return `${x.toFixed(1)},${y.toFixed(1)}`
-    })
-    .join(' ')
 }
 
 function splitExplanation(text: string): string[] {
@@ -61,12 +47,6 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
       : language === 'zh'
         ? '完成一次测验后，这里会显示进度。'
         : 'Finish one quiz to unlock progress.'
-  const singleScoreNote =
-    language === 'ms'
-      ? 'Selesaikan satu lagi kuiz untuk lihat garisan skor.'
-      : language === 'zh'
-        ? '再完成一次测验后，这里会显示折线。'
-        : 'Finish one more quiz to see the line.'
 
   const [selectedTopic,   setSelectedTopic]   = useState<QuizTopic>('mixed')
   const [questionCount]                        = useState(DEFAULT_QUESTION_COUNT)
@@ -86,22 +66,43 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const specificTopics = topics.filter((item) => item.topic !== 'mixed')
   const [sessions, setSessions] = useState<QuizSessionRecord[]>(() => getSessions())
   const [points,   setPoints]   = useState(() => getTotalPoints())
-
-  const lastScores = useMemo(() => {
-    const recent = sessions.slice(-10)
-    return recent.map((session) =>
-      session.totalQuestions ? (session.correctCount / session.totalQuestions) * 100 : 0,
-    )
-  }, [sessions])
+  const questionRef = useRef<HTMLParagraphElement | null>(null)
+  const feedbackRef = useRef<HTMLDivElement | null>(null)
+  const pendingScrollTargetRef = useRef<'feedback' | 'question' | null>(null)
 
   const topicStats = useMemo(() => buildSessionStats(sessions), [sessions])
   const current    = quizQuestions ? quizQuestions[index] : null
+
+  const scrollElementToViewportCenter = (element: HTMLElement | null) => {
+    if (!element) return
+    const rect = element.getBoundingClientRect()
+    const targetTop = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2
+    window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' })
+  }
 
   useEffect(() => {
     if (selectedTopic !== 'mixed') {
       setShowSpecificTopics(true)
     }
   }, [selectedTopic])
+
+  useEffect(() => {
+    if (pendingScrollTargetRef.current !== 'feedback' || !hasSubmitted) return
+    const frame = window.requestAnimationFrame(() => {
+      scrollElementToViewportCenter(feedbackRef.current)
+      pendingScrollTargetRef.current = null
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [hasSubmitted])
+
+  useEffect(() => {
+    if (pendingScrollTargetRef.current !== 'question') return
+    const frame = window.requestAnimationFrame(() => {
+      scrollElementToViewportCenter(questionRef.current)
+      pendingScrollTargetRef.current = null
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [index])
 
   // ── Quiz lifecycle ────────────────────────────────────────────────────────────
   const startQuiz = async () => {
@@ -160,6 +161,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
 
     setError(null)
     const correct = selectedOptionId === current.correctOptionId
+    pendingScrollTargetRef.current = 'feedback'
     setHasSubmitted(true)
     setIsCorrect(correct)
 
@@ -177,6 +179,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const next = () => {
     if (!quizQuestions) return
     if (index >= quizQuestions.length - 1) return
+    pendingScrollTargetRef.current = 'question'
     setIndex((value) => value + 1)
     setSelectedOptionId(null)
     setHasSubmitted(false)
@@ -396,7 +399,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                 </span>
               </div>
 
-              <p className="study-center-page__prompt">{current.prompt}</p>
+              <p className="study-center-page__prompt" ref={questionRef}>{current.prompt}</p>
 
               <div className="study-center-page__options" role="list" aria-label="Answer options">
                 {current.options.map((opt, optIndex) => (
@@ -435,6 +438,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
               ) : null}
 
               <div
+                ref={feedbackRef}
                 className={
                   hasSubmitted
                     ? 'study-center-page__feedback study-center-page__feedback--visible'
@@ -531,30 +535,6 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
             </div>
 
             <div className="study-center-page__charts">
-              <div className="study-center-page__chart" aria-label={strings.studyCenter.sessionsLabel}>
-                <h3 className="study-center-page__h3">{strings.studyCenter.sessionsLabel}</h3>
-                {lastScores.length > 1 ? (
-                  <svg viewBox="0 0 320 120" role="img" aria-label={strings.studyCenter.sessionsLabel}>
-                    <defs>
-                      <linearGradient id="sc-line" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%"   stopColor="rgba(19, 108, 242, 1)" />
-                        <stop offset="100%" stopColor="rgba(13, 79, 179, 1)"  />
-                      </linearGradient>
-                    </defs>
-                    <polyline
-                      fill="none"
-                      stroke="url(#sc-line)"
-                      strokeWidth="5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      points={buildPolylinePoints(lastScores, 320, 120)}
-                    />
-                  </svg>
-                ) : (
-                  <p className="study-center-page__chart-note">{singleScoreNote}</p>
-                )}
-              </div>
-
               <div className="study-center-page__chart" aria-label={strings.studyCenter.breakdownLabel}>
                 <h3 className="study-center-page__h3">{strings.studyCenter.breakdownLabel}</h3>
                 <div className="study-center-page__bars">

@@ -244,6 +244,8 @@ export type Strings = {
     progressEyebrow: string
     progressTitle: string
     progressDescription: string
+    progressShowCategories: string
+    progressHideCategories: string
     startScenario: (title: string) => string
     scenarioUnavailable: string
   }

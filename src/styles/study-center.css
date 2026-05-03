@@ -439,7 +439,7 @@
   color: var(--muted);
   text-align: center;
   line-height: 1.55;
-  font-size: calc(0.94rem * var(--sc-scale));
+  font-size: calc(1.08rem * var(--sc-scale));
 }
 
 .study-center-page__progress-card {
