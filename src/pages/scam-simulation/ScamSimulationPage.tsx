@@ -593,15 +593,14 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
             {feedbackLines.map((line, i) => (
               <p key={i}>{line}</p>
             ))}
-          </div>
-
-          <div className="scam-simulation-page__report-actions">
-            <Button
-              variant="primary"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            >
-              Return to top
-            </Button>
+            <div className="scam-simulation-page__report-actions">
+              <Button
+                variant="primary"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                Return to top
+              </Button>
+            </div>
           </div>
         </section>
       )}

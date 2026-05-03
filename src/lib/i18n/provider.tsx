@@ -223,6 +223,8 @@ const STRINGS: Record<Language, Strings> = {
       pointsLabel: 'Points',
       sessionsLabel: 'Scores over time',
       breakdownLabel: 'By scam type',
+      progressShowCategories: 'Show all categories',
+      progressHideCategories: 'Hide all categories',
       emptyProgress: 'Complete a quiz to see your progress here.',
     },
     scamDetection: {
@@ -524,6 +526,8 @@ const STRINGS: Record<Language, Strings> = {
       pointsLabel: 'Mata',
       sessionsLabel: 'Skor mengikut masa',
       breakdownLabel: 'Mengikut jenis penipuan',
+      progressShowCategories: 'Lihat semua kategori',
+      progressHideCategories: 'Sembunyikan semua kategori',
       emptyProgress: 'Selesaikan satu kuiz untuk melihat kemajuan di sini.',
     },
     scamDetection: {
@@ -823,6 +827,8 @@ const STRINGS: Record<Language, Strings> = {
       pointsLabel: '积分',
       sessionsLabel: '分数趋势',
       breakdownLabel: '按诈骗类型',
+      progressShowCategories: '展开所有分类',
+      progressHideCategories: '收起所有分类',
       emptyProgress: '完成一次测验后，这里会显示你的进度。',
     },
     scamDetection: {

@@ -8,7 +8,6 @@ import {
   fetchQuizQuestions,
   getSessions,
   getTopics,
-  getTotalPoints,
   recordSession,
 } from '@/services/studyCenterQuiz'
 import type { QuizQuestion, QuizSessionRecord, QuizTopic } from '@/types/studyCenterQuiz'
@@ -18,10 +17,6 @@ type StudyCenterPageProps = {
 }
 
 const DEFAULT_QUESTION_COUNT = 6
-
-function formatPercent(value: number) {
-  return `${Math.round(value)}%`
-}
 
 function splitExplanation(text: string): string[] {
   // Backend explanations may arrive as newline text or bullet text; normalize
@@ -60,17 +55,36 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const [error,           setError]           = useState<string | null>(null)
   const [isFinished,      setIsFinished]      = useState(false)
   const [isLoadingQuiz,   setIsLoadingQuiz]   = useState(false)
+  const [isTopicBreakdownOpen, setIsTopicBreakdownOpen] = useState(false)
 
   const topics    = useMemo(() => getTopics(language), [language])
   const featuredTopic = topics.find((item) => item.topic === 'mixed') ?? topics[0]
   const specificTopics = topics.filter((item) => item.topic !== 'mixed')
   const [sessions, setSessions] = useState<QuizSessionRecord[]>(() => getSessions())
-  const [points,   setPoints]   = useState(() => getTotalPoints())
   const questionRef = useRef<HTMLParagraphElement | null>(null)
   const feedbackRef = useRef<HTMLDivElement | null>(null)
   const pendingScrollTargetRef = useRef<'feedback' | 'question' | null>(null)
 
   const topicStats = useMemo(() => buildSessionStats(sessions), [sessions])
+  const featuredProgress = useMemo(() => ({
+    label: featuredTopic.title,
+    attempts: sessions.length,
+    total: sessions.reduce((sum, session) => sum + session.totalQuestions, 0),
+    correct: sessions.reduce((sum, session) => sum + session.correctCount, 0),
+  }), [featuredTopic.title, sessions])
+  const categoryProgress = useMemo(
+    () =>
+      TOPIC_ORDER.map((topic) => ({
+        topic,
+        label: topics.find((item) => item.topic === topic)?.title ?? topic,
+        attempts: topicStats[topic]?.attempts ?? 0,
+        total: topicStats[topic]?.total ?? 0,
+        correct: topicStats[topic]?.correct ?? 0,
+      })),
+    [topicStats, topics],
+  )
+  const leftColumnProgress = categoryProgress.slice(0, 4)
+  const rightColumnProgress = categoryProgress.slice(4)
   const current    = quizQuestions ? quizQuestions[index] : null
 
   const scrollElementToViewportCenter = (element: HTMLElement | null) => {
@@ -206,7 +220,6 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
 
     recordSession(record)
     setSessions(getSessions())
-    setPoints(getTotalPoints())
     setIsFinished(true)
   }
 
@@ -249,6 +262,19 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
       )}
     </div>
   ) : undefined
+
+  const renderProgressRow = (
+    row: { label: string; attempts: number; total: number; correct: number },
+    className?: string,
+  ) => (
+    <div className={className ? `study-center-page__progress-item ${className}` : 'study-center-page__progress-item'}>
+      <p className="study-center-page__progress-item-title">{row.label}</p>
+      <p className="study-center-page__progress-item-meta">
+        {strings.common.completed}: <strong>{row.attempts}</strong> · {strings.studyCenter.correct}:{' '}
+        <strong>{row.correct}</strong> · {strings.studyCenter.questionCountLabel}: <strong>{row.total}</strong>
+      </p>
+    </div>
+  )
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
@@ -525,39 +551,57 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
             eyebrow={strings.studyCenter.progressEyebrow}
             title={strings.studyCenter.progressTitle}
           >
-            <div className="study-center-page__progress-top">
-              <span className="study-center-page__pill">
-                {strings.studyCenter.pointsLabel}: <strong>{points}</strong>
-              </span>
-              <span className="study-center-page__pill">
-                {strings.common.completed}: <strong>{sessions.length}</strong>
-              </span>
-            </div>
+            <div className="study-center-page__progress-stack">
+              {renderProgressRow(featuredProgress, 'study-center-page__progress-item--featured')}
 
-            <div className="study-center-page__charts">
-              <div className="study-center-page__chart" aria-label={strings.studyCenter.breakdownLabel}>
-                <h3 className="study-center-page__h3">{strings.studyCenter.breakdownLabel}</h3>
-                <div className="study-center-page__bars">
-                  {TOPIC_ORDER.map((topic) => {
-                    const stat  = topicStats[topic]
-                    const rate  = stat.total ? (stat.correct / stat.total) * 100 : 0
-                    const label = topics.find((t) => t.topic === topic)?.title ?? topic
-                    return (
-                      <div className="study-center-page__bar" key={topic}>
-                        <div className="study-center-page__bar-top">
-                          <span>{label}</span>
-                          <span>{stat.total ? formatPercent(rate) : '—'}</span>
-                        </div>
-                        <div className="study-center-page__bar-track" aria-hidden="true">
-                          <div
-                            className="study-center-page__bar-fill"
-                            style={{ width: `${Math.min(100, Math.max(0, rate))}%` }}
-                          />
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
+              <div className="study-center-page__progress-breakdown">
+                <button
+                  type="button"
+                  className="study-center-page__progress-toggle"
+                  aria-expanded={isTopicBreakdownOpen}
+                  aria-controls="study-center-category-breakdown"
+                  onClick={() => setIsTopicBreakdownOpen((open) => !open)}
+                >
+                  <span className="study-center-page__progress-toggle-label">
+                    {isTopicBreakdownOpen
+                      ? strings.studyCenter.progressHideCategories
+                      : strings.studyCenter.progressShowCategories}
+                  </span>
+                  <span
+                    className={
+                      isTopicBreakdownOpen
+                        ? 'study-center-page__progress-toggle-icon study-center-page__progress-toggle-icon--open'
+                        : 'study-center-page__progress-toggle-icon'
+                    }
+                    aria-hidden="true"
+                  >
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="m6.5 9.5 5.5 5 5.5-5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </button>
+
+                {isTopicBreakdownOpen ? (
+                  <div className="study-center-page__progress-grid" id="study-center-category-breakdown">
+                    <div className="study-center-page__progress-column">
+                      {leftColumnProgress.map((row) => (
+                        <div key={row.topic}>{renderProgressRow(row)}</div>
+                      ))}
+                    </div>
+                    <div className="study-center-page__progress-column">
+                      {rightColumnProgress.map((row) => (
+                        <div key={row.topic}>{renderProgressRow(row)}</div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
           </SectionCard>

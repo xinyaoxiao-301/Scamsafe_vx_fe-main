@@ -112,7 +112,7 @@ function AppContent() {
 
     const timeoutId = window.setTimeout(() => {
       setShowDismissedScamToast(false)
-    }, 3200)
+    }, 6000)
 
     return () => {
       window.clearTimeout(timeoutId)

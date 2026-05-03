@@ -171,6 +171,8 @@ export type Strings = {
     pointsLabel: string
     sessionsLabel: string
     breakdownLabel: string
+    progressShowCategories: string
+    progressHideCategories: string
     emptyProgress: string
   }
   scamDetection: {
