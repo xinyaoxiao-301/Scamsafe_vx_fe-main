@@ -120,7 +120,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
       <div className="app-shell__ambient" aria-hidden="true" />
       <div className="app-shell__ambient app-shell__ambient--secondary" aria-hidden="true" />
       <div className={isHome ? 'app-shell__frame app-shell__frame--home' : 'app-shell__frame'}>
-        <header className="app-shell__brand" aria-label="ScamSafe brand">
+        <header className="app-shell__brand" aria-label={strings.ui.brandLabel}>
           <div className="app-shell__brand-copy">
             <button className="app-shell__brand-home" type="button" onClick={() => onNavigate(appRoutes.home)}>
               <img className="app-shell__brand-logo" src={logo} alt="ScamSafe logo" />
@@ -128,7 +128,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
             </button>
           </div>
           {isDesktop ? (
-            <nav className="app-shell__nav app-shell__nav--desktop" id="app-navigation" aria-label="Primary navigation">
+            <nav className="app-shell__nav app-shell__nav--desktop" id="app-navigation" aria-label={strings.ui.primaryNavigation}>
               {primaryNavItems.map((item) => (
                 <button
                   key={item.route}
@@ -185,7 +185,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                 </label>
               </div>
               {isMenuOpen ? (
-                <nav className="app-shell__menu-panel" id="app-navigation" aria-label="Primary navigation">
+                <nav className="app-shell__menu-panel" id="app-navigation" aria-label={strings.ui.primaryNavigation}>
                   {primaryNavItems.map((item) => (
                     <button
                       key={item.route}
@@ -225,13 +225,13 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
             <section
               key={heroAnimationCycle}
               className={enableHeroAnimations ? 'app-shell__hero app-shell__hero--animate' : 'app-shell__hero'}
-              aria-label="ScamSafe hero introduction"
+              aria-label={strings.ui.heroIntroductionLabel}
             >
               <div className="app-shell__hero-bg" aria-hidden="true">
                 <img src={homeHeroBackground} alt="" />
               </div>
               <div className="app-shell__hero-inner">
-                <header className="app-shell__hero-header" aria-label="ScamSafe tagline">
+                <header className="app-shell__hero-header" aria-label={strings.ui.heroTaglineLabel}>
                   <h1 className="app-shell__hero-title" aria-label={titleTokensToText(strings.hero.titleTokens)}>
                     <span className="sr-only">{titleTokensToText(strings.hero.titleTokens)}</span>
                     <span className="app-shell__hero-title-animated" aria-hidden="true">
@@ -250,8 +250,8 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
         ) : null}
         {isHome ? (
           <>
-            <div className="app-shell__home-main" aria-label="Homepage main content">
-              <section className="app-shell__hero-video-section" aria-label="ScamSafe tutorial video">
+            <div className="app-shell__home-main" aria-label={strings.ui.homeMainLabel}>
+              <section className="app-shell__hero-video-section" aria-label={strings.ui.tutorialVideoLabel}>
                 <div className="app-shell__hero-video-wrap">
                   <div className="app-shell__hero-video-frame">
                     <div className="app-shell__hero-video-play">
@@ -266,13 +266,13 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
               </section>
               {children}
 
-              <section className="app-shell__stats" aria-label="Malaysia scam statistics">
+              <section className="app-shell__stats" aria-label={strings.ui.statsLabel}>
                 <header className="app-shell__stats-header">
                   <p className="app-shell__stats-eyebrow">{strings.homeStats.eyebrow}</p>
                   <h2 className="app-shell__stats-title">{strings.homeStats.title}</h2>
                 </header>
 
-                <div className="app-shell__stats-grid" role="list" aria-label="Key statistics">
+                <div className="app-shell__stats-grid" role="list" aria-label={strings.ui.keyStatisticsLabel}>
                   <article className="app-shell__stats-card" role="listitem">
                     <div className="app-shell__stats-icon" aria-hidden="true">
                       <svg viewBox="0 0 24 24">
@@ -339,32 +339,32 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
           children
         )}
         <div className="app-shell__footer-wrap">
-          <footer className="app-footer" aria-label="Footer">
+          <footer className="app-footer" aria-label={strings.ui.footerLabel}>
             <div className="app-footer__inner">
               <div className="app-footer__header">
                 <h2 className="app-footer__title">{strings.footer.title}</h2>
               </div>
               <div className="app-footer__grid">
-                <section className="app-footer__card" aria-label="Data sources">
+                <section className="app-footer__card" aria-label={strings.footer.sourcesTitle}>
                   <h3 className="app-footer__card-title">{strings.footer.sourcesTitle}</h3>
                   <p className="app-footer__card-text">{strings.footer.sourcesHint}</p>
                   <p className="app-footer__credit">
-                    <span className="app-footer__credit-label">Image credit:</span>{' '}
+                    <span className="app-footer__credit-label">{strings.footer.imageCreditLabel}</span>{' '}
                     <a
                       className="app-footer__credit-link"
                       href="https://www.freepik.com/free-photo/elderly-senior-asian-male-freelancer-casual-clothes-typing-laptop-keyboard-while-talking-smartphone-standing-desk-busy-working-home-office_25117731.htm#fromView=search&page=1&position=2&uuid=ff5cca6a-b8fa-489a-ba36-8c4ab535e59c&query=Elderly+fraud+asian+technical"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      Image by Lifestylememory on Freepik
+                      {strings.footer.imageCreditText}
                     </a>
                   </p>
                 </section>
-                <section className="app-footer__card" aria-label="About ScamSafe">
+                <section className="app-footer__card" aria-label={strings.footer.aboutTitle}>
                   <h3 className="app-footer__card-title">{strings.footer.aboutTitle}</h3>
                   <p className="app-footer__card-text">{strings.footer.aboutHint}</p>
                 </section>
-                <section className="app-footer__card" aria-label="Risk level guide">
+                <section className="app-footer__card" aria-label={strings.footer.riskTitle}>
                   <h3 className="app-footer__card-title">{strings.footer.riskTitle}</h3>
                   <p className="app-footer__card-text">{strings.footer.riskHint}</p>
                 </section>

@@ -10,6 +10,8 @@ type HomePageProps = {
 export function HomePage({ onNavigate }: HomePageProps) {
   const { strings } = useI18n()
 
+  // The home screen mainly composes shared primitives so feature-specific logic
+  // can stay inside each dedicated page module.
   const features = [
     {
       id: 'scam-detection',
@@ -49,9 +51,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
   ] as const
 
   return (
-    <main className="home-page" id="top" aria-label="Homepage">
-      <section className="feature-launchpad-shell" aria-label="Main feature launch buttons">
-        <header className="feature-launchpad__lead" aria-label="Choose a service">
+    <main className="home-page" id="top" aria-label={strings.homeCard.pageLabel}>
+      <section className="feature-launchpad-shell" aria-label={strings.homeCard.launchpadLabel}>
+        <header className="feature-launchpad__lead" aria-label={strings.homeCard.title}>
           <p className="feature-launchpad__lead-title">{strings.homeCard.title}</p>
           <p className="feature-launchpad__lead-helper">
             <span className="feature-launchpad__lead-helper-before">{strings.homeCard.helperBefore}</span>{' '}

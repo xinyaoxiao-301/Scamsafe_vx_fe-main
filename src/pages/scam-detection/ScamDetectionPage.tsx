@@ -242,12 +242,12 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
                       ].join(' ')}
                     >
                       <div className="scam-detection-page__risk-box-risk">
-                        {s.riskLabels[result.riskLevel]} risk
+                        {s.riskBoxLabel(s.riskLabels[result.riskLevel])}
                       </div>
                     </div>
                   </div>
 
-                  <div className="scam-detection-page__pills" aria-label="Result tags">
+                  <div className="scam-detection-page__pills" aria-label={s.resultTagsLabel}>
                     <span className="scam-detection-page__pill scam-detection-page__pill--type">
                       <span>{s.resultTypeLabel}:</span>
                       <strong>{s.typeLabels[result.scamType]}</strong>
@@ -281,7 +281,7 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
 
                 {result.guidance.length ? (
                   <div className="scam-detection-page__block">
-                    <h3 className="scam-detection-page__h3">Smart Guidance</h3>
+                    <h3 className="scam-detection-page__h3">{s.guidanceEyebrow}</h3>
                     <ul className="scam-detection-page__list">
                       {result.guidance.map((step, i) => (
                         <li key={i} className="scam-detection-page__guidance-item">

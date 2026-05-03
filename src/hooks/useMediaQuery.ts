@@ -8,6 +8,8 @@ function getMatches(query: string) {
   return window.matchMedia(query).matches
 }
 
+// Shared responsive hook for behavior that must match the CSS breakpoint
+// strategy without duplicating media query listener setup in components.
 export function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(() => getMatches(query))
 

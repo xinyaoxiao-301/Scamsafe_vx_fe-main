@@ -97,7 +97,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 12px 14px;
+  padding: 12px 42px 12px 14px;
   border-radius: 18px;
   border: 1px solid rgba(19, 108, 242, 0.14);
   background: rgba(255, 255, 255, 0.88);
@@ -106,6 +106,8 @@
   font-weight: 850;
   letter-spacing: -0.02em;
   text-align: center;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -176,6 +178,8 @@
   font-size: calc(1rem * var(--sim-scale));
   font-weight: 950;
   letter-spacing: -0.03em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .scam-simulation-page__type-tooltip {
@@ -195,6 +199,8 @@
   font-size: calc(0.82rem * var(--sim-scale));
   line-height: 1.45;
   text-align: center;
+  white-space: normal;
+  overflow-wrap: break-word;
   opacity: 0;
   pointer-events: none;
   transition:
@@ -704,6 +710,8 @@
   gap: 14px;
 }
 
+/* Progress cards default to a stacked mobile layout; wider screens can reveal
+   more density later without changing the overall interaction pattern. */
 .scam-simulation-page__perf-grid {
   display: grid;
   gap: 12px;
@@ -796,6 +804,8 @@
   border-top: 1px solid rgba(17, 38, 58, 0.08);
 }
 
+/* Tablet and desktop widths upgrade the progress breakdown into two columns
+   while preserving the same featured-card-first reading order. */
 @media (min-width: 768px) {
   .scam-simulation-page {
     gap: 22px;

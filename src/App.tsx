@@ -16,8 +16,9 @@ import { StudyCenterPage } from '@/pages/study-center'
 
 type SiteEntryState = 'pending' | 'accepted' | 'declined'
 
-function formatNotificationTime(date: Date) {
-  return new Intl.DateTimeFormat(undefined, {
+function formatNotificationTime(date: Date, language: string) {
+  const locale = language === 'ms' ? 'ms-MY' : language === 'zh' ? 'zh-Hans-MY' : 'en-MY'
+  return new Intl.DateTimeFormat(locale, {
     hour: 'numeric',
     minute: '2-digit',
   }).format(date)
@@ -32,10 +33,10 @@ export default function App() {
 }
 
 function AppContent() {
-  const { strings } = useI18n()
+  const { language, strings } = useI18n()
   const [currentRoute, setCurrentRoute] = useState<AppRoute>(() => getRouteFromHash(window.location.hash))
   const [siteEntryState, setSiteEntryState] = useState<SiteEntryState>('pending')
-  const [notificationTime, setNotificationTime] = useState(() => formatNotificationTime(new Date()))
+  const [notificationTime, setNotificationTime] = useState(() => formatNotificationTime(new Date(), language))
   const [prefetchedNotificationReveal, setPrefetchedNotificationReveal] = useState<Record<number, { isScam: boolean }>>({})
   const [showDismissedScamToast, setShowDismissedScamToast] = useState(false)
   const hasAcceptedSiteDisclaimer = siteEntryState === 'accepted'
@@ -68,16 +69,16 @@ function AppContent() {
       return
     }
 
-    setNotificationTime(formatNotificationTime(new Date()))
+    setNotificationTime(formatNotificationTime(new Date(), language))
 
     const intervalId = window.setInterval(() => {
-      setNotificationTime(formatNotificationTime(new Date()))
+      setNotificationTime(formatNotificationTime(new Date(), language))
     }, 1000)
 
     return () => {
       window.clearInterval(intervalId)
     }
-  }, [activeScenario])
+  }, [activeScenario, language])
 
   useEffect(() => {
     if (!activeScenario || prefetchedNotificationReveal[activeScenario.id]) {
@@ -131,6 +132,8 @@ function AppContent() {
     window.location.hash = route
   }
 
+  // Each feature is kept as its own page module; App only composes the current
+  // route with the shared shell and navigation callbacks.
   const page = (() => {
     switch (currentRoute) {
       case appRoutes.detection:
@@ -266,11 +269,11 @@ function AppContent() {
             </div>
           ) : null}
           {hasAcceptedSiteDisclaimer && currentRoute !== appRoutes.notificationReveal && activeScenario ? (
-            <div className="notification-modal" role="dialog" aria-modal="true" aria-label="Simulated notification popup">
+            <div className="notification-modal" role="dialog" aria-modal="true" aria-label={notificationStrings.popupLabel}>
               <div className="notification-modal__backdrop" aria-hidden="true" />
               <section
                 className="notification-modal__panel"
-                aria-label="Simulated notification preview"
+                aria-label={notificationStrings.previewLabel}
               >
                 <button
                   type="button"
@@ -286,20 +289,22 @@ function AppContent() {
                 <div className="notification-modal__source">
                   <img className="notification-modal__logo" src={logo} alt="" />
                   <div className="notification-modal__source-copy">
-                    <p className="notification-modal__source-name">ScamSafe practice alert</p>
+                    <p className="notification-modal__source-name">{notificationStrings.practiceAlertName}</p>
                   </div>
                 </div>
                 <div className="notification-modal__header">
-                  <h2 className="notification-modal__title">Check this notification carefully</h2>
+                  <h2 className="notification-modal__title">{notificationStrings.checkCarefullyTitle}</h2>
                 </div>
-                <p className="notification-modal__message-time">Today {notificationTime}</p>
+                <p className="notification-modal__message-time">
+                  {notificationStrings.todayLabel} {notificationTime}
+                </p>
                 <div className="notification-modal__message-box">
                   <p className="notification-modal__message-label">{notificationStrings.messageLabel}</p>
                   <p className="notification-modal__body">{activeScenario.message}</p>
                 </div>
                 <p className="notification-modal__scope-note">{notificationStrings.scopeNote}</p>
                 <div className="notification-modal__actions">
-                  <Button onClick={() => openScenario()}>Open</Button>
+                  <Button onClick={() => openScenario()}>{notificationStrings.open}</Button>
                   <Button variant="secondary" onClick={() => void handleDismissNotification()}>
                     {notificationStrings.dismiss}
                   </Button>

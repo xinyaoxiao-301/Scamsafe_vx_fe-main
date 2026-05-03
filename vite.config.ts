@@ -11,6 +11,8 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      // Keep frontend calls same-origin in development so pages stay decoupled
+      // from whichever backend host is currently serving the API.
       '/api': {
         target: 'http://localhost:8000',
         changeOrigin: true,

@@ -15,6 +15,15 @@ export type Strings = {
   ui: {
     openMenu: string
     language: string
+    brandLabel: string
+    primaryNavigation: string
+    statsLabel: string
+    heroIntroductionLabel: string
+    heroTaglineLabel: string
+    homeMainLabel: string
+    tutorialVideoLabel: string
+    keyStatisticsLabel: string
+    footerLabel: string
     languageOption: Record<Language, string>
   }
   common: {
@@ -31,8 +40,12 @@ export type Strings = {
     aboutHint: string
     riskTitle: string
     riskHint: string
+    imageCreditLabel: string
+    imageCreditText: string
   }
   homeCard: {
+    pageLabel: string
+    launchpadLabel: string
     eyebrow: string
     title: string
     helper: string
@@ -63,6 +76,12 @@ export type Strings = {
     messageLabel: string
     scopeNote: string
     previewHint: string
+    popupLabel: string
+    previewLabel: string
+    practiceAlertName: string
+    checkCarefullyTitle: string
+    todayLabel: string
+    open: string
     dismiss: string
     dismissedScamTitle: string
     dismissedScamDescription: string
@@ -130,6 +149,25 @@ export type Strings = {
     eyebrow: string
     title: string
     description: string
+    newsSectionLabel: string
+    liveFeedEyebrow: string
+    latestReportsTitle: string
+    latestReportsDescription: string
+    readingNote: string
+    chooseNote: string
+    loadingNews: string
+    newsErrorPrefix: string
+    noNews: string
+    newsArticlesLabel: string
+    selectedArticleLabel: string
+    step1Eyebrow: string
+    chooseArticleTitle: string
+    chooseArticleDescription: string
+    loadingArticle: string
+    articleDetailEyebrow: string
+    readSource: string
+    tipsTitle: string
+    chooseAnotherArticle: string
   }
   postScamSupport: {
     eyebrow: string
@@ -137,6 +175,101 @@ export type Strings = {
     description: string
     highlights: string[]
     supportNote: string
+    startCardEyebrow: string
+    startCardTitle: string
+    startCardDescription: string
+    startButton: string
+    quickGuideLabel: string
+    quickSteps: Array<{ title: string; text: string }>
+    trackerEyebrow: string
+    trackerTitle: string
+    trackerDescription: string
+    selectedCaseLabel: string
+    selectedCaseText: string
+    recoveryStepsLabel: string
+    statusDone: string
+    statusActive: string
+    statusLocked: string
+    currentAction: string
+    reviewNote: string
+    completeNote: string
+    confirmLabel: string
+    nextStepButton: string
+    emergencySide: {
+      policeTitle: string
+      policeText: string
+      bankTitle: string
+      bankText: string
+      lossTitle: string
+      lossText: string
+    }
+    emergencyPanelTitle: string
+    emergencyCallLabel: string
+    tapCall997: string
+    first997Label: string
+    first997Text: string
+    tapToCallNow: string
+    completedEyebrow: string
+    completedTitle: string
+    completedDescription: string
+    finalNote: string
+    otherBankName: string
+    otherBankInstruction: string
+    steps: Array<{
+      key: 'stop-money' | 'freeze-bank' | 'secure-accounts' | 'file-report'
+      label: string
+      eyebrow: string
+      title: string
+      description: string
+      actionLabel?: string
+      actionHref?: string
+      emergencyTitle?: string
+      emergencyLines?: string[]
+      extraTitle?: string
+      extraDescription?: string
+      checklistTitle?: string
+      checklist?: string[]
+      evidenceTitle?: string
+      evidenceItems?: string[]
+      semakMuleTitle?: string
+      semakMuleDescription?: string
+      semakMuleHref?: string
+      semakMuleLabel?: string
+    }>
+  }
+  notificationReveal: {
+    pageLabel: string
+    trainingResultLabel: string
+    eyebrow: string
+    noAlertTitle: string
+    noAlertDescription: string
+    loadingTitle: string
+    unavailableTitle: string
+    unavailableDescription: string
+    loadError: string
+    heroEyebrow: string
+    observedEyebrow: string
+    messageBadge: string
+    reasonsEyebrow: string
+    explanationsLabel: string
+    scam: {
+      title: string
+      summary: string
+      cardDescription: string
+      reasonsTitle: string
+      reasonsDescription: string
+      actionLabel: string
+      verdictLabel: string
+    }
+    safe: {
+      title: string
+      summary: string
+      cardDescription: string
+      reasonsTitle: string
+      reasonsDescription: string
+      actionLabel: string
+      verdictLabel: string
+    }
   }
   studyCenter: {
     pageLabel: string
@@ -173,6 +306,16 @@ export type Strings = {
     breakdownLabel: string
     progressShowCategories: string
     progressHideCategories: string
+    progressLockedNote: string
+    showSpecificTopics: string
+    hideSpecificTopics: string
+    questionProgressLabel: string
+    answerOptionsLabel: string
+    feedbackAriaLabel: string
+    unavailableMalay: string
+    unavailableChinese: string
+    errorNoQuestions: string
+    errorLoadQuestions: string
     emptyProgress: string
   }
   scamDetection: {
@@ -205,6 +348,7 @@ export type Strings = {
     modalConfirm: string
     resultRiskLabel: string
     resultTypeLabel: string
+    resultTagsLabel: string
     resultVerdictScam: string
     resultVerdictNotScam: string
     indicatorsTitle: string
@@ -214,6 +358,7 @@ export type Strings = {
     guidanceDescription: string
     riskLabels: Record<ScamRiskLevel, string>
     typeLabels: Record<ScamType, string>
+    riskBoxLabel: (riskLabel: string) => string
     highlightPrefixes: string[]
   }
   scamSimulation: {
@@ -248,6 +393,13 @@ export type Strings = {
     progressDescription: string
     progressShowCategories: string
     progressHideCategories: string
+    showSpecificScenarios: string
+    hideSpecificScenarios: string
+    safeQuitFeedback: string
+    riskyOutcomeTitle: string
+    safeOutcomeTitle: string
+    reportHeading: string
+    returnToTop: string
     startScenario: (title: string) => string
     scenarioUnavailable: string
   }

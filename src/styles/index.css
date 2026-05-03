@@ -1,3 +1,5 @@
+/* Global stylesheet entrypoint. Tokens and base styles load first, followed by
+   layout and page-specific styles so feature files stay modular. */
 @import './tokens.css';
 @import './base.css';
 @import './layout.css';

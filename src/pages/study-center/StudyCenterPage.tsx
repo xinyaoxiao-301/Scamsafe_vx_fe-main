@@ -32,16 +32,11 @@ function splitExplanation(text: string): string[] {
 }
 
 export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
-  const specificTopicToggleLabel = 'Choose a scam type'
-  const hideSpecificTopicToggleLabel = 'Hide scam types'
   const { language, strings } = useI18n()
+  const specificTopicToggleLabel = strings.studyCenter.showSpecificTopics
+  const hideSpecificTopicToggleLabel = strings.studyCenter.hideSpecificTopics
   const [showSpecificTopics, setShowSpecificTopics] = useState(false)
-  const progressLockedNote =
-    language === 'ms'
-      ? 'Selesaikan satu kuiz untuk buka progress.'
-      : language === 'zh'
-        ? '完成一次测验后，这里会显示进度。'
-        : 'Finish one quiz to unlock progress.'
+  const progressLockedNote = strings.studyCenter.progressLockedNote
 
   const [selectedTopic,   setSelectedTopic]   = useState<QuizTopic>('mixed')
   const [questionCount]                        = useState(DEFAULT_QUESTION_COUNT)
@@ -66,6 +61,8 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const pendingScrollTargetRef = useRef<'feedback' | 'question' | null>(null)
 
   const topicStats = useMemo(() => buildSessionStats(sessions), [sessions])
+  // "Mix scams" mirrors the simulation page by acting as the featured summary,
+  // while the specific quiz categories stay inside a collapsible breakdown.
   const featuredProgress = useMemo(() => ({
     label: featuredTopic.title,
     attempts: sessions.length,
@@ -83,6 +80,8 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
       })),
     [topicStats, topics],
   )
+  // The breakdown is split into two columns only after expansion so the base
+  // mobile layout can stay short and readable.
   const leftColumnProgress = categoryProgress.slice(0, 4)
   const rightColumnProgress = categoryProgress.slice(4)
   const current    = quizQuestions ? quizQuestions[index] : null
@@ -122,7 +121,8 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const startQuiz = async () => {
     // Quiz is only available in English
     if (language !== 'en') {
-      const unavailable = language === 'ms' ? 'tidak tersedia' : '无法使用'
+      const unavailable =
+        language === 'ms' ? strings.studyCenter.unavailableMalay : strings.studyCenter.unavailableChinese
       setError(unavailable)
       setQuizQuestions(null)
       return
@@ -142,12 +142,12 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     try {
       const questions = await fetchQuizQuestions(selectedTopic, questionCount)
       if (!questions || questions.length === 0) {
-        setError('No questions available for this topic. Please try another.')
+        setError(strings.studyCenter.errorNoQuestions)
         return
       }
       setQuizQuestions(questions)
     } catch {
-      setError('Could not load questions. Please check your connection and try again.')
+      setError(strings.studyCenter.errorLoadQuestions)
     } finally {
       setIsLoadingQuiz(false)
     }
@@ -416,7 +416,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
             </div>
           ) : quizQuestions && current ? (
             <>
-              <div className="study-center-page__question-meta" aria-label="Question progress">
+              <div className="study-center-page__question-meta" aria-label={strings.studyCenter.questionProgressLabel}>
                 <span>
                   {strings.studyCenter.questionCountLabel}: {index + 1}/{quizQuestions.length}
                 </span>
@@ -427,7 +427,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
 
               <p className="study-center-page__prompt" ref={questionRef}>{current.prompt}</p>
 
-              <div className="study-center-page__options" role="list" aria-label="Answer options">
+              <div className="study-center-page__options" role="list" aria-label={strings.studyCenter.answerOptionsLabel}>
                 {current.options.map((opt, optIndex) => (
                   <button
                     type="button"
@@ -470,7 +470,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                     ? 'study-center-page__feedback study-center-page__feedback--visible'
                     : 'study-center-page__feedback'
                 }
-                aria-label="Feedback"
+                aria-label={strings.studyCenter.feedbackAriaLabel}
                 aria-live="polite"
               >
                 {hasSubmitted ? (

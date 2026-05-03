@@ -1,4 +1,6 @@
 :root {
+  /* Mobile-first breakpoints: base styles target phone widths first, then
+     tablet and desktop layouts progressively enhance at 768px and 1200px. */
   color-scheme: light;
   --page-bg: #ffffff;
   --surface: #ffffff;

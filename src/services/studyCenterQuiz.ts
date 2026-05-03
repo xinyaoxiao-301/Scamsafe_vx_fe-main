@@ -50,26 +50,26 @@ const TOPICS: Record<Language, TopicMeta[]> = {
     { topic: 'family-emergency',    title: 'Family emergency scams', description: 'Check urgent calls claiming a relative is in trouble.' },
   ],
   ms: [
-    { topic: 'mixed',               title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'romance',             title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'investment',          title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'tech-support',        title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'government-imposter', title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'marketplace',         title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'charity',             title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'lottery-prize',       title: 'tidak tersedia',  description: 'tidak tersedia' },
-    { topic: 'family-emergency',    title: 'tidak tersedia',  description: 'tidak tersedia' },
+    { topic: 'mixed',               title: 'Kuiz campuran',          description: 'Gabungan ringkas corak scam biasa.' },
+    { topic: 'romance',             title: 'Scam percintaan',        description: 'Kenal pasti orang dalam talian yang berpura-pura mencintai anda.' },
+    { topic: 'investment',          title: 'Scam pelaburan',         description: 'Semak tawaran yang terlalu bagus untuk dipercayai.' },
+    { topic: 'tech-support',        title: 'Scam sokongan teknikal', description: 'Elakkan bantuan palsu untuk masalah yang tidak wujud.' },
+    { topic: 'government-imposter', title: 'Penyamar kerajaan',      description: 'Fahami cara scammer menyamar sebagai agensi kerajaan.' },
+    { topic: 'marketplace',         title: 'Scam marketplace',       description: 'Belajar elak penjual palsu dan helah bayaran.' },
+    { topic: 'charity',             title: 'Scam amal',              description: 'Semak kutipan derma yang kelihatan sah.' },
+    { topic: 'lottery-prize',       title: 'Scam loteri / hadiah',   description: 'Berhati-hati dengan hadiah yang anda tidak sertai.' },
+    { topic: 'family-emergency',    title: 'Scam kecemasan keluarga', description: 'Sahkan panggilan mendesak tentang ahli keluarga.' },
   ],
   zh: [
-    { topic: 'mixed',               title: '无法使用', description: '无法使用' },
-    { topic: 'romance',             title: '无法使用', description: '无法使用' },
-    { topic: 'investment',          title: '无法使用', description: '无法使用' },
-    { topic: 'tech-support',        title: '无法使用', description: '无法使用' },
-    { topic: 'government-imposter', title: '无法使用', description: '无法使用' },
-    { topic: 'marketplace',         title: '无法使用', description: '无法使用' },
-    { topic: 'charity',             title: '无法使用', description: '无法使用' },
-    { topic: 'lottery-prize',       title: '无法使用', description: '无法使用' },
-    { topic: 'family-emergency',    title: '无法使用', description: '无法使用' },
+    { topic: 'mixed',               title: '混合测验',       description: '常见诈骗模式的简短混合练习。' },
+    { topic: 'romance',             title: '情感诈骗',       description: '识别网上假装恋爱的诈骗者。' },
+    { topic: 'investment',          title: '投资诈骗',       description: '判断好到不真实的投资机会。' },
+    { topic: 'tech-support',        title: '技术支持诈骗',   description: '避开针对不存在问题的假技术支持。' },
+    { topic: 'government-imposter', title: '冒充政府人员',   description: '了解诈骗者如何冒充政府机构。' },
+    { topic: 'marketplace',         title: '网购交易诈骗',   description: '学习避开假卖家和付款陷阱。' },
+    { topic: 'charity',             title: '慈善诈骗',       description: '核实看似正规的捐款请求。' },
+    { topic: 'lottery-prize',       title: '彩票 / 中奖诈骗', description: '警惕没有参加却突然中奖的消息。' },
+    { topic: 'family-emergency',    title: '家庭紧急诈骗',   description: '核实声称家人出事的紧急来电。' },
   ],
 }
 
@@ -126,7 +126,7 @@ export function recordSession(record: QuizSessionRecord) {
 }
 
 export function buildSessionStats(sessions: QuizSessionRecord[]) {
-  // Pre-seed every topic so the progress chart can render stable rows even
+  // Pre-seed every topic so the progress breakdown can render stable rows even
   // before the user has answered questions in each category.
   const byTopic: Record<string, { attempts: number; total: number; correct: number }> = {}
   for (const topic of TOPIC_ORDER) {

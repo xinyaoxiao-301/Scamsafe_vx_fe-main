@@ -92,7 +92,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 12px 14px;
+  padding: 12px 42px 12px 14px;
   border-radius: 18px;
   border: 1px solid rgba(19, 108, 242, 0.14);
   background: rgba(255, 255, 255, 0.88);
@@ -101,6 +101,8 @@
   font-weight: 850;
   letter-spacing: -0.02em;
   text-align: center;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -173,6 +175,8 @@
   font-size: calc(1rem * var(--sc-scale));
   font-weight: 950;
   letter-spacing: -0.03em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 
 .study-center-page__topic-tooltip {
@@ -192,6 +196,8 @@
   font-size: calc(0.82rem * var(--sc-scale));
   line-height: 1.45;
   text-align: center;
+  white-space: normal;
+  overflow-wrap: break-word;
   opacity: 0;
   pointer-events: none;
   transition:
@@ -470,6 +476,8 @@
   margin-top: 14px;
 }
 
+/* Quiz progress follows the same mobile-first structure as simulation: show a
+   featured summary first, then let category details expand below it. */
 .study-center-page__progress-item {
   border: 1px solid rgba(17, 38, 58, 0.14);
   border-radius: 22px;
@@ -570,6 +578,8 @@
   font-size: calc(0.98rem * var(--sc-scale));
 }
 
+/* The category breakdown stays single-column on phones and only widens into a
+   two-column grid once tablet space is available. */
 @media (min-width: 768px) {
   .study-center-page__grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

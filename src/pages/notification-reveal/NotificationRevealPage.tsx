@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
+import { useI18n } from '@/lib/i18n'
 import { readStoredNotificationScenario } from '@/lib/notification-training/storage'
 import type { NotificationReveal } from '@/lib/notification-training/types'
 import { fetchNotificationReveal } from '@/services/notificationTraining'
@@ -24,33 +25,9 @@ function ReasonBadge({ tone }: { tone: 'danger' | 'safe' }) {
   )
 }
 
-function getVerdictCopy(isScam: boolean) {
-  if (isScam) {
-    return {
-      title: 'This was a scam notification!',
-      lede: '',
-      summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
-      cardDescription: 'Review the original message below.',
-      reasonsTitle: 'You allowed notifications on this site.',
-      reasonsDescription: 'Here are reasons why this message is a scam:',
-      actionLabel: 'Scam example',
-      verdictLabel: 'Scam',
-    }
-  }
-
-  return {
-    title: 'This was a non-scam notification.',
-    lede: '',
-    summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
-    cardDescription: 'Review the original message below.',
-    reasonsTitle: 'You allowed notifications on this site.',
-    reasonsDescription: 'Here are reasons why this message is safe:',
-    actionLabel: 'Safe example',
-    verdictLabel: 'Non-scam',
-  }
-}
-
 export function NotificationRevealPage({ onBackHome }: NotificationRevealPageProps) {
+  const { strings } = useI18n()
+  const s = strings.notificationReveal
   const [storedScenario] = useState(() => readStoredNotificationScenario())
   const [result, setResult] = useState<NotificationReveal | null>(null)
   const [isLoading, setIsLoading] = useState(Boolean(storedScenario))
@@ -74,7 +51,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
         })
       } catch {
         if (isCancelled) return
-        setError('Could not load the notification result right now. Please try again after opening another practice alert.')
+        setError(s.loadError)
       } finally {
         if (!isCancelled) {
           setIsLoading(false)
@@ -85,17 +62,17 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
     return () => {
       isCancelled = true
     }
-  }, [storedScenario])
+  }, [storedScenario, s.loadError])
 
   if (!storedScenario) {
     return (
-      <main className="notification-reveal-page" aria-label="Notification result">
+      <main className="notification-reveal-page" aria-label={s.pageLabel}>
         <SectionCard
           className="notification-reveal-page__card"
-          eyebrow="Notification Training"
-          title="No practice alert is available yet"
-          description="Allow notifications on the landing page and wait for the first training alert to appear."
-          footer={<Button onClick={onBackHome}>Back to Home</Button>}
+          eyebrow={s.eyebrow}
+          title={s.noAlertTitle}
+          description={s.noAlertDescription}
+          footer={<Button onClick={onBackHome}>{strings.common.backToHome}</Button>}
         />
       </main>
     )
@@ -103,12 +80,12 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
 
   if (isLoading) {
     return (
-      <main className="notification-reveal-page" aria-label="Notification training result">
+      <main className="notification-reveal-page" aria-label={s.trainingResultLabel}>
         <SectionCard
           className="notification-reveal-page__card"
-          eyebrow="Notification Training"
-          title="Loading notification result"
-          footer={<Button onClick={onBackHome}>Back to Home</Button>}
+          eyebrow={s.eyebrow}
+          title={s.loadingTitle}
+          footer={<Button onClick={onBackHome}>{strings.common.backToHome}</Button>}
         />
       </main>
     )
@@ -116,35 +93,35 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
 
   if (!result || error) {
     return (
-      <main className="notification-reveal-page" aria-label="Notification training result">
+      <main className="notification-reveal-page" aria-label={s.trainingResultLabel}>
         <SectionCard
           className="notification-reveal-page__card"
-          eyebrow="Notification Training"
-          title="Notification result unavailable"
-          description={error ?? 'We could not reveal this notification result right now.'}
-          footer={<Button onClick={onBackHome}>Back to Home</Button>}
+          eyebrow={s.eyebrow}
+          title={s.unavailableTitle}
+          description={error ?? s.unavailableDescription}
+          footer={<Button onClick={onBackHome}>{strings.common.backToHome}</Button>}
         />
       </main>
     )
   }
 
-  const copy = getVerdictCopy(result.isScam)
+  const copy = result.isScam ? s.scam : s.safe
   const tone = result.isScam ? 'danger' : 'safe'
 
   return (
-    <main className="notification-reveal-page" aria-label="Notification training result">
+    <main className="notification-reveal-page" aria-label={s.trainingResultLabel}>
       <section className="notification-reveal-page__hero">
-        <p className="notification-reveal-page__eyebrow">Notification Training Result</p>
+        <p className="notification-reveal-page__eyebrow">{s.heroEyebrow}</p>
         <h1 className="notification-reveal-page__title">{copy.title}</h1>
-        {copy.lede ? <p className="notification-reveal-page__lede">{copy.lede}</p> : null}
+        {copy.summary ? <p className="notification-reveal-page__lede">{copy.summary}</p> : null}
       </section>
 
       <section className="notification-reveal-page__grid">
         <SectionCard
           className="notification-reveal-page__card notification-reveal-page__card--observed"
-          eyebrow="Observed notification"
+          eyebrow={s.observedEyebrow}
           title={copy.cardDescription}
-          footer={<Button onClick={onBackHome}>Back to Home</Button>}
+          footer={<Button onClick={onBackHome}>{strings.common.backToHome}</Button>}
         >
           <div className="notification-reveal-page__summary">
             <div className="notification-reveal-page__summary-row">
@@ -162,7 +139,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
           </div>
           <div className="notification-reveal-page__body-preview">
             <div className="notification-reveal-page__body-topline">
-              <span className="notification-reveal-page__body-badge">Message</span>
+              <span className="notification-reveal-page__body-badge">{s.messageBadge}</span>
             </div>
             <p className="notification-reveal-page__body-text">{result.message}</p>
             <span
@@ -179,11 +156,11 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
 
         <SectionCard
           className="notification-reveal-page__card notification-reveal-page__card--reasons"
-          eyebrow="Why did I get this notification?"
+          eyebrow={s.reasonsEyebrow}
           title={copy.reasonsTitle}
           description={copy.reasonsDescription}
         >
-          <ul className="notification-reveal-page__reasons" aria-label="Notification explanations">
+          <ul className="notification-reveal-page__reasons" aria-label={s.explanationsLabel}>
             {result.explanations.map((text, index) => (
               <li className="notification-reveal-page__reason" key={index}>
                 <ReasonBadge tone={tone} />

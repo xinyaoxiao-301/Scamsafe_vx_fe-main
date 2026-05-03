@@ -70,7 +70,8 @@ function formatArticleContent(value: string): string[] {
 }
 
 export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
-  const { strings } = useI18n()
+  const { language, strings } = useI18n()
+  const s = strings.knowledgeHub
   const newsSectionRef = useRef<HTMLElement | null>(null)
   const [newsItems, setNewsItems] = useState<NewsListItem[]>([])
   const [newsLoading, setNewsLoading] = useState(true)
@@ -99,13 +100,13 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
         if (items.length > 0) setSelectedNewsId(items[0].article_id)
       })
       .catch((err: unknown) => {
-        if (!cancelled) setNewsError(err instanceof Error ? err.message : 'Failed to load news')
+        if (!cancelled) setNewsError(err instanceof Error ? err.message : s.newsErrorPrefix)
       })
       .finally(() => {
         if (!cancelled) setNewsLoading(false)
       })
     return () => { cancelled = true }
-  }, [])
+  }, [s.newsErrorPrefix])
 
   useEffect(() => {
     if (selectedNewsId === null) return
@@ -121,7 +122,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
 
   const formatShortDate = (value: string) =>
     value
-      ? new Date(value).toLocaleDateString('en-MY', {
+      ? new Date(value).toLocaleDateString(language === 'ms' ? 'ms-MY' : language === 'zh' ? 'zh-Hans-MY' : 'en-MY', {
           day: 'numeric',
           month: 'short',
           year: 'numeric',
@@ -130,7 +131,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
 
   const formatLongDate = (value: string) =>
     value
-      ? new Date(value).toLocaleDateString('en-MY', {
+      ? new Date(value).toLocaleDateString(language === 'ms' ? 'ms-MY' : language === 'zh' ? 'zh-Hans-MY' : 'en-MY', {
           day: 'numeric',
           month: 'long',
           year: 'numeric',
@@ -138,45 +139,45 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
       : ''
 
   return (
-    <main className="knowledge-hub-page" aria-label={strings.knowledgeHub.title}>
+    <main className="knowledge-hub-page" aria-label={s.title}>
       <section className="knowledge-hub-page__hero">
-        <p className="knowledge-hub-page__eyebrow">{strings.knowledgeHub.eyebrow}</p>
-        <h1>{strings.knowledgeHub.title}</h1>
+        <p className="knowledge-hub-page__eyebrow">{s.eyebrow}</p>
+        <h1>{s.title}</h1>
       </section>
 
       <section
         ref={newsSectionRef}
         className="knowledge-hub-page__news-section"
-        aria-label="Latest scam news"
+        aria-label={s.newsSectionLabel}
       >
         <SectionCard
           className="knowledge-hub-page__card knowledge-hub-page__card--news"
-          eyebrow="Live feed"
+          eyebrow={s.liveFeedEyebrow}
           eyebrowClassName="knowledge-hub-page__section-eyebrow"
-          title="Read the latest scam reports"
-          description="Open a recent article to review its title, source, full text, and linked prevention tips."
+          title={s.latestReportsTitle}
+          description={s.latestReportsDescription}
           footer={
             <div className="knowledge-hub-page__overview-footer">
               {!newsLoading && !newsError && newsItems.length > 0 ? (
                 <p className="knowledge-hub-page__overview-note">
                   {isReadingArticle
-                    ? 'You are now reading one selected article.'
-                    : 'Choose one article to open the reading view.'}
+                    ? s.readingNote
+                    : s.chooseNote}
                 </p>
               ) : null}
             </div>
           }
         >
           {newsLoading && (
-            <p className="knowledge-hub-page__news-status">Loading latest news…</p>
+            <p className="knowledge-hub-page__news-status">{s.loadingNews}</p>
           )}
           {newsError && (
             <p className="knowledge-hub-page__news-status knowledge-hub-page__news-status--error">
-              Could not load news: {newsError}
+              {s.newsErrorPrefix}: {newsError}
             </p>
           )}
           {!newsLoading && !newsError && newsItems.length === 0 && (
-            <p className="knowledge-hub-page__news-status">No news articles available yet.</p>
+            <p className="knowledge-hub-page__news-status">{s.noNews}</p>
           )}
           {!newsLoading && !newsError && newsItems.length > 0 && (
             <div
@@ -190,7 +191,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                 <div
                   className="knowledge-hub-page__article-list"
                   role="list"
-                  aria-label="News articles"
+                  aria-label={s.newsArticlesLabel}
                 >
                   {newsItems.map((item) => {
                     const isActive = item.article_id === selectedNewsId
@@ -225,14 +226,14 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     ? 'knowledge-hub-page__reader knowledge-hub-page__reader--expanded'
                     : 'knowledge-hub-page__reader knowledge-hub-page__reader--placeholder'
                 }
-                aria-label="Selected news article"
+                aria-label={s.selectedArticleLabel}
               >
                 {!isReadingArticle ? (
                   <div className="knowledge-hub-page__reader-empty">
-                    <p className="knowledge-hub-page__section-eyebrow">Step 1</p>
-                    <h2 className="knowledge-hub-page__reader-title">Choose one article to open the reading view</h2>
+                    <p className="knowledge-hub-page__section-eyebrow">{s.step1Eyebrow}</p>
+                    <h2 className="knowledge-hub-page__reader-title">{s.chooseArticleTitle}</h2>
                     <p className="knowledge-hub-page__reader-empty-copy">
-                      Pick any report on the left and the selected article will expand across this card.
+                      {s.chooseArticleDescription}
                     </p>
                     <div className="knowledge-hub-page__reader-footer knowledge-hub-page__reader-footer--single">
                       <Button variant="secondary" onClick={onBackHome}>
@@ -243,13 +244,13 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                 ) : null}
 
                 {isReadingArticle && newsDetailLoading ? (
-                  <p className="knowledge-hub-page__news-status">Loading article…</p>
+                  <p className="knowledge-hub-page__news-status">{s.loadingArticle}</p>
                 ) : null}
 
                 {isReadingArticle && !newsDetailLoading && newsDetail ? (
                   <>
                     <div className="knowledge-hub-page__reader-top">
-                      <p className="knowledge-hub-page__reader-eyebrow">Article detail</p>
+                      <p className="knowledge-hub-page__reader-eyebrow">{s.articleDetailEyebrow}</p>
                       <h2 className="knowledge-hub-page__reader-title">{newsDetail.title}</h2>
                       <div className="knowledge-hub-page__reader-meta">
                         <span>{formatLongDate(newsDetail.published)}</span>
@@ -260,7 +261,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                           target="_blank"
                           rel="noreferrer"
                         >
-                          Read source
+                          {s.readSource}
                         </a>
                       </div>
                     </div>
@@ -274,7 +275,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
                     {newsDetail.tips.length > 0 ? (
                       <div className="knowledge-hub-page__reader-grid">
                         <section className="knowledge-hub-page__reader-panel">
-                          <p className="knowledge-hub-page__panel-title">Analysis and prevention tips</p>
+                          <p className="knowledge-hub-page__panel-title">{s.tipsTitle}</p>
                           <ul className="knowledge-hub-page__panel-list">
                             {newsDetail.tips.map((tip) => (
                               <li key={tip}>{tip}</li>
@@ -286,7 +287,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
 
                     <div className="knowledge-hub-page__reader-footer">
                       <Button variant="primary" onClick={returnToArticleList}>
-                        Choose another article
+                        {s.chooseAnotherArticle}
                       </Button>
                       <Button variant="secondary" onClick={onBackHome}>
                         {strings.common.backToHome}

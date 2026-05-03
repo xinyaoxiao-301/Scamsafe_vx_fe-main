@@ -3,12 +3,12 @@ import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
 import {
-  SCENARIO_LABELS,
-  SCENARIO_DESCRIPTIONS,
   API_SCENARIO_SLUGS,
   type ApiScenarioType,
   isGoodbye,
   getPerformance,
+  getScenarioDescriptions,
+  getScenarioLabels,
   recordPerformance,
   startSimulationSession,
   sendSimulationMessage,
@@ -39,10 +39,12 @@ type SpeechRecognitionLike = {
 type SpeechRecognitionCtor = new () => SpeechRecognitionLike
 
 export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
-  const specificScenarioToggleLabel = 'Choose a scam type'
-  const hideSpecificScenarioToggleLabel = 'Hide scam types'
   const { language, strings } = useI18n()
   const s = strings.scamSimulation
+  const specificScenarioToggleLabel = s.showSpecificScenarios
+  const hideSpecificScenarioToggleLabel = s.hideSpecificScenarios
+  const scenarioLabels = getScenarioLabels(language)
+  const scenarioDescriptions = getScenarioDescriptions(language)
 
   const [scenarioType,  setScenarioType]  = useState<ScamScenarioType | null>(null)
   const [sessionId,     setSessionId]     = useState<string | null>(null)
@@ -62,7 +64,9 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null)
   const inputRef       = useRef<HTMLInputElement | null>(null)
 
-  const performance = getPerformance()
+  const performance = getPerformance(language)
+  // Mixed practice acts as the summary card while per-category results stay in
+  // the collapsible breakdown below to keep the mobile view compact first.
   const featuredPerformance = performance.find((row) => row.type === 'mixed-scams') ?? performance[0]
   const categoryPerformance = performance.filter((row) => row.type !== 'mixed-scams')
 
@@ -232,7 +236,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
         setLastOutcome('safe')
         recordPerformance(scenarioType, 'safe')
       } catch {
-        setAiFeedback('Well done! You ended the conversation safely.')
+        setAiFeedback(s.safeQuitFeedback)
         setLastOutcome('safe')
         recordPerformance(scenarioType, 'safe')
       } finally {
@@ -323,13 +327,13 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                           .join(' ')
                       }
                       onClick={() => startScenario(slug)}
-                      aria-label={s.startScenario(SCENARIO_LABELS[slug])}
+                      aria-label={s.startScenario(scenarioLabels[slug])}
                       aria-describedby={tooltipId}
                       disabled={isBotTyping}
                     >
-                      <p className="scam-simulation-page__type-title">{SCENARIO_LABELS[slug]}</p>
+                      <p className="scam-simulation-page__type-title">{scenarioLabels[slug]}</p>
                       <span id={tooltipId} className="scam-simulation-page__type-tooltip" role="tooltip">
-                        {SCENARIO_DESCRIPTIONS[slug]}
+                        {scenarioDescriptions[slug]}
                       </span>
                     </button>
                   )
@@ -381,13 +385,13 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                               .join(' ')
                           }
                           onClick={() => startScenario(slug)}
-                          aria-label={s.startScenario(SCENARIO_LABELS[slug])}
+                          aria-label={s.startScenario(scenarioLabels[slug])}
                           aria-describedby={tooltipId}
                           disabled={isBotTyping}
                         >
-                          <p className="scam-simulation-page__type-title">{SCENARIO_LABELS[slug]}</p>
+                          <p className="scam-simulation-page__type-title">{scenarioLabels[slug]}</p>
                           <span id={tooltipId} className="scam-simulation-page__type-tooltip" role="tooltip">
-                            {SCENARIO_DESCRIPTIONS[slug]}
+                            {scenarioDescriptions[slug]}
                           </span>
                         </button>
                       )
@@ -432,7 +436,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                     </svg>
                   </div>
                   <p className="scam-simulation-page__phone-title">
-                    {scenarioType ? SCENARIO_LABELS[scenarioType] : s.phoneDefaultTitle}
+                    {scenarioType ? scenarioLabels[scenarioType] : s.phoneDefaultTitle}
                   </p>
                 </div>
                 <p className="scam-simulation-page__phone-time" aria-label={timeLabel}>
@@ -583,22 +587,24 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
               }
             >
               {lastOutcome === 'risky'
-                ? 'You fell for the scam — here is what happened'
-                : 'Well done — you avoided the scam!'}
+                ? s.riskyOutcomeTitle
+                : s.safeOutcomeTitle}
             </p>
           </div>
 
           <div className="scam-simulation-page__report-box">
-            <p className="scam-simulation-page__report-heading">Here&apos;s your feedback report:</p>
+            <p className="scam-simulation-page__report-heading">{s.reportHeading}</p>
             {feedbackLines.map((line, i) => (
               <p key={i}>{line}</p>
             ))}
+            {/* Keep the return action inside the report card so the feedback
+                reads as one self-contained block on smaller screens. */}
             <div className="scam-simulation-page__report-actions">
               <Button
                 variant="primary"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               >
-                Return to top
+                {s.returnToTop}
               </Button>
             </div>
           </div>

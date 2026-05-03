@@ -499,7 +499,7 @@
   gap: 6px;
   color: var(--accent-strong);
   font-weight: 950;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .feature-launchpad__lead-helper-action::after {
@@ -634,7 +634,8 @@
   letter-spacing: -0.04em;
   line-height: 1.06;
   text-transform: none;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .feature-launchpad__item--scam-detection,
@@ -654,7 +655,7 @@
 
 .feature-launchpad__item--scam-detection .feature-launchpad__subtitle,
 .feature-launchpad__item--scam-simulation .feature-launchpad__subtitle {
-  white-space: nowrap;
+  white-space: normal;
   font-size: 0.96rem;
   line-height: 1.02;
 }
@@ -662,7 +663,7 @@
 .feature-launchpad__subtitle--wide {
   font-size: 1.22rem;
   letter-spacing: -0.04em;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .feature-anchors {
@@ -684,6 +685,8 @@
   box-shadow: none !important;
 }
 
+/* The launcher stays single-flow on phones first, then gains denser spacing
+   and wider card arrangements from tablet widths upward. */
 @media (min-width: 768px) {
   .home-page {
     min-height: auto;
@@ -784,6 +787,8 @@
   }
 }
 
+/* Desktop keeps the same launchpad content but gives the hero stronger
+   side-by-side balance for larger screens. */
 @media (min-width: 1200px) {
   /* Make the "Choose a service" lead more compact when it sits beside the video. */
   .feature-launchpad-shell {
@@ -887,7 +892,7 @@
   .feature-launchpad__item--scam-detection .feature-launchpad__subtitle {
     font-size: 0.94rem;
     line-height: 1.08;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .feature-launchpad__item--scam-simulation .feature-launchpad__heading {
@@ -897,7 +902,7 @@
   .feature-launchpad__item--scam-simulation .feature-launchpad__subtitle {
     font-size: 0.94rem;
     line-height: 1.08;
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .feature-launchpad__item--scam-detection .feature-launchpad__button {

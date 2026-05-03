@@ -46,6 +46,18 @@ a {
   text-decoration: none;
 }
 
+h1,
+h2,
+h3,
+p,
+li,
+button,
+a,
+label,
+span {
+  overflow-wrap: break-word;
+}
+
 #root {
   min-height: 100vh;
 }

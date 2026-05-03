@@ -17,12 +17,13 @@
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .knowledge-hub-page__hero h1 {
   margin: 0;
   width: fit-content;
+  max-width: 100%;
   color: var(--text);
   font-size: clamp(
     calc(1.55rem * var(--knowledge-hub-scale)),
@@ -32,17 +33,19 @@
   font-weight: 950;
   letter-spacing: -0.05em;
   line-height: 1.03;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .knowledge-hub-page__description {
   margin: 0;
   width: fit-content;
-  max-width: none;
+  max-width: 74ch;
   color: var(--muted);
   font-size: calc(1rem * var(--knowledge-hub-scale));
   line-height: 1.7;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
 }
 
 .knowledge-hub-page__hero-note {

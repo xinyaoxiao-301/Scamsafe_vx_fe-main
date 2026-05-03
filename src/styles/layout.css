@@ -202,6 +202,7 @@
 .app-shell__menu-link {
   display: block;
   width: 100%;
+  min-width: 0;
   padding: 12px 14px;
   border: 0;
   border-radius: 12px;
@@ -212,7 +213,8 @@
   text-align: left;
   line-height: 1.2;
   cursor: pointer;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .app-shell__menu-link:hover {
@@ -229,6 +231,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 0;
   min-height: 46px;
   padding: 10px 16px;
   border: 1px solid var(--line);
@@ -240,6 +243,7 @@
   line-height: 1.2;
   text-align: center;
   text-wrap: balance;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     background-color 180ms ease,
@@ -851,13 +855,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
+  min-width: 0;
   min-height: 44px;
   padding: 0 14px;
   border: 1px solid transparent;
   border-radius: 999px;
   font-size: 0.92rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.2;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
   cursor: pointer;
   transition:
     transform 180ms ease,
@@ -1014,10 +1023,12 @@
 
   .app-footer__title {
     font-size: 1.15rem;
-    white-space: nowrap;
+    white-space: normal;
   }
 }
 
+/* Tablet enhancement layer: keep the same flows, then widen spacing and split
+   dense sections into larger layouts once the mobile experience is stable. */
 @media (min-width: 768px) {
   .app-shell {
     --shell-top-pad: clamp(10px, 3vh, 28px);
@@ -1102,6 +1113,8 @@
 }
 
 
+/* Desktop enhancement layer: strengthen content zoning without introducing a
+   separate desktop-only experience. */
 @media (min-width: 1200px) {
   .app-shell {
     --home-hero-align-shift: clamp(36px, 4vw, 72px);
@@ -1168,8 +1181,8 @@
     padding-bottom: 8px;
     padding-left: 12px;
     padding-right: 12px;
-    white-space: nowrap;
-    text-wrap: nowrap;
+    white-space: normal;
+    text-wrap: balance;
   }
 
   .app-shell__nav-controls--desktop {
@@ -1190,7 +1203,7 @@
     font-size: 1.02rem;
   }
 
-  /* Keep the first slogan line on a single row; line breaks happen only at <br>. */
+  /* Let localized slogans wrap naturally when Malay or Chinese text is longer. */
   .app-shell__hero-header {
     max-width: 46rem;
     margin-top: clamp(12px, 20vh, 260px);
@@ -1198,7 +1211,7 @@
   }
 
   .app-shell__hero-title {
-    white-space: nowrap;
+    white-space: normal;
   }
 
   .app-shell__hero-body {

@@ -30,6 +30,7 @@ import type {
   SimulationQuitResult,
 } from '@/types/scamSimulation'
 import { env } from '@/lib/env'
+import type { Language } from '@/lib/i18n'
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
@@ -37,8 +38,8 @@ const API_BASE        = env.apiBaseUrl
 const PERFORMANCE_KEY = 'scamsafe_simulation_performance_v1'
 
 // ── Slug → UI display label ───────────────────────────────────────────────────
-// These English labels are only used in the scenario picker UI.
-// ms/zh show "not available" — handled via i18n scenarioUnavailable string.
+// Scenario slugs stay stable for the backend; the UI labels can still localize
+// so progress cards and unavailable views respect the selected language.
 
 export type ApiScenarioType = Exclude<ScamScenarioType, 'mixed-scams'>
 
@@ -79,6 +80,66 @@ export const SCENARIO_DESCRIPTIONS: Record<ScamScenarioType, string> = {
   'family-emergency-scams': 'Check urgent calls claiming a relative is in trouble.',
 }
 
+const SCENARIO_LABELS_BY_LANGUAGE: Record<Language, Record<ScamScenarioType, string>> = {
+  en: SCENARIO_LABELS,
+  ms: {
+    'mixed-scams':            'Kategori Rawak',
+    'romance-scams':          'Scam percintaan',
+    'investment-scams':       'Scam pelaburan',
+    'tech-support-scams':     'Scam sokongan teknikal',
+    'government-imposters':   'Penyamar kerajaan',
+    'marketplace-scams':      'Scam marketplace',
+    'charity-scams':          'Scam amal',
+    'lottery-prize-scams':    'Scam loteri / hadiah',
+    'family-emergency-scams': 'Scam kecemasan keluarga',
+  },
+  zh: {
+    'mixed-scams':            '随机类别',
+    'romance-scams':          '情感诈骗',
+    'investment-scams':       '投资诈骗',
+    'tech-support-scams':     '技术支持诈骗',
+    'government-imposters':   '冒充政府人员',
+    'marketplace-scams':      '网购交易诈骗',
+    'charity-scams':          '慈善诈骗',
+    'lottery-prize-scams':    '彩票 / 中奖诈骗',
+    'family-emergency-scams': '家庭紧急诈骗',
+  },
+}
+
+const SCENARIO_DESCRIPTIONS_BY_LANGUAGE: Record<Language, Record<ScamScenarioType, string>> = {
+  en: SCENARIO_DESCRIPTIONS,
+  ms: {
+    'mixed-scams':            'Gabungan ringkas corak scam biasa.',
+    'romance-scams':          'Lindungi diri apabila seseorang dalam talian berpura-pura mencintai anda.',
+    'investment-scams':       'Kenal pasti tawaran yang terlalu bagus untuk dipercayai.',
+    'tech-support-scams':     'Elakkan penyelesaian palsu untuk masalah yang tidak wujud.',
+    'government-imposters':   'Ketahui cara scammer menyamar sebagai badan kerajaan.',
+    'marketplace-scams':      'Belajar mengelak penjual palsu dan helah escrow.',
+    'charity-scams':          'Fahami cara scammer menyamar sebagai badan amal sah.',
+    'lottery-prize-scams':    'Anda tidak boleh menang pertandingan yang anda tidak sertai.',
+    'family-emergency-scams': 'Semak panggilan mendesak yang mendakwa ahli keluarga dalam masalah.',
+  },
+  zh: {
+    'mixed-scams':            '常见诈骗模式的简短混合练习。',
+    'romance-scams':          '学习识别网上假装恋爱的诈骗者。',
+    'investment-scams':       '识别那些好到不真实的投资机会。',
+    'tech-support-scams':     '避免为不存在的问题接受假技术支持。',
+    'government-imposters':   '了解诈骗者如何冒充政府机构。',
+    'marketplace-scams':      '学习避开假卖家和托管付款陷阱。',
+    'charity-scams':          '理解诈骗者如何冒充正规慈善机构。',
+    'lottery-prize-scams':    '没有参加的抽奖，不可能真的中奖。',
+    'family-emergency-scams': '核实声称亲人出事的紧急来电。',
+  },
+}
+
+export function getScenarioLabels(language: Language): Record<ScamScenarioType, string> {
+  return SCENARIO_LABELS_BY_LANGUAGE[language]
+}
+
+export function getScenarioDescriptions(language: Language): Record<ScamScenarioType, string> {
+  return SCENARIO_DESCRIPTIONS_BY_LANGUAGE[language]
+}
+
 // ── Goodbye detection ─────────────────────────────────────────────────────────
 // Mirrors GOODBYE_PHRASES in scam_sim.py.
 // Checked client-side so the frontend can route to /api/simulate/quit
@@ -116,11 +177,12 @@ function readPerformance(): PerformanceStore {
   }
 }
 
-export function getPerformance(): SimulationPerformanceRow[] {
+export function getPerformance(language: Language = 'en'): SimulationPerformanceRow[] {
   const store = readPerformance()
+  const scenarioLabels = getScenarioLabels(language)
   return SCENARIO_SLUGS.map((slug) => ({
     type:      slug,
-    label:     SCENARIO_LABELS[slug],
+    label:     scenarioLabels[slug],
     completed: store[slug]?.completed ?? 0,
     safe:      store[slug]?.safe      ?? 0,
     risky:     store[slug]?.risky     ?? 0,
