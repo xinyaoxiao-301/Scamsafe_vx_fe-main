@@ -1,3 +1,4 @@
+// types/scamDetection.ts
 // Labels are intentionally human-readable because the backend/model returns
 // these exact strings and the UI maps them directly to localized display labels.
 export type ScamRiskLevel = 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High'
