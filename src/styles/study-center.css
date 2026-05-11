@@ -68,7 +68,7 @@
 
 .study-center-page__topics {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
 
@@ -102,7 +102,13 @@
   letter-spacing: -0.02em;
   text-align: center;
   line-height: 1.25;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
   cursor: pointer;
   transition:
     border-color 180ms ease,
@@ -172,11 +178,17 @@
 
 .study-center-page__topic-title {
   color: var(--text);
-  font-size: calc(1rem * var(--sc-scale));
+  font-size: calc(0.98rem * var(--sc-scale));
   font-weight: 950;
   letter-spacing: -0.03em;
-  line-height: 1.15;
-  overflow-wrap: anywhere;
+  line-height: 1.18;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .study-center-page__topic-tooltip {
@@ -594,6 +606,13 @@
   .study-center-page__progress-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: start;
+  }
+}
+
+/* Desktop: give more space to the quiz workspace (right card). */
+@media (min-width: 1200px) {
+  .study-center-page__grid {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
   }
 }
 

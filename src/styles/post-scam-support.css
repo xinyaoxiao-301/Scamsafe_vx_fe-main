@@ -342,6 +342,22 @@
   text-align: left;
 }
 
+/* Visually merge the tracker + current action into one continuous card. */
+.support-recovery-page__card--tracker.section-card {
+  border-bottom: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding-bottom: 14px;
+}
+
+.support-recovery-page__card--active-step.section-card {
+  margin-top: -16px;
+  border-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: none;
+}
+
 .support-recovery-page__card--tracker > .section-card__header {
   display: block;
   width: auto;
@@ -942,35 +958,110 @@
   }
 
   .support-recovery-page__card--tracker .section-card__body {
-    grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr);
     justify-items: stretch;
-    align-items: center;
+    align-items: start;
     gap: 12px;
   }
 
-  .support-recovery-page__selected-case {
-    min-width: 0;
-    width: min(100%, 272px);
-    margin-bottom: 0;
-    justify-self: center;
+  .support-recovery-page__tracker {
+    --tracker-node-size: 44px;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0;
+    padding: 0;
   }
 
-  .support-recovery-page__tracker {
-    grid-template-columns: repeat(4, minmax(0, 178px));
+  .support-recovery-page__tracker::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--tracker-node-size) / 2);
+    left: calc(var(--tracker-node-size) / 2);
+    right: calc(var(--tracker-node-size) / 2);
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(17, 38, 58, 0.14);
+    z-index: 0;
+  }
+
+  .support-recovery-page__tracker > li {
+    flex: 1;
+    display: flex;
     justify-content: center;
+    min-width: 0;
+  }
+
+  .support-recovery-page__tracker-step {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    min-height: 0;
     width: 100%;
-    gap: 26px;
+    max-width: 190px;
+    gap: 10px;
+    z-index: 1;
+  }
+
+  .support-recovery-page__tracker-index {
+    width: var(--tracker-node-size);
+    height: var(--tracker-node-size);
+    border-radius: 999px;
+    border: 2px solid rgba(19, 108, 242, 0.42);
+    background: #eaf2ff;
+    color: var(--accent-strong);
+    box-shadow: none;
+    position: relative;
+    z-index: 2;
+  }
+
+  .support-recovery-page__tracker-step--done .support-recovery-page__tracker-index {
+    border-color: rgba(22, 163, 74, 0.52);
+    background: #e9f8ee;
+    color: #166534;
+  }
+
+  .support-recovery-page__tracker-step--locked .support-recovery-page__tracker-index {
+    border-color: rgba(107, 114, 128, 0.36);
+    background: #f3f4f6;
+    color: rgba(17, 38, 58, 0.62);
+  }
+
+  .support-recovery-page__tracker-copy {
+    grid-template-rows: auto auto;
+    gap: 8px;
+  }
+
+  .support-recovery-page__tracker-label {
+    min-height: 0;
+    font-size: 1.02rem;
+  }
+
+  .support-recovery-page__tracker-status {
+    border-radius: 12px;
+    border: 1px solid rgba(17, 38, 58, 0.12);
+    padding: 2px 12px;
+    min-height: 30px;
+  }
+
+  .support-recovery-page__tracker-step--done .support-recovery-page__tracker-status {
+    border-color: rgba(22, 163, 74, 0.32);
+  }
+
+  .support-recovery-page__tracker-step--active .support-recovery-page__tracker-status {
+    border-color: rgba(19, 108, 242, 0.3);
+  }
+
+  .support-recovery-page__tracker-step--locked .support-recovery-page__tracker-status {
+    border-color: rgba(107, 114, 128, 0.28);
   }
 
   .support-recovery-page__tracker-step:not(:last-child)::after {
-    content: '→';
-    position: absolute;
-    top: 50%;
-    right: -20px;
-    transform: translateY(-50%);
-    color: rgba(11, 87, 208, 0.96);
-    font-size: 1rem;
-    font-weight: 900;
-    pointer-events: none;
+    content: '';
+    display: none;
   }
 }

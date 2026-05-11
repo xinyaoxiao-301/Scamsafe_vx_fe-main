@@ -35,18 +35,18 @@ export function HomePage({ onNavigate }: HomePageProps) {
       tooltip: strings.homeFeatures.tooltips.studyCenter,
     },
     {
-      id: 'post-scam-support',
-      icon: 'support',
-      subtitle: strings.homeFeatures.support,
-      route: appRoutes.support,
-      tooltip: strings.homeFeatures.tooltips.support,
-    },
-    {
       id: 'knowledge-hub',
       icon: 'study',
       subtitle: strings.homeFeatures.knowledgeHub,
       route: appRoutes.knowledgeHub,
       tooltip: strings.homeFeatures.tooltips.knowledgeHub,
+    },
+    {
+      id: 'post-scam-support',
+      icon: 'support',
+      subtitle: strings.homeFeatures.support,
+      route: appRoutes.support,
+      tooltip: strings.homeFeatures.tooltips.support,
     },
   ] as const
 
@@ -55,13 +55,6 @@ export function HomePage({ onNavigate }: HomePageProps) {
       <section className="feature-launchpad-shell" aria-label={strings.homeCard.launchpadLabel}>
         <header className="feature-launchpad__lead" aria-label={strings.homeCard.title}>
           <p className="feature-launchpad__lead-title">{strings.homeCard.title}</p>
-          <p className="feature-launchpad__lead-helper">
-            <span className="feature-launchpad__lead-helper-before">{strings.homeCard.helperBefore}</span>{' '}
-            <span className="feature-launchpad__lead-helper-action">{strings.homeCard.helperAction}</span>
-            {strings.homeCard.helperAfter ? (
-              <span className="feature-launchpad__lead-helper-after"> {strings.homeCard.helperAfter}</span>
-            ) : null}
-          </p>
         </header>
         <div className="feature-launchpad" role="list">
           {features.map((feature) => {

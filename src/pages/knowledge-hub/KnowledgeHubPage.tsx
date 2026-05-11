@@ -141,7 +141,6 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
   return (
     <main className="knowledge-hub-page" aria-label={s.title}>
       <section className="knowledge-hub-page__hero">
-        <p className="knowledge-hub-page__eyebrow">{s.eyebrow}</p>
         <h1>{s.title}</h1>
       </section>
 

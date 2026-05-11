@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+﻿import { useEffect, useMemo, useState } from 'react'
 import type { PropsWithChildren } from 'react'
 import { appRoutes } from '@/app/routes'
 import { I18nContext } from './context'
@@ -164,10 +164,10 @@ const STRINGS: Record<Language, Strings> = {
         { id: 'in', tone: 'plain', text: 'in', spaceAfter: true },
         { id: 'the', tone: 'plain', text: 'the', spaceAfter: true },
         { id: 'digital', tone: 'plain', text: 'Digital', spaceAfter: true },
-        { id: 'world', tone: 'plain', text: 'World', spaceAfter: false },
+        { id: 'world', tone: 'plain', text: 'World.', spaceAfter: false },
       ],
-      subtitle:
-        'Easy to understand · Simple to use · Realistic practice',
+      subtitle: 'A scam awareness platform designed for elderly',
+      keywords: 'Easy to understand · Simple to use · Realistic practice',
       pills: {
         detection: 'Scam Checker',
         chat: 'AI Scam Chat',
@@ -252,8 +252,8 @@ const STRINGS: Record<Language, Strings> = {
       currentAction: 'Current action',
       reviewNote: 'You are reviewing an earlier step. Return to the active step in the tracker when you are ready to continue.',
       completeNote: 'Complete this action in real life before unlocking the next step.',
-      confirmLabel: 'I have completed this action and I am ready for the next step.',
-      nextStepButton: 'Done, next step',
+      confirmLabel: 'I have completed this action.',
+      nextStepButton: 'Next',
       emergencySide: {
         policeTitle: 'Police',
         policeText: 'Report fast',
@@ -659,17 +659,18 @@ const STRINGS: Record<Language, Strings> = {
     },
     hero: {
       titleTokens: [
-        { id: 'kekal', tone: 'plain', text: 'Kekal', spaceAfter: true },
+        { id: 'kekal-1', tone: 'plain', text: 'Kekal', spaceAfter: true },
         { id: 'selamat', tone: 'highlight', text: 'Selamat', spaceAfter: false },
         { id: 'comma', tone: 'plain', text: ',', spaceAfter: true },
         { id: 'kekal-2', tone: 'plain', text: 'Kekal', spaceAfter: true },
-        { id: 'yakin', tone: 'highlight', text: 'Yakin', spaceAfter: true },
+        { id: 'tenang', tone: 'highlight', text: 'Tenang', spaceAfter: false },
+        { id: 'br-1', tone: 'plain', text: '\n', spaceAfter: false },
         { id: 'dalam', tone: 'plain', text: 'dalam', spaceAfter: true },
         { id: 'dunia', tone: 'plain', text: 'Dunia', spaceAfter: true },
-        { id: 'digital', tone: 'plain', text: 'Digital', spaceAfter: false },
+        { id: 'digital', tone: 'plain', text: 'Digital.', spaceAfter: false },
       ],
-      subtitle:
-        'ScamSafe ialah laman web berkuasa AI yang membantu warga emas di Malaysia menyemak SMS mencurigakan dan kandungan mesej yang disalin daripada emel atau chat menggunakan tulisan besar, langkah mudah, dan penjelasan yang tenang.',
+      subtitle: 'A scam awareness platform designed for elderly',
+      keywords: 'Mudah difahami · Mudah digunakan · Amalan realistik',
       pills: {
         detection: 'Semak Scam',
         chat: 'Latihan Chat AI',
@@ -754,8 +755,8 @@ const STRINGS: Record<Language, Strings> = {
       currentAction: 'Tindakan semasa',
       reviewNote: 'Anda sedang menyemak langkah terdahulu. Kembali ke langkah aktif dalam penjejak apabila anda sedia untuk teruskan.',
       completeNote: 'Selesaikan tindakan ini dalam kehidupan sebenar sebelum membuka langkah seterusnya.',
-      confirmLabel: 'Saya telah menyelesaikan tindakan ini dan bersedia untuk langkah seterusnya.',
-      nextStepButton: 'Selesai, langkah seterusnya',
+      confirmLabel: 'Saya telah menyelesaikan tindakan ini.',
+      nextStepButton: 'Seterusnya',
       emergencySide: {
         policeTitle: 'Polis',
         policeText: 'Lapor segera',
@@ -1161,15 +1162,16 @@ const STRINGS: Record<Language, Strings> = {
     },
     hero: {
       titleTokens: [
-        { id: 'stay-safe', tone: 'plain', text: '保持', spaceAfter: false },
+        { id: 'keep-1', tone: 'plain', text: '保持', spaceAfter: false },
         { id: 'safe', tone: 'highlight', text: '安全', spaceAfter: false },
         { id: 'comma', tone: 'plain', text: '，', spaceAfter: false },
-        { id: 'stay-confident', tone: 'plain', text: '保持', spaceAfter: false },
-        { id: 'confident', tone: 'highlight', text: '自信', spaceAfter: false },
-        { id: 'tail', tone: 'plain', text: '畅游数字世界', spaceAfter: false },
+        { id: 'keep-2', tone: 'plain', text: '保持', spaceAfter: false },
+        { id: 'calm', tone: 'highlight', text: '冷静', spaceAfter: false },
+        { id: 'br-1', tone: 'plain', text: '\n', spaceAfter: false },
+        { id: 'tail', tone: 'plain', text: '畅游数字世界。', spaceAfter: false },
       ],
-      subtitle:
-        'ScamSafe 是一款 AI 反诈网站，帮助马来西亚的老年人检查可疑诈骗短信，以及复制粘贴的邮件和聊天消息内容，采用大字显示、步骤清晰、解释安心的方式。',
+      subtitle: '一个专为老年人设计的防诈骗意识平台',
+      keywords: '易于理解 · 使用简单 · 贴近实际',
       pills: {
         detection: '诈骗检查',
         chat: 'AI 防诈聊天',
@@ -1254,8 +1256,8 @@ const STRINGS: Record<Language, Strings> = {
       currentAction: '当前行动',
       reviewNote: '你正在查看之前的步骤。准备继续时，请回到进度条中的当前步骤。',
       completeNote: '请先在现实中完成这个行动，再解锁下一步。',
-      confirmLabel: '我已完成这个行动，可以进入下一步。',
-      nextStepButton: '完成，下一步',
+      confirmLabel: '我已完成这个行动。',
+      nextStepButton: '下一步',
       emergencySide: {
         policeTitle: '警方',
         policeText: '尽快报案',

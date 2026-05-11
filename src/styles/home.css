@@ -450,10 +450,10 @@
   display: grid;
   gap: 6px;
   text-align: center;
-  padding: 12px 12px 12px;
-  border-bottom: 1px solid rgba(19, 108, 242, 0.12);
-  background: #ffffff;
-  border-radius: 18px;
+  padding: 8px 12px 0;
+  border-bottom: 0;
+  background: transparent;
+  border-radius: 0;
 }
 
 .feature-launchpad__lead-eyebrow {
@@ -825,19 +825,29 @@
 
   /* Make the 5 feature cards very compact on desktop. */
   .feature-launchpad {
-    grid-template-columns: repeat(3, 240px);
-    gap: 12px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 14px;
     align-content: start;
-    justify-content: center;
+    justify-content: stretch;
     justify-items: stretch;
-    width: fit-content;
+    width: 100%;
     margin: 0 auto;
   }
 
   .feature-launchpad__item {
-    min-height: 88px;
-    padding: 10px 18px;
-    border-radius: 18px;
+    min-height: 190px;
+    padding: 14px 18px;
+    border-radius: 22px;
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .feature-launchpad__item--scam-detection,
+  .feature-launchpad__item--scam-simulation {
+    grid-column: auto;
+    max-width: none;
+    min-height: 190px;
   }
 
   .feature-launchpad__button {
@@ -845,87 +855,25 @@
     width: min(100%, 148px);
   }
 
-  .feature-launchpad__item--scam-detection {
-    grid-column: auto;
-    grid-row: span 2;
-    min-height: 190px;
-    max-width: none;
-    align-content: center;
-    justify-items: center;
-    gap: 18px;
-    padding: 14px 18px;
-  }
-
-  .feature-launchpad__item--scam-simulation {
-    grid-column: auto;
-    max-width: none;
-    min-height: 114px;
-    padding: 10px 18px;
-  }
-
-  .feature-launchpad__item--post-scam-support {
-    grid-column: 3;
-    grid-row: 2;
-  }
-
-  .feature-launchpad__item--scam-detection .feature-launchpad__icon {
+  .feature-launchpad__icon {
     width: 56px;
     height: 56px;
     border-radius: 16px;
   }
 
-  .feature-launchpad__item--scam-detection .feature-launchpad__icon svg {
+  .feature-launchpad__icon svg {
     width: 28px;
     height: 28px;
   }
 
-  .feature-launchpad__item--scam-detection .feature-launchpad__heading {
-    align-content: center;
-    gap: 8px;
-    justify-items: center;
-  }
-
-  .feature-launchpad__item--scam-detection .feature-launchpad__title {
-    font-size: 0.86rem;
-  }
-
-  .feature-launchpad__item--scam-detection .feature-launchpad__subtitle {
-    font-size: 0.94rem;
-    line-height: 1.08;
-    white-space: normal;
-  }
-
-  .feature-launchpad__item--scam-simulation .feature-launchpad__heading {
-    justify-items: center;
-  }
-
-  .feature-launchpad__item--scam-simulation .feature-launchpad__subtitle {
-    font-size: 0.94rem;
-    line-height: 1.08;
-    white-space: normal;
-  }
-
-  .feature-launchpad__item--scam-detection .feature-launchpad__button {
-    align-self: center;
-  }
-
-  .feature-launchpad__icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 14px;
-  }
-
-  .feature-launchpad__icon svg {
-    width: 22px;
-    height: 22px;
-  }
-
   .feature-launchpad__title {
-    font-size: 0.78rem;
+    font-size: 0.86rem;
   }
 
   .feature-launchpad__subtitle {
     font-size: 1.05rem;
+    line-height: 1.12;
+    white-space: normal;
   }
 
   .feature-launchpad__subtitle--wide {

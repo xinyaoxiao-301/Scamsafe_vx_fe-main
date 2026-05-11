@@ -77,16 +77,33 @@ function titleTokensToText(tokens: HeroTitleToken[]) {
 
 export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimations = false }: AppShellProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false)
   const [heroAnimationCycle, setHeroAnimationCycle] = useState(0)
   const isMobile = useMediaQuery('(max-width: 767px)')
   const isDesktop = useMediaQuery('(min-width: 1200px)')
   const isHome = currentRoute === appRoutes.home
   const { language, setLanguage, strings } = useI18n()
   const lastHeroTriggerRef = useRef<string | null>(null)
+  const langMenuRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     setIsMenuOpen(false)
+    setIsLangMenuOpen(false)
   }, [currentRoute])
+
+  useEffect(() => {
+    if (!isLangMenuOpen) return
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null
+      if (!target) return
+      if (langMenuRef.current?.contains(target)) return
+      setIsLangMenuOpen(false)
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    return () => document.removeEventListener('pointerdown', handlePointerDown)
+  }, [isLangMenuOpen])
 
   useEffect(() => {
     if (!enableHeroAnimations) {
@@ -135,6 +152,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                   className={[
                     'app-shell__nav-link',
                     item.route === currentRoute ? 'app-shell__nav-link--active' : '',
+                    language === 'ms' ? 'app-shell__nav-link--ms' : '',
                     item.route === appRoutes.detection && language === 'en'
                       ? 'app-shell__nav-link--scam-checker'
                       : '',
@@ -206,17 +224,54 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
           )}
           <div className={isDesktop ? 'app-shell__nav-controls app-shell__nav-controls--desktop' : 'app-shell__nav-controls'}>
             {isDesktop ? (
-              <label className="app-shell__lang" aria-label={strings.ui.language}>
-                <select
-                  value={language}
-                  onChange={(event) => setLanguage(event.target.value as Language)}
+              <div className="app-shell__lang-switch" ref={langMenuRef}>
+                <button
+                  type="button"
+                  className="app-shell__lang-button"
                   aria-label={strings.ui.language}
+                  aria-haspopup="menu"
+                  aria-expanded={isLangMenuOpen}
+                  onClick={() => setIsLangMenuOpen((open) => !open)}
                 >
-                  <option value="en">{languageLabel('en')}</option>
-                  <option value="ms">{languageLabel('ms')}</option>
-                  <option value="zh">{languageLabel('zh')}</option>
-                </select>
-              </label>
+                  Language
+                </button>
+                {isLangMenuOpen ? (
+                  <div className="app-shell__lang-menu" role="menu" aria-label={strings.ui.language}>
+                    {[
+                      {
+                        value: 'en' as const,
+                        label: language === 'ms' ? 'Inggeris' : language === 'zh' ? '英文' : 'English',
+                      },
+                      {
+                        value: 'ms' as const,
+                        label: language === 'ms' ? 'Melayu' : language === 'zh' ? '马来文' : 'Malay',
+                      },
+                      {
+                        value: 'zh' as const,
+                        label: language === 'ms' ? 'Cina' : language === 'zh' ? '中文' : 'Chinese',
+                      },
+                    ].map((item) => (
+                      <button
+                        key={item.value}
+                        type="button"
+                        role="menuitemradio"
+                        aria-checked={language === item.value}
+                        className={
+                          language === item.value
+                            ? 'app-shell__lang-option app-shell__lang-option--active'
+                            : 'app-shell__lang-option'
+                        }
+                        onClick={() => {
+                          setLanguage(item.value as Language)
+                          setIsLangMenuOpen(false)
+                        }}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             ) : null}
           </div>
         </header>
@@ -232,38 +287,41 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
               </div>
               <div className="app-shell__hero-inner">
                 <header className="app-shell__hero-header" aria-label={strings.ui.heroTaglineLabel}>
-                  <h1 className="app-shell__hero-title" aria-label={titleTokensToText(strings.hero.titleTokens)}>
+                  <h1
+                    className={[
+                      'app-shell__hero-title',
+                      language === 'ms'
+                        ? 'app-shell__hero-title--ms'
+                        : language === 'zh'
+                          ? 'app-shell__hero-title--zh'
+                          : 'app-shell__hero-title--en',
+                    ].join(' ')}
+                    aria-label={titleTokensToText(strings.hero.titleTokens)}
+                  >
                     <span className="sr-only">{titleTokensToText(strings.hero.titleTokens)}</span>
                     <span className="app-shell__hero-title-animated" aria-hidden="true">
                       {renderAnimatedTitle(strings.hero.titleTokens, enableHeroAnimations)}
                     </span>
                   </h1>
                 </header>
-                <div className="app-shell__hero-body">
-                  <div className="app-shell__hero-copy">
-                    <p className="app-shell__hero-subtitle">{strings.hero.subtitle}</p>
+                  <div className="app-shell__hero-body">
+                    <div className="app-shell__hero-copy">
+                      <p className="app-shell__hero-tagline">{strings.hero.subtitle}</p>
+                      {strings.hero.keywords ? <p className="app-shell__hero-subtitle">{strings.hero.keywords}</p> : null}
+                      <div className="app-shell__hero-video-button" aria-label={strings.ui.tutorialVideoLabel}>
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M9.2 7.6v8.8L16.8 12 9.2 7.6Z" fill="currentColor" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
             </section>
           </>
         ) : null}
         {isHome ? (
           <>
             <div className="app-shell__home-main" aria-label={strings.ui.homeMainLabel}>
-              <section className="app-shell__hero-video-section" aria-label={strings.ui.tutorialVideoLabel}>
-                <div className="app-shell__hero-video-wrap">
-                  <div className="app-shell__hero-video-frame">
-                    <div className="app-shell__hero-video-play">
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M9.2 7.6v8.8L16.8 12 9.2 7.6Z" fill="currentColor" />
-                      </svg>
-                    </div>
-                    <p className="app-shell__hero-video-label">{strings.hero.video.label}</p>
-                    <p className="app-shell__hero-video-hint">{strings.hero.video.hint}</p>
-                  </div>
-                </div>
-              </section>
               {children}
 
               <section className="app-shell__stats" aria-label={strings.ui.statsLabel}>

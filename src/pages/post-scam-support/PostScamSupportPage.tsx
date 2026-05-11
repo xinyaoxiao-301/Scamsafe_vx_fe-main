@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+﻿import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useI18n } from '@/lib/i18n'
@@ -81,7 +81,6 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
   return (
     <main className="support-recovery-page" aria-label={strings.postScamSupport.title}>
       <section className="support-recovery-page__hero">
-        <p className="support-recovery-page__eyebrow">{strings.postScamSupport.eyebrow}</p>
         <h1>{strings.postScamSupport.title}</h1>
       </section>
 
@@ -122,10 +121,6 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
               title={s.trackerTitle}
               description={s.trackerDescription}
             >
-              <div className="support-recovery-page__selected-case">
-                <span className="support-recovery-page__selected-case-label">{s.selectedCaseLabel}</span>
-                <strong>{s.selectedCaseText}</strong>
-              </div>
               <ol className="support-recovery-page__tracker" aria-label={s.recoveryStepsLabel}>
                 {steps.map((step, index) => {
                   const isDone = index < completedCount
@@ -168,7 +163,6 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
         {activeStep ? (
           <SectionCard
             className="support-recovery-page__card support-recovery-page__card--active-step"
-            eyebrow={`${s.currentAction} • ${activeStep.eyebrow}`}
             title={activeStep.title}
             description={activeStep.description}
             footer={
@@ -180,9 +174,6 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                     </p>
                   ) : (
                     <>
-                      <p className="support-recovery-page__active-footer-text">
-                        {s.completeNote}
-                      </p>
                       <label className="support-recovery-page__confirm-check">
                         <input
                           type="checkbox"

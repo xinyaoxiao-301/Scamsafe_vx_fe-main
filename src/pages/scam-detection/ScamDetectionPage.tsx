@@ -125,7 +125,6 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
     <main className="scam-detection-page" aria-label={s.pageLabel}>
 
       <header className="scam-detection-page__header">
-        <p className="scam-detection-page__eyebrow">{s.headerEyebrow}</p>
         <h1 className="scam-detection-page__title">{s.title}</h1>
       </header>
 

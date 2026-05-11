@@ -293,7 +293,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   return (
     <main className="scam-simulation-page" aria-label={s.pageLabel}>
       <header className="scam-simulation-page__header">
-        <p className="scam-simulation-page__eyebrow">{s.eyebrow}</p>
         <h1 className="scam-simulation-page__title">{s.title}</h1>
       </header>
 

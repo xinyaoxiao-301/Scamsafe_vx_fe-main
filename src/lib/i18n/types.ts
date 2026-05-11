@@ -118,6 +118,7 @@ export type Strings = {
   hero: {
     titleTokens: HeroTitleToken[]
     subtitle: string
+    keywords?: string
     pills: {
       detection: string
       chat: string

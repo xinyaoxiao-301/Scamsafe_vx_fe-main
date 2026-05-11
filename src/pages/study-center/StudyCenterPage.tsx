@@ -280,7 +280,6 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   return (
     <main className="study-center-page" aria-label={strings.studyCenter.pageLabel}>
       <header className="study-center-page__header">
-        <p className="study-center-page__eyebrow">{strings.studyCenter.eyebrow}</p>
         <h1 className="study-center-page__title">{strings.studyCenter.title}</h1>
       </header>
 
