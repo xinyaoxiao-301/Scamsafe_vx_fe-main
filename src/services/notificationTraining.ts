@@ -13,7 +13,6 @@ type NotificationRevealResponse = {
   message: string
   label: string
   is_scam: boolean
-  // Backend returns explanation rows as plain strings for the reveal page.
   explanations: string[]
 }
 
@@ -22,8 +21,11 @@ async function parseError(res: Response) {
   return (body as { detail?: string }).detail ?? `Server error ${res.status}`
 }
 
-export async function fetchRandomNotification(): Promise<RandomNotificationResponse> {
-  const res = await fetch(`${API_BASE}/api/notifications/random`)
+export async function fetchRandomNotification(language = 'en'): Promise<RandomNotificationResponse> {
+  const url = new URL(`${API_BASE}/api/notifications/random`)
+  url.searchParams.set('language', language)
+
+  const res = await fetch(url.toString())
   if (!res.ok) {
     throw new Error(await parseError(res))
   }
@@ -31,8 +33,14 @@ export async function fetchRandomNotification(): Promise<RandomNotificationRespo
   return res.json() as Promise<RandomNotificationResponse>
 }
 
-export async function fetchNotificationReveal(notificationId: number): Promise<NotificationReveal> {
-  const res = await fetch(`${API_BASE}/api/notifications/${notificationId}`)
+export async function fetchNotificationReveal(
+  notificationId: number,
+  language = 'en',
+): Promise<NotificationReveal> {
+  const url = new URL(`${API_BASE}/api/notifications/${notificationId}`)
+  url.searchParams.set('language', language)
+
+  const res = await fetch(url.toString())
   if (!res.ok) {
     throw new Error(await parseError(res))
   }

@@ -13,7 +13,7 @@ function supportsNativeNotifications() {
   return typeof window !== 'undefined' && 'Notification' in window
 }
 
-export function useNotificationTraining(enabled: boolean) {
+export function useNotificationTraining(enabled: boolean, language = 'en') {
   const entryTimeRef = useRef<number | null>(null)
   const hasTriggeredRef = useRef(false)
   const notificationRef = useRef<Notification | null>(null)
@@ -101,7 +101,8 @@ export function useNotificationTraining(enabled: boolean) {
 
       void (async () => {
         try {
-          const preview = await fetchRandomNotification()
+          // Pass the current language so the notification message is localised.
+          const preview = await fetchRandomNotification(language)
           if (isCancelled || hasTriggeredRef.current) {
             return
           }
@@ -117,8 +118,6 @@ export function useNotificationTraining(enabled: boolean) {
           writeStoredNotificationScenario(scenario)
           setActiveScenario(scenario)
 
-          // The in-app training popup should always appear after site entry.
-          // Native browser notifications are optional and only shown when allowed.
           if (permission === 'granted') {
             try {
               const nativeNotification = new window.Notification('ScamSafe notification training', {
@@ -140,8 +139,7 @@ export function useNotificationTraining(enabled: boolean) {
 
               notificationRef.current = nativeNotification
             } catch {
-              // Keep the mirrored in-app preview available even if the native
-              // notification constructor fails on a specific browser/runtime.
+              // Keep the in-app preview available even if the native notification fails.
             }
           }
         } catch {
@@ -154,7 +152,7 @@ export function useNotificationTraining(enabled: boolean) {
       isCancelled = true
       window.clearTimeout(timeoutId)
     }
-  }, [enabled, permission])
+  }, [enabled, language, permission])
 
   useEffect(() => {
     if (!enabled) {

@@ -41,7 +41,13 @@ function AppContent() {
   const [showDismissedScamToast, setShowDismissedScamToast] = useState(false)
   const hasAcceptedSiteDisclaimer = siteEntryState === 'accepted'
   const hasDeclinedSiteDisclaimer = siteEntryState === 'declined'
-  const { activeScenario, dismissScenario, openScenario } = useNotificationTraining(hasAcceptedSiteDisclaimer)
+
+  // Pass the active language so the hook fetches a localised notification message.
+  const { activeScenario, dismissScenario, openScenario } = useNotificationTraining(
+    hasAcceptedSiteDisclaimer,
+    language,
+  )
+
   const siteDisclaimerStrings = strings.siteDisclaimer
   const notificationStrings = strings.notificationTraining
 
@@ -89,7 +95,9 @@ function AppContent() {
 
     void (async () => {
       try {
-        const reveal = await fetchNotificationReveal(activeScenario.id)
+        // Prefetch the reveal in the correct language so the result page is
+        // already localised when the user clicks "Open".
+        const reveal = await fetchNotificationReveal(activeScenario.id, language)
         if (isCancelled) return
 
         setPrefetchedNotificationReveal((current) => ({
@@ -104,7 +112,7 @@ function AppContent() {
     return () => {
       isCancelled = true
     }
-  }, [activeScenario, prefetchedNotificationReveal])
+  }, [activeScenario, language, prefetchedNotificationReveal])
 
   useEffect(() => {
     if (!showDismissedScamToast) {
@@ -120,8 +128,6 @@ function AppContent() {
     }
   }, [showDismissedScamToast])
 
-  // Hash routing keeps the static build deployable without server-side rewrite
-  // rules while still allowing direct feature navigation inside the app.
   const handleNavigate = (route: AppRoute) => {
     if (window.location.hash === route) {
       setCurrentRoute(route)
@@ -132,8 +138,6 @@ function AppContent() {
     window.location.hash = route
   }
 
-  // Each feature is kept as its own page module; App only composes the current
-  // route with the shared shell and navigation callbacks.
   const page = (() => {
     switch (currentRoute) {
       case appRoutes.detection:
@@ -193,7 +197,9 @@ function AppContent() {
     }
 
     try {
-      const reveal = await fetchNotificationReveal(scenario.id)
+      // Fetch reveal in the current language so even the dismiss-path gets
+      // localised data if the prefetch hadn't completed yet.
+      const reveal = await fetchNotificationReveal(scenario.id, language)
       setPrefetchedNotificationReveal((current) => ({
         ...current,
         [scenario.id]: { isScam: reveal.isScam },
@@ -203,8 +209,7 @@ function AppContent() {
         setShowDismissedScamToast(true)
       }
     } catch {
-      // If reveal data is unavailable, keep the dismiss behaviour silent so the
-      // training flow still feels responsive.
+      // If reveal data is unavailable, keep the dismiss behaviour silent.
     }
   }
 

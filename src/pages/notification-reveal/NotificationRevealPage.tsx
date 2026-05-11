@@ -26,7 +26,7 @@ function ReasonBadge({ tone }: { tone: 'danger' | 'safe' }) {
 }
 
 export function NotificationRevealPage({ onBackHome }: NotificationRevealPageProps) {
-  const { strings } = useI18n()
+  const { language, strings } = useI18n()
   const s = strings.notificationReveal
   const [storedScenario] = useState(() => readStoredNotificationScenario())
   const [result, setResult] = useState<NotificationReveal | null>(null)
@@ -43,7 +43,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
 
     void (async () => {
       try {
-        const reveal = await fetchNotificationReveal(storedScenario.id)
+        const reveal = await fetchNotificationReveal(storedScenario.id, language)
         if (isCancelled) return
         setResult({
           ...reveal,
@@ -62,7 +62,7 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
     return () => {
       isCancelled = true
     }
-  }, [storedScenario, s.loadError])
+  }, [storedScenario, language, s.loadError])
 
   if (!storedScenario) {
     return (
@@ -135,7 +135,6 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
                 {copy.verdictLabel}
               </strong>
             </div>
-
           </div>
           <div className="notification-reveal-page__body-preview">
             <div className="notification-reveal-page__body-topline">
