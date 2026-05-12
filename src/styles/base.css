@@ -8,6 +8,12 @@ html {
   min-height: 100%;
 }
 
+@media (max-width: 767px) {
+  html {
+    font-size: 85%;
+  }
+}
+
 body {
   min-height: 100vh;
   margin: 0;

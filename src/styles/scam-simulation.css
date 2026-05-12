@@ -863,6 +863,72 @@
   }
 }
 
+@media (max-width: 767px) {
+  .scam-simulation-page {
+    /* Mobile: reduce the senior-friendly scale so the phone mockup fits
+       comfortably without horizontal overflow. */
+    --sim-scale: 1.05;
+    --sim-composer-control-size: 44px;
+    --sim-composer-icon-size: 18px;
+    padding-top: 12px;
+    gap: var(--space-4);
+  }
+
+  .scam-simulation-page__title {
+    font-size: clamp(1.45rem, 5.6vw, 2.05rem);
+    line-height: 1.1;
+  }
+
+  .scam-simulation-page__card .section-card__eyebrow {
+    font-size: 0.88rem;
+  }
+
+  .scam-simulation-page__card .section-card__header h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .scam-simulation-page__card .section-card__header p {
+    font-size: 1.03rem;
+    line-height: 1.55;
+  }
+
+  .scam-simulation-page__footer-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    justify-items: stretch;
+    align-items: center;
+    width: 100%;
+  }
+
+  .scam-simulation-page__footer-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .scam-simulation-page__phone {
+    width: 100%;
+    max-width: 420px;
+    height: min(70vh, 620px);
+    box-sizing: border-box;
+  }
+
+  .scam-simulation-page__messages {
+    padding: 10px 8px;
+  }
+
+  .scam-simulation-page__composer {
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .scam-simulation-page__type-tooltip {
+    /* Tooltips are hover-based; keep them from overflowing on touch screens. */
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .scam-simulation-page__typing span {
     animation: none;

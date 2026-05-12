@@ -119,6 +119,32 @@
   overflow-wrap: anywhere;
 }
 
+@media (max-width: 767px) {
+  .notification-reveal-page {
+    padding-top: 12px;
+    gap: var(--space-4);
+  }
+
+  .notification-reveal-page__title {
+    font-size: clamp(1.45rem, 5.6vw, 2.05rem);
+    line-height: 1.1;
+  }
+
+  .notification-reveal-page__card .section-card__eyebrow {
+    font-size: 0.88rem;
+  }
+
+  .notification-reveal-page__card .section-card__header h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .notification-reveal-page__card .section-card__header p {
+    font-size: 1.03rem;
+    line-height: 1.55;
+  }
+}
+
 .notification-reveal-page__verdict-pill--danger {
   background: rgba(163, 24, 24, 0.14);
   border: 1px solid rgba(163, 24, 24, 0.26);

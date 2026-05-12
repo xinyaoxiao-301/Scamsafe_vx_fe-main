@@ -724,14 +724,39 @@
 }
 
 @media (max-width: 767px) {
-  .scam-detection-page__card--input {
-    min-height: 676px;
-    height: min(910px, calc(100vh - 220px));
+  .scam-detection-page {
+    padding-top: 12px;
+    gap: var(--space-4);
   }
 
+  .scam-detection-page__title {
+    font-size: clamp(1.45rem, 5.6vw, 2.05rem);
+    line-height: 1.1;
+  }
+
+  .scam-detection-page__card .section-card__eyebrow {
+    font-size: 0.88rem;
+  }
+
+  .scam-detection-page__card .section-card__header h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .scam-detection-page__card .section-card__header p {
+    font-size: 1.03rem;
+    line-height: 1.55;
+  }
+
+  .scam-detection-page__card--input,
   .scam-detection-page__card--result {
-    min-height: 676px;
-    height: min(910px, calc(100vh - 220px));
+    min-height: 0;
+    height: auto;
+  }
+
+  .scam-detection-page__card--input .section-card__body,
+  .scam-detection-page__card--result .section-card__body {
+    overflow: visible;
   }
 }
 

@@ -119,6 +119,33 @@
   scroll-margin-top: 110px;
 }
 
+@media (max-width: 767px) {
+  .knowledge-hub-page {
+    padding-top: 12px;
+    gap: var(--space-4);
+  }
+
+  .knowledge-hub-page__hero h1 {
+    font-size: clamp(1.45rem, 5.6vw, 2.05rem);
+    line-height: 1.1;
+  }
+
+  .knowledge-hub-page__card .section-card__eyebrow,
+  .knowledge-hub-page__reader-empty .knowledge-hub-page__section-eyebrow {
+    font-size: 0.88rem;
+  }
+
+  .knowledge-hub-page__card .section-card__header h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .knowledge-hub-page__card .section-card__header p {
+    font-size: 1.03rem;
+    line-height: 1.55;
+  }
+}
+
 .knowledge-hub-page__article-list {
   display: grid;
   gap: 12px;

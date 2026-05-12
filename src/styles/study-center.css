@@ -616,6 +616,40 @@
   }
 }
 
+@media (max-width: 767px) {
+  .study-center-page {
+    padding-top: 12px;
+    gap: var(--space-4);
+  }
+
+  .study-center-page__title {
+    font-size: clamp(1.45rem, 5.6vw, 2.05rem);
+    line-height: 1.1;
+  }
+
+  .study-center-page__card .section-card__eyebrow {
+    font-size: 0.88rem;
+  }
+
+  .study-center-page__card .section-card__header h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .study-center-page__card .section-card__header p {
+    font-size: 1.03rem;
+    line-height: 1.55;
+  }
+
+  .study-center-page__progress-note {
+    font-size: 0.9rem;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 @media (max-width: 420px) {
   .study-center-page__topics {
     grid-template-columns: 1fr;
