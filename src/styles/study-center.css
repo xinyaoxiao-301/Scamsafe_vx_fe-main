@@ -648,6 +648,29 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .study-center-page__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: center;
+  }
+
+  .study-center-page__actions .button {
+    width: 100%;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .study-center-page__actions .button:only-child {
+    grid-column: 1 / -1;
+  }
+
+  .study-center-page__action-primary {
+    margin-left: 0;
+  }
 }
 
 @media (max-width: 420px) {

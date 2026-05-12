@@ -385,7 +385,7 @@ const STRINGS: Record<Language, Strings> = {
       step2Description: 'Pick one answer, then tap “Submit answer” to see why.',
       chooseTopicLabel: 'Choose a category',
       startQuiz: 'Start quiz',
-      loadingLabel: 'Loading the quiz…',
+      loadingLabel: 'Loading',
       questionCountLabel: 'Questions',
       submitAnswer: 'Submit answer',
       errorPickAnswer: 'Please choose one answer first.',
