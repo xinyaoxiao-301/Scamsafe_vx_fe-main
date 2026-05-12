@@ -67,7 +67,7 @@ const STRINGS: Record<Language, Strings> = {
       pageLabel: 'Homepage',
       launchpadLabel: 'Main feature launch buttons',
       eyebrow: 'Professional and reliable',
-      title: 'Choose a service',
+      title: 'Choose a Service',
       helper: 'Tap one option below to begin',
       helperBefore: 'Tap one option below to',
       helperAction: 'begin',
@@ -669,7 +669,7 @@ const STRINGS: Record<Language, Strings> = {
         { id: 'dunia', tone: 'plain', text: 'Dunia', spaceAfter: true },
         { id: 'digital', tone: 'plain', text: 'Digital.', spaceAfter: false },
       ],
-      subtitle: 'A scam awareness platform designed for elderly',
+      subtitle: 'Platform kesedaran penipuan yang direka untuk warga emas',
       keywords: 'Mudah difahami · Mudah digunakan · Amalan realistik',
       pills: {
         detection: 'Semak Scam',
@@ -1154,7 +1154,7 @@ const STRINGS: Record<Language, Strings> = {
         },
         seniorsAffected: {
           value: '83.7%',
-          label: '受害者为 60+',
+          label: '受害者年龄 60+',
           hint: '数字素养较低导致风险更高。',
         },
       },

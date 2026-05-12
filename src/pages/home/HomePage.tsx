@@ -2,6 +2,11 @@ import { Button } from '@/components/ui/Button'
 import { FeatureIcon } from '@/components/ui/FeatureIcon'
 import { appRoutes, type AppRoute } from '@/app/routes'
 import { useI18n } from '@/lib/i18n'
+import scamCheckerIcon from '@/assets/scam-checker.jpg'
+import aiScamChatIcon from '@/assets/ai-scam-chat.jpg'
+import testYourselfIcon from '@/assets/test-yourself.jpg'
+import scamNewsIcon from '@/assets/scam-news.png'
+import getHelpIcon from '@/assets/get-help.jpg'
 
 type HomePageProps = {
   onNavigate: (route: AppRoute) => void
@@ -9,6 +14,13 @@ type HomePageProps = {
 
 export function HomePage({ onNavigate }: HomePageProps) {
   const { strings } = useI18n()
+  const featureImageById = {
+    'scam-detection': scamCheckerIcon,
+    'scam-simulation': aiScamChatIcon,
+    'anti-scam-study-center': testYourselfIcon,
+    'knowledge-hub': scamNewsIcon,
+    'post-scam-support': getHelpIcon,
+  } as const
 
   // The home screen mainly composes shared primitives so feature-specific logic
   // can stay inside each dedicated page module.
@@ -67,7 +79,11 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 role="listitem"
               >
                 <div className="feature-launchpad__icon">
-                  <FeatureIcon name={feature.icon} />
+                  {featureImageById[feature.id] ? (
+                    <img className="feature-launchpad__icon-image" src={featureImageById[feature.id]} alt="" />
+                  ) : (
+                    <FeatureIcon name={feature.icon} />
+                  )}
                 </div>
                 <div className="feature-launchpad__heading">
                   <p

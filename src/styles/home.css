@@ -607,6 +607,13 @@
   color: var(--accent-strong);
 }
 
+.feature-launchpad__icon-image {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  display: block;
+}
+
 .feature-launchpad__icon svg {
   width: 28px;
   height: 28px;
@@ -826,44 +833,68 @@
   /* Make the 5 feature cards very compact on desktop. */
   .feature-launchpad {
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
     align-content: start;
-    justify-content: stretch;
+    justify-content: center;
     justify-items: stretch;
     width: 100%;
     margin: 0 auto;
   }
 
   .feature-launchpad__item {
-    min-height: 190px;
-    padding: 14px 18px;
+    width: 100%;
+    min-height: 160px;
+    padding: 18px 18px;
     border-radius: 22px;
     align-content: center;
     justify-items: center;
     text-align: center;
+    grid-template-columns: 64px minmax(0, 1fr);
+    grid-template-areas:
+      'icon heading'
+      'icon button';
+    column-gap: 14px;
+    row-gap: 10px;
+    align-items: center;
   }
 
   .feature-launchpad__item--scam-detection,
   .feature-launchpad__item--scam-simulation {
     grid-column: auto;
     max-width: none;
-    min-height: 190px;
+    min-height: 160px;
   }
 
   .feature-launchpad__button {
-    justify-self: center;
+    grid-area: button;
+    justify-self: start;
     width: min(100%, 148px);
   }
 
   .feature-launchpad__icon {
+    grid-area: icon;
     width: 56px;
     height: 56px;
-    border-radius: 16px;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+    background: transparent;
   }
 
   .feature-launchpad__icon svg {
     width: 28px;
     height: 28px;
+  }
+
+  .feature-launchpad__icon-image {
+    width: 56px;
+    height: 56px;
+  }
+
+  .feature-launchpad__heading {
+    grid-area: heading;
+    text-align: left;
+    justify-items: start;
   }
 
   .feature-launchpad__title {
