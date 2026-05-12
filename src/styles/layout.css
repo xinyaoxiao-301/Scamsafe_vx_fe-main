@@ -508,6 +508,7 @@
   gap: 8px;
   text-align: center;
   padding: 6px 10px 12px;
+  border-bottom: 1px solid rgba(19, 108, 242, 0.18);
 }
 
 .app-shell__stats-eyebrow {
@@ -548,24 +549,20 @@
 }
 
 .app-shell__stats-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
-  border: 1px solid rgba(19, 108, 242, 0.14);
-  background: linear-gradient(180deg, rgba(19, 108, 242, 0.12), rgba(19, 108, 242, 0.04));
-  color: var(--accent-strong);
+  width: 56px;
+  height: 56px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
   display: grid;
   place-items: center;
 }
 
-.app-shell__stats-icon svg {
-  width: 22px;
-  height: 22px;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.app-shell__stats-icon img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  display: block;
 }
 
 .app-shell__stats-label {
@@ -592,6 +589,8 @@
 
 .app-shell__stats-sources {
   margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(19, 108, 242, 0.18);
   color: rgba(17, 38, 58, 0.74);
   font-size: 0.92rem;
   font-weight: 650;
@@ -1188,9 +1187,9 @@
   }
 
   .app-shell__stats-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: 0;
-    align-items: stretch;
   }
 
   .app-shell__stats-card {
@@ -1198,12 +1197,69 @@
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    height: 100%;
-    padding: 16px 14px;
+    padding: 16px 6px;
+    display: grid;
+    /* Keep the middle column centered on a consistent axis by fixing the value column width. */
+    grid-template-columns: 56px minmax(0, 1fr) 210px;
+    grid-template-rows: auto auto;
+    column-gap: 16px;
+    row-gap: 6px;
+    justify-items: start;
+    text-align: left;
   }
 
   .app-shell__stats-card:not(:first-child) {
-    border-left: 1px solid rgba(19, 108, 242, 0.18);
+    border-top: 1px solid rgba(19, 108, 242, 0.18);
+  }
+
+  .app-shell__stats-icon {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    justify-self: center;
+    align-self: start;
+    margin-top: 4px;
+  }
+
+  .app-shell__stats-label,
+  .app-shell__stats-value,
+  .app-shell__stats-hint {
+    justify-self: start;
+    align-self: start;
+    text-align: left;
+    max-width: none;
+  }
+
+  .app-shell__stats-label {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+  }
+
+  .app-shell__stats-value {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    font-size: 1.9rem;
+    letter-spacing: -0.04em;
+  }
+
+  .app-shell__stats-label {
+    margin-top: 0;
+  }
+
+  .app-shell__stats-hint {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: 60ch;
+    width: 100%;
+  }
+
+  /* Center label + hint text for each statistic row. */
+  .app-shell__stats-label,
+  .app-shell__stats-hint {
+    justify-self: center;
+    text-align: center;
+    transform: translateX(80px);
   }
 
   .section-card {

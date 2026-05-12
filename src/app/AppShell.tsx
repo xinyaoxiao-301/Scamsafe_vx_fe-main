@@ -5,6 +5,10 @@ import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useI18n, type Language } from '@/lib/i18n'
 import logo from '@/assets/scamsafe-logo.png'
 import homeHeroBackground from '@/assets/home-hero-background.png'
+import seniorsIcon from '@/assets/seniors.png'
+import lossesIcon from '@/assets/losses.png'
+import gdpIcon from '@/assets/gdp.png'
+import exposureIcon from '@/assets/exposure.png'
 
 type AppShellProps = PropsWithChildren<{
   currentRoute: AppRoute
@@ -320,82 +324,61 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
           </>
         ) : null}
         {isHome ? (
-          <>
-            <div className="app-shell__home-main" aria-label={strings.ui.homeMainLabel}>
-              {children}
+            <>
+              <div className="app-shell__home-main" aria-label={strings.ui.homeMainLabel}>
+                <section className="app-shell__stats" aria-label={strings.ui.statsLabel}>
+                  <header className="app-shell__stats-header">
+                    <p className="app-shell__stats-eyebrow">{strings.homeStats.eyebrow}</p>
+                    <h2 className="app-shell__stats-title">{strings.homeStats.title}</h2>
+                  </header>
 
-              <section className="app-shell__stats" aria-label={strings.ui.statsLabel}>
-                <header className="app-shell__stats-header">
-                  <p className="app-shell__stats-eyebrow">{strings.homeStats.eyebrow}</p>
-                  <h2 className="app-shell__stats-title">{strings.homeStats.title}</h2>
-                </header>
+                  <div className="app-shell__stats-grid" role="list" aria-label={strings.ui.keyStatisticsLabel}>
+                    <article className="app-shell__stats-card" role="listitem">
+                      <div className="app-shell__stats-icon" aria-hidden="true">
+                        <img src={seniorsIcon} alt="" />
+                      </div>
+                      <p className="app-shell__stats-label">{strings.homeStats.cards.seniorsAffected.label}</p>
+                      <p className="app-shell__stats-value">{strings.homeStats.cards.seniorsAffected.value}</p>
+                      <p className="app-shell__stats-hint">{strings.homeStats.cards.seniorsAffected.hint}</p>
+                    </article>
 
-                <div className="app-shell__stats-grid" role="list" aria-label={strings.ui.keyStatisticsLabel}>
-                  <article className="app-shell__stats-card" role="listitem">
-                    <div className="app-shell__stats-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M8 3h8" />
-                        <path d="M7 7h10a4 4 0 0 1 4 4v2a7 7 0 0 1-7 7h-4a7 7 0 0 1-7-7v-2a4 4 0 0 1 4-4Z" />
-                        <path d="M12 10v4" />
-                        <path d="M10 12h4" />
-                      </svg>
-                    </div>
-                    <p className="app-shell__stats-label">{strings.homeStats.cards.monthlyExposure.label}</p>
-                    <p className="app-shell__stats-value">{strings.homeStats.cards.monthlyExposure.value}</p>
-                    <p className="app-shell__stats-hint">{strings.homeStats.cards.monthlyExposure.hint}</p>
-                  </article>
+                    <article className="app-shell__stats-card" role="listitem">
+                      <div className="app-shell__stats-icon" aria-hidden="true">
+                        <img src={lossesIcon} alt="" />
+                      </div>
+                      <p className="app-shell__stats-label">{strings.homeStats.cards.totalLosses.label}</p>
+                      <p className="app-shell__stats-value">{strings.homeStats.cards.totalLosses.value}</p>
+                      <p className="app-shell__stats-hint">{strings.homeStats.cards.totalLosses.hint}</p>
+                    </article>
 
-                  <article className="app-shell__stats-card" role="listitem">
-                    <div className="app-shell__stats-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M4.5 18.5V6.8a2.3 2.3 0 0 1 2.3-2.3h10.4a2.3 2.3 0 0 1 2.3 2.3v11.7" />
-                        <path d="M6.8 18.5h10.4" />
-                        <path d="M8.2 9.2h7.6" />
-                        <path d="M8.2 12.2h7.6" />
-                        <path d="M8.2 15.2h4.6" />
-                      </svg>
-                    </div>
-                    <p className="app-shell__stats-label">{strings.homeStats.cards.totalLosses.label}</p>
-                    <p className="app-shell__stats-value">{strings.homeStats.cards.totalLosses.value}</p>
-                    <p className="app-shell__stats-hint">{strings.homeStats.cards.totalLosses.hint}</p>
-                  </article>
+                    <article className="app-shell__stats-card" role="listitem">
+                      <div className="app-shell__stats-icon" aria-hidden="true">
+                        <img src={gdpIcon} alt="" />
+                      </div>
+                      <p className="app-shell__stats-label">{strings.homeStats.cards.gdpShare.label}</p>
+                      <p className="app-shell__stats-value">{strings.homeStats.cards.gdpShare.value}</p>
+                      <p className="app-shell__stats-hint">{strings.homeStats.cards.gdpShare.hint}</p>
+                    </article>
 
-                  <article className="app-shell__stats-card" role="listitem">
-                    <div className="app-shell__stats-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M5 18.5V6.5" />
-                        <path d="M5 18.5h14" />
-                        <path d="M8 16v-4" />
-                        <path d="M12 16V9" />
-                        <path d="M16 16v-6" />
-                      </svg>
-                    </div>
-                    <p className="app-shell__stats-label">{strings.homeStats.cards.gdpShare.label}</p>
-                    <p className="app-shell__stats-value">{strings.homeStats.cards.gdpShare.value}</p>
-                    <p className="app-shell__stats-hint">{strings.homeStats.cards.gdpShare.hint}</p>
-                  </article>
+                    <article className="app-shell__stats-card" role="listitem">
+                      <div className="app-shell__stats-icon" aria-hidden="true">
+                        <img src={exposureIcon} alt="" />
+                      </div>
+                      <p className="app-shell__stats-label">{strings.homeStats.cards.monthlyExposure.label}</p>
+                      <p className="app-shell__stats-value">{strings.homeStats.cards.monthlyExposure.value}</p>
+                      <p className="app-shell__stats-hint">{strings.homeStats.cards.monthlyExposure.hint}</p>
+                    </article>
+                  </div>
 
-                  <article className="app-shell__stats-card" role="listitem">
-                    <div className="app-shell__stats-icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24">
-                        <path d="M8.5 10.3a3.2 3.2 0 1 1 6.4 0" />
-                        <path d="M6.5 20v-1.1a5.5 5.5 0 0 1 11 0V20" />
-                        <path d="M9.1 13.1h5.8" />
-                      </svg>
-                    </div>
-                    <p className="app-shell__stats-label">{strings.homeStats.cards.seniorsAffected.label}</p>
-                    <p className="app-shell__stats-value">{strings.homeStats.cards.seniorsAffected.value}</p>
-                    <p className="app-shell__stats-hint">{strings.homeStats.cards.seniorsAffected.hint}</p>
-                  </article>
-                </div>
+                  <p className="app-shell__stats-sources">{strings.homeStats.sources}</p>
+                </section>
 
-                <p className="app-shell__stats-sources">{strings.homeStats.sources}</p>
-              </section>
-            </div>
-          </>
-        ) : (
-          children
-        )}
+                {children}
+              </div>
+            </>
+          ) : (
+            children
+          )}
         <div className="app-shell__footer-wrap">
           <footer className="app-footer" aria-label={strings.ui.footerLabel}>
             <div className="app-footer__inner">
