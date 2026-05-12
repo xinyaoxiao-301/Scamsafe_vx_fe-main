@@ -893,6 +893,36 @@
     line-height: 1.55;
   }
 
+  .scam-simulation-page__input {
+    /* Prevent iOS Safari from auto-zooming the viewport when focusing inputs. */
+    font-size: 16px;
+    word-spacing: normal;
+  }
+
+  .scam-simulation-page__input::placeholder {
+    font-size: 0.82em;
+  }
+
+  .scam-simulation-page__input:focus-visible {
+    outline: none;
+  }
+
+  .scam-simulation-page__icon-button:focus-visible {
+    outline: none;
+  }
+
+  .scam-simulation-page__icon-button svg {
+    display: block;
+  }
+
+  .scam-simulation-page__icon-button--mic svg {
+    transform: translateY(1px);
+  }
+
+  .scam-simulation-page__icon-button--send svg {
+    transform: translateX(1px);
+  }
+
   .scam-simulation-page__footer-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -921,11 +951,29 @@
   .scam-simulation-page__composer {
     gap: 8px;
     padding: 10px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
   }
 
   .scam-simulation-page__type-tooltip {
     /* Tooltips are hover-based; keep them from overflowing on touch screens. */
     display: none;
+  }
+
+  .scam-simulation-page__input {
+    -webkit-appearance: none;
+    caret-color: var(--accent-strong);
+    line-height: 1.2;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .scam-simulation-page__input:focus {
+    border-color: rgba(19, 108, 242, 0.32);
+  }
+
+  .scam-simulation-page__icon-button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
   }
 }
 

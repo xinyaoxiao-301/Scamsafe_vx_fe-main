@@ -785,6 +785,19 @@
   .notification-toast__panel {
     width: 100%;
   }
+
+  .notification-modal__message-box {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .notification-modal__message-label {
+    text-align: center;
+  }
+
+  .notification-modal__scope-note {
+    text-align: center;
+  }
 }
 
 /* Desktop keeps the same launchpad content but gives the hero stronger

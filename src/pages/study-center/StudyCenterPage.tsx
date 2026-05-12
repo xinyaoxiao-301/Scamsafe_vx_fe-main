@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useI18n } from '@/lib/i18n'
 import {
   TOPIC_ORDER,
@@ -33,6 +34,7 @@ function splitExplanation(text: string): string[] {
 
 export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const { language, strings } = useI18n()
+  const isMobile = useMediaQuery('(max-width: 767px)')
   const specificTopicToggleLabel = strings.studyCenter.showSpecificTopics
   const hideSpecificTopicToggleLabel = strings.studyCenter.hideSpecificTopics
   const [showSpecificTopics, setShowSpecificTopics] = useState(false)
@@ -59,6 +61,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const questionRef = useRef<HTMLParagraphElement | null>(null)
   const feedbackRef = useRef<HTMLDivElement | null>(null)
   const pendingScrollTargetRef = useRef<'feedback' | 'question' | null>(null)
+  const step2CardRef = useRef<HTMLDivElement | null>(null)
 
   const topicStats = useMemo(() => buildSessionStats(sessions), [sessions])
   // "Mix scams" mirrors the simulation page by acting as the featured summary,
@@ -118,7 +121,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   }, [index])
 
   // ── Quiz lifecycle ────────────────────────────────────────────────────────────
-  const startQuiz = async () => {
+  const startQuiz = async (topicOverride?: QuizTopic) => {
     // Quiz is only available in English
     if (language !== 'en') {
       const unavailable =
@@ -126,6 +129,11 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
       setError(unavailable)
       setQuizQuestions(null)
       return
+    }
+
+    const topicToUse = topicOverride ?? selectedTopic
+    if (topicToUse !== selectedTopic) {
+      setSelectedTopic(topicToUse)
     }
 
     setError(null)
@@ -139,8 +147,14 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     setSessionByTopic({})
     setIsFinished(false)
 
+    if (isMobile) {
+      window.requestAnimationFrame(() => {
+        step2CardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
+
     try {
-      const questions = await fetchQuizQuestions(selectedTopic, questionCount)
+      const questions = await fetchQuizQuestions(topicToUse, questionCount)
       if (!questions || questions.length === 0) {
         setError(strings.studyCenter.errorNoQuestions)
         return
@@ -318,7 +332,13 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                       .filter(Boolean)
                       .join(' ')
                   }
-                  onClick={() => setSelectedTopic(featuredTopic.topic)}
+                  onClick={() => {
+                    if (isMobile) {
+                      void startQuiz(featuredTopic.topic)
+                      return
+                    }
+                    setSelectedTopic(featuredTopic.topic)
+                  }}
                   aria-label={featuredTopic.title}
                   aria-describedby={`sc-topic-tip-${featuredTopic.topic}`}
                 >
@@ -377,6 +397,11 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                             .join(' ')
                         }
                         onClick={() => {
+                          if (isMobile) {
+                            setShowSpecificTopics(true)
+                            void startQuiz(item.topic)
+                            return
+                          }
                           setSelectedTopic(item.topic)
                           setShowSpecificTopics(true)
                         }}
@@ -407,6 +432,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
           description={strings.studyCenter.step2Description}
           footer={step2Footer}
         >
+          <div ref={step2CardRef} />
           {/* Loading state */}
           {isLoadingQuiz ? (
             <div className="study-center-page__loading" role="status" aria-live="polite">

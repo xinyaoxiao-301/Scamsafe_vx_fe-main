@@ -224,9 +224,8 @@
 }
 
 .scam-detection-page__risk-box-risk {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-grid;
+  place-items: center;
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid rgba(17, 38, 58, 0.14);
@@ -235,6 +234,7 @@
   letter-spacing: -0.03em;
   font-size: calc(0.88rem * var(--sd-scale));
   line-height: 1.1;
+  text-align: center;
 }
 
 .scam-detection-page__risk-sentence-pill {
@@ -746,6 +746,10 @@
   .scam-detection-page__card .section-card__header p {
     font-size: 1.03rem;
     line-height: 1.55;
+  }
+
+  .scam-detection-page__risk-box-risk {
+    text-align: center;
   }
 
   .scam-detection-page__card--input,
