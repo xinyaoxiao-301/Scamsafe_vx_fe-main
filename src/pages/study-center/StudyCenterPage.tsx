@@ -310,7 +310,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
               </Button>
               <Button
                 className="study-center-page__action-primary"
-                onClick={startQuiz}
+                onClick={() => void startQuiz()}
                 disabled={isLoadingQuiz}
               >
                 {isLoadingQuiz ? strings.studyCenter.loadingLabel : strings.studyCenter.startQuiz}
