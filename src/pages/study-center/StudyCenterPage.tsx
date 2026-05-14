@@ -122,15 +122,6 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
 
   // ── Quiz lifecycle ────────────────────────────────────────────────────────────
   const startQuiz = async (topicOverride?: QuizTopic) => {
-    // Quiz is only available in English
-    if (language !== 'en') {
-      const unavailable =
-        language === 'ms' ? strings.studyCenter.unavailableMalay : strings.studyCenter.unavailableChinese
-      setError(unavailable)
-      setQuizQuestions(null)
-      return
-    }
-
     const topicToUse = topicOverride ?? selectedTopic
     if (topicToUse !== selectedTopic) {
       setSelectedTopic(topicToUse)
@@ -154,7 +145,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     }
 
     try {
-      const questions = await fetchQuizQuestions(topicToUse, questionCount)
+      const questions = await fetchQuizQuestions(topicToUse, questionCount, language)
       if (!questions || questions.length === 0) {
         setError(strings.studyCenter.errorNoQuestions)
         return

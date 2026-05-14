@@ -1,5 +1,8 @@
 // "mixed" is a picker option only. Individual questions always resolve to one
 // concrete topic so progress can be grouped by scam category.
+
+//src/types/studyCenterQuiz.ts
+
 export type QuizTopic =
   | 'romance'
   | 'investment'

@@ -93,7 +93,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
 
   useEffect(() => {
     let cancelled = false
-    fetchNewsList(10)
+    fetchNewsList(10, language)
       .then((items) => {
         if (cancelled) return
         setNewsItems(items)
@@ -108,19 +108,19 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
         if (!cancelled) setNewsLoading(false)
       })
     return () => { cancelled = true }
-  }, [s.newsErrorPrefix])
+  }, [language, s.newsErrorPrefix])
 
   useEffect(() => {
     if (selectedNewsId === null) return
     let cancelled = false
     setNewsDetailLoading(true)
     setNewsDetail(null)
-    fetchNewsDetail(selectedNewsId)
+    fetchNewsDetail(selectedNewsId, language)
       .then((detail) => { if (!cancelled) setNewsDetail(detail) })
       .catch(() => { /* detail errors are non-critical; list still visible */ })
       .finally(() => { if (!cancelled) setNewsDetailLoading(false) })
     return () => { cancelled = true }
-  }, [selectedNewsId])
+  }, [selectedNewsId, language])
 
   const formatShortDate = (value: string) =>
     value
