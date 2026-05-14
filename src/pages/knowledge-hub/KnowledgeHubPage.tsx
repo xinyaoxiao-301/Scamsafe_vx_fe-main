@@ -100,7 +100,9 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
         if (items.length > 0) setSelectedNewsId(items[0].article_id)
       })
       .catch((err: unknown) => {
-        if (!cancelled) setNewsError(err instanceof Error ? err.message : s.newsErrorPrefix)
+        if (cancelled) return
+        console.warn('Failed to fetch scam news list', err)
+        setNewsError(err instanceof Error ? err.message : 'unknown_error')
       })
       .finally(() => {
         if (!cancelled) setNewsLoading(false)
@@ -154,7 +156,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
           eyebrow={s.liveFeedEyebrow}
           eyebrowClassName="knowledge-hub-page__section-eyebrow"
           title={s.latestReportsTitle}
-          description={s.latestReportsDescription}
+          description={!newsLoading && !newsError && newsItems.length > 0 ? s.latestReportsDescription : undefined}
           footer={
             <div className="knowledge-hub-page__overview-footer">
               {!newsLoading && !newsError && newsItems.length > 0 ? (
@@ -171,8 +173,8 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
             <p className="knowledge-hub-page__news-status">{s.loadingNews}</p>
           )}
           {newsError && (
-            <p className="knowledge-hub-page__news-status knowledge-hub-page__news-status--error">
-              {s.newsErrorPrefix}: {newsError}
+            <p className="knowledge-hub-page__news-status">
+              {s.newsErrorPrefix}
             </p>
           )}
           {!newsLoading && !newsError && newsItems.length === 0 && (

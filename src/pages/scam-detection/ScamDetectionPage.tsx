@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ClipboardEvent } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
@@ -23,36 +23,83 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
   const [showModal,   setShowModal]   = useState(false)
 
   const resultsRef = useRef<HTMLDivElement | null>(null)
+  const analysisRequestIdRef = useRef(0)
+  const lastAnalyzedTextRef = useRef<string | null>(null)
+  const previousLanguageRef = useRef(language)
 
   const wordCount   = countWords(text)
   const isOverLimit = wordCount > WORD_LIMIT
   const canAnalyze  = !isOverLimit && !isLoading
 
-  const handleAnalyze = async () => {
-    if (text.trim().length === 0) { setError(s.errorEmpty); return }
-    if (!canAnalyze) return
-
-    setIsLoading(true)
-    setError(null)
-    setResult(null)
-
-    try {
-      const analysis = await analyzeScamText(text, language)
-      setResult(analysis)
-      // High-risk results need an immediate interruption before the user reads
-      // the detailed panel, because the safest action is to stop first.
-      if (analysis.riskLevel === 'High' || analysis.riskLevel === 'Very High') {
-        setShowModal(true)
+  const runAnalysis = useCallback(
+    async (
+      sourceText: string,
+      options: { scrollToResults?: boolean; resetResult?: boolean } = {},
+    ) => {
+      const trimmedText = sourceText.trim()
+      if (!trimmedText) {
+        setError(s.errorEmpty)
+        return
       }
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }, 100)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : s.errorEmpty)
-    } finally {
-      setIsLoading(false)
-    }
+
+      if (countWords(trimmedText) > WORD_LIMIT) return
+
+      const requestId = ++analysisRequestIdRef.current
+      lastAnalyzedTextRef.current = trimmedText
+
+      setIsLoading(true)
+      setError(null)
+      setShowModal(false)
+
+      if (options.resetResult ?? true) {
+        setResult(null)
+      }
+
+      try {
+        const analysis = await analyzeScamText(trimmedText, language)
+        if (requestId !== analysisRequestIdRef.current) return
+
+        setResult(analysis)
+        // High-risk results need an immediate interruption before the user reads
+        // the detailed panel, because the safest action is to stop first.
+        if (analysis.riskLevel === 'High' || analysis.riskLevel === 'Very High') {
+          setShowModal(true)
+        }
+
+        if (options.scrollToResults ?? true) {
+          setTimeout(() => {
+            resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 100)
+        }
+      } catch (err) {
+        if (requestId !== analysisRequestIdRef.current) return
+        setError(err instanceof Error ? err.message : s.errorEmpty)
+      } finally {
+        if (requestId === analysisRequestIdRef.current) {
+          setIsLoading(false)
+        }
+      }
+    },
+    [language, s.errorEmpty],
+  )
+
+  const handleAnalyze = async () => {
+    if (!canAnalyze) return
+    await runAnalysis(text)
   }
+
+  useEffect(() => {
+    if (previousLanguageRef.current === language) return
+    previousLanguageRef.current = language
+
+    const lastAnalyzedText = lastAnalyzedTextRef.current
+    if (!lastAnalyzedText || (!result && !isLoading)) return
+
+    void runAnalysis(lastAnalyzedText, {
+      scrollToResults: false,
+      resetResult: false,
+    })
+  }, [isLoading, language, result, runAnalysis])
 
   const handlePaste = async () => {
     try {
@@ -75,7 +122,10 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
   }
 
   const handleClear = () => {
+    analysisRequestIdRef.current += 1
+    lastAnalyzedTextRef.current = null
     setText('')
+    setIsLoading(false)
     setResult(null)
     setError(null)
     setShowModal(false)
