@@ -326,6 +326,8 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
         {isHome ? (
             <>
               <div className="app-shell__home-main" aria-label={strings.ui.homeMainLabel}>
+                {children}
+
                 <section className="app-shell__stats" aria-label={strings.ui.statsLabel}>
                   <header className="app-shell__stats-header">
                     <p className="app-shell__stats-eyebrow">{strings.homeStats.eyebrow}</p>
@@ -372,8 +374,6 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
 
                   <p className="app-shell__stats-sources">{strings.homeStats.sources}</p>
                 </section>
-
-                {children}
               </div>
             </>
           ) : (

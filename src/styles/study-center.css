@@ -445,7 +445,10 @@
   font-weight: 800;
   line-height: 1.45;
   text-align: center;
-  font-size: calc(0.98rem * var(--sc-scale));
+  font-size: calc(0.94rem * var(--sc-scale));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .study-center-page__progress {

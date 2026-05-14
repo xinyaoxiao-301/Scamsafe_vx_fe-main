@@ -54,8 +54,8 @@
   top: 0;
   z-index: 120;
   min-height: 0;
-  padding: 0 16px 8px;
-  margin: 0 -14px 12px;
+  padding: 6px 16px 14px;
+  margin: 0 -8px 12px;
   background: #ffffff;
   color: var(--muted-strong);
   box-shadow: inset 0 -1px 0 rgba(19, 108, 242, 0.12);
@@ -64,8 +64,7 @@
 .app-shell__brand-copy {
   display: flex;
   align-items: center;
-  /* Nudge the logo + wordmark a touch left without shifting the whole header layout. */
-  margin-left: -6px;
+  margin-left: 0;
 }
 
 .app-shell__brand-home {
@@ -357,10 +356,10 @@
 .app-shell__hero-video-button {
   display: grid;
   place-items: center;
-  width: clamp(156px, 16vw, 210px);
-  aspect-ratio: 4 / 3;
+  width: clamp(210px, 26vw, 320px);
+  aspect-ratio: 16 / 9;
   align-self: flex-start;
-  border-radius: 22px;
+  border-radius: 18px;
   border: 1px solid rgba(19, 108, 242, 0.16);
   background: rgba(255, 255, 255, 0.9);
   color: var(--accent-strong);
@@ -503,6 +502,19 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.92);
 }
 
+@media (min-width: 768px) {
+  .app-shell__stats {
+    position: relative;
+    left: 50%;
+    width: min(calc(100% + 15vw), calc(100vw - 96px));
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+  }
+}
+
 .app-shell__stats-header {
   display: grid;
   gap: 8px;
@@ -513,7 +525,7 @@
 
 .app-shell__stats-eyebrow {
   color: var(--accent-strong);
-  font-size: 0.88rem;
+  font-size: 1.14rem;
   font-weight: 850;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -521,7 +533,7 @@
 
 .app-shell__stats-title {
   color: var(--text);
-  font-size: 1.55rem;
+  font-size: 2.02rem;
   font-weight: 950;
   letter-spacing: -0.05em;
   line-height: 1.05;
@@ -549,8 +561,8 @@
 }
 
 .app-shell__stats-icon {
-  width: 56px;
-  height: 56px;
+  width: 109px;
+  height: 109px;
   border-radius: 0;
   border: none;
   background: transparent;
@@ -559,8 +571,8 @@
 }
 
 .app-shell__stats-icon img {
-  width: 56px;
-  height: 56px;
+  width: 109px;
+  height: 109px;
   object-fit: contain;
   display: block;
 }
@@ -568,6 +580,7 @@
 .app-shell__stats-label {
   margin-top: 4px;
   color: var(--muted-strong);
+  font-size: 1.3rem;
   font-weight: 850;
   letter-spacing: -0.01em;
   line-height: 1.25;
@@ -577,12 +590,13 @@
   color: var(--text);
   font-weight: 800;
   letter-spacing: -0.05em;
-  font-size: clamp(2rem, 3.2vw, 2.6rem);
+  font-size: clamp(2.6rem, 4.16vw, 3.38rem);
   line-height: 1;
 }
 
 .app-shell__stats-hint {
   color: var(--muted);
+  font-size: 1.3rem;
   line-height: 1.45;
   max-width: 30ch;
 }
@@ -592,7 +606,7 @@
   padding-top: 12px;
   border-top: 1px solid rgba(19, 108, 242, 0.18);
   color: rgba(17, 38, 58, 0.74);
-  font-size: 0.92rem;
+  font-size: 1.2rem;
   font-weight: 650;
   text-align: center;
 }
@@ -967,7 +981,8 @@
     flex-wrap: nowrap;
     align-items: center;
     gap: 10px;
-    padding-bottom: 10px;
+    padding-top: 8px;
+    padding-bottom: 14px;
   }
 
   .app-shell__brand-copy {
@@ -1108,8 +1123,8 @@
   }
 
   .app-shell__hero-video-button {
-    width: clamp(103px, 29.1vw, 143px);
-    border-radius: 18px;
+    width: clamp(150px, 44vw, 220px);
+    border-radius: 16px;
     margin-top: 10px;
   }
 
@@ -1149,8 +1164,8 @@
 
   .app-shell__brand {
     min-height: 0;
-    padding: 0 24px 10px;
-    margin: 0 calc(var(--space-5) * -1) 12px;
+    padding: 8px 24px 16px;
+    margin: 0 calc(var(--space-5) * -1 + 8px) 12px;
   }
 
   .app-shell__brand-mark {
@@ -1183,7 +1198,7 @@
   }
 
   .app-shell__stats-title {
-    font-size: 1.75rem;
+    font-size: 2.28rem;
   }
 
   .app-shell__stats-grid {
@@ -1200,7 +1215,7 @@
     padding: 16px 6px;
     display: grid;
     /* Keep the middle column centered on a consistent axis by fixing the value column width. */
-    grid-template-columns: 56px minmax(0, 1fr) 210px;
+    grid-template-columns: 109px minmax(0, 1fr) 273px;
     grid-template-rows: auto auto;
     column-gap: 16px;
     row-gap: 6px;
@@ -1237,9 +1252,10 @@
 
   .app-shell__stats-value {
     grid-column: 3;
-    grid-row: 1;
+    grid-row: 1 / -1;
     justify-self: end;
-    font-size: 1.9rem;
+    align-self: center;
+    font-size: 2.47rem;
     letter-spacing: -0.04em;
   }
 
@@ -1319,11 +1335,22 @@
     margin-right: 0;
     padding-left: 24px;
     padding-right: 24px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     background: rgba(255, 255, 255, 0.92);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
+  }
+
+  .app-footer__inner {
+    position: relative;
+    left: 50%;
+    width: min(calc(100% + 15vw), calc(100vw - 96px));
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    transform: translateX(-50%);
+    box-sizing: border-box;
   }
 
   .app-shell__brand-copy {
@@ -1415,7 +1442,7 @@
 
   .app-shell__lang-switch {
     position: relative;
-    transform: translateX(20px);
+    transform: translateX(0);
     z-index: 70;
   }
 
@@ -1539,7 +1566,7 @@
   }
 
   .app-shell__hero-video-button {
-    width: clamp(210px, 18vw, 280px);
+    width: clamp(260px, 24vw, 360px);
     transform: translateX(200px);
     margin-top: calc(var(--hero-gap) * 0.78);
   }
@@ -1553,9 +1580,13 @@
   }
 
   .app-shell__stats {
-    width: auto;
+    position: relative;
+    left: 50%;
+    width: min(calc(100% + 15vw), calc(100vw - 96px));
+    max-width: none;
     margin-left: 0;
     margin-right: 0;
+    transform: translateX(-50%);
   }
 
 }
