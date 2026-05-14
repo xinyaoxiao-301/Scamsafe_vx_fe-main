@@ -1,3 +1,5 @@
+//src/services/studyCenterQuiz.ts
+
 import { env } from '@/lib/env'
 import type { Language } from '@/lib/i18n'
 import type { QuizQuestion, QuizSessionRecord, QuizTopic } from '@/types/studyCenterQuiz'
@@ -77,13 +79,40 @@ export function getTopics(language: Language): TopicMeta[] {
   return TOPICS[language]
 }
 
-// ── API: fetch questions from backend (English only) ──────────────────────────
+// ── Fisher-Yates shuffle (in-place) ──────────────────────────────────────────
 
-export async function fetchQuizQuestions(topic: QuizTopic, count = 6): Promise<QuizQuestion[]> {
+function shuffleArray<T>(array: T[]): T[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+  return array
+}
+
+// ── API: fetch questions from backend ────────────────────────────────────────
+//
+// The backend returns choices in database display_order. We shuffle them
+// client-side so the correct answer is not always in a predictable position.
+// The correctOptionId stored on each question is an immutable choice ID so
+// shuffling the options array does not affect answer-checking logic.
+
+export async function fetchQuizQuestions(
+  topic: QuizTopic,
+  count = 6,
+  language: Language = 'en',
+): Promise<QuizQuestion[]> {
   const slug = topic === 'mixed' ? 'mixed' : TOPIC_TO_SLUG[topic as Exclude<QuizTopic, 'mixed'>]
-  const res  = await fetch(`${API_BASE}/api/quiz/${slug}/questions?count=${count}`)
+  const res  = await fetch(
+    `${API_BASE}/api/quiz/${slug}/questions?count=${count}&language=${language}`,
+  )
   if (!res.ok) throw new Error(`Quiz API error: ${res.status}`)
-  return res.json() as Promise<QuizQuestion[]>
+  const questions = await res.json() as QuizQuestion[]
+
+  // Shuffle the options array of every question independently.
+  return questions.map((q) => ({
+    ...q,
+    options: shuffleArray([...q.options]),
+  }))
 }
 
 // ── Session storage ───────────────────────────────────────────────────────────
