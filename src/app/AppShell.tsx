@@ -314,7 +314,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                       {strings.hero.keywords ? <p className="app-shell__hero-subtitle">{strings.hero.keywords}</p> : null}
                       <div className="app-shell__hero-video-button" aria-label={strings.ui.tutorialVideoLabel}>
                         <iframe
-                          src="https://www.youtube.com/embed/SsRr9lfEkyc?si=jOoCa6DdoBcLHdLn&vq=hd1080"
+                          src="https://www.youtube.com/embed/M2vSp5ik8PM?si=018FUtbzGshHZRxr&vq=hd1080"
                           title="YouTube video player"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                           referrerPolicy="strict-origin-when-cross-origin"
