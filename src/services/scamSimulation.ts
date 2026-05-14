@@ -28,7 +28,7 @@ import type {
   SimulationStartResult,
   SimulationMessageResult,
   SimulationQuitResult,
-} from '@/types/scamSimulation'
+} from '@/types/scamSimulationTypes'
 import { env } from '@/lib/env'
 import type { Language } from '@/lib/i18n'
 
@@ -206,11 +206,12 @@ export function recordPerformance(type: ScamScenarioType, outcome: 'safe' | 'ris
  */
 export async function startSimulationSession(
   scenarioType: ApiScenarioType,
+  language: Language = 'en',
 ): Promise<SimulationStartResult> {
   const res = await fetch(`${API_BASE}/api/simulate/start`, {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ scenario_type: scenarioType }),
+    body:    JSON.stringify({ scenario_type: scenarioType, language }),
   })
   if (!res.ok) throw new Error(`Simulation start error: ${res.status}`)
   return res.json() as Promise<SimulationStartResult>
