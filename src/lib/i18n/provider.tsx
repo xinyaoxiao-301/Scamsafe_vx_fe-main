@@ -8,10 +8,6 @@ function getInitialLanguage(): Language {
   // Prefer the user's saved language, then fall back to the browser locale.
   const stored = window.localStorage.getItem('scamsafe_language')
   if (stored === 'en' || stored === 'ms' || stored === 'zh') return stored
-
-  const browserLanguage = window.navigator.language.toLowerCase()
-  if (browserLanguage.startsWith('zh')) return 'zh'
-  if (browserLanguage.startsWith('ms')) return 'ms'
   return 'en'
 }
 
