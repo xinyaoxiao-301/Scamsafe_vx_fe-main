@@ -1,0 +1,223 @@
+.footer-info-page {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+  padding-top: clamp(16px, 5vh, 64px);
+  padding-bottom: var(--space-7);
+}
+
+.footer-info-page__hero {
+  display: grid;
+  gap: 10px;
+}
+
+.footer-info-page__hero h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(1.55rem, 5.2vw, 2.4rem);
+  font-weight: 950;
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.footer-info-page__grid {
+  display: grid;
+  gap: 16px;
+}
+
+.footer-info-page__card .section-card__eyebrow {
+  color: var(--accent-strong);
+  font-size: 0.9rem;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+}
+
+.footer-info-page__card .section-card__header h2 {
+  font-size: 1.25rem;
+}
+
+.footer-info-page__card .section-card__header p {
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.footer-info-page__tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.footer-info-page__tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(19, 108, 242, 0.08);
+  border: 1px solid rgba(19, 108, 242, 0.12);
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.footer-info-page__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.footer-info-page__list-item {
+  position: relative;
+  padding-left: 16px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.footer-info-page__list-item::before {
+  content: '';
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(19, 108, 242, 0.68);
+  transform: translateY(-50%);
+}
+
+.footer-info-page__risk-list {
+  display: grid;
+  gap: 12px;
+}
+
+.footer-info-page__risk-item {
+  display: grid;
+  gap: 8px;
+  padding: 14px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(19, 108, 242, 0.12);
+  background: linear-gradient(180deg, rgba(19, 108, 242, 0.06), rgba(255, 255, 255, 0.94));
+}
+
+.footer-info-page__risk-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(19, 108, 242, 0.12);
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.footer-info-page__risk-text,
+.footer-info-page__credit {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.footer-info-page__credit-label {
+  color: var(--text);
+  font-weight: 800;
+}
+
+.footer-info-page__credit-link {
+  color: var(--accent-strong);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.footer-info-page__credit-link:hover,
+.footer-info-page__credit-link:focus-visible {
+  color: var(--accent);
+}
+
+.footer-info-page__link-list {
+  display: grid;
+  gap: 12px;
+}
+
+.footer-info-page__link-card {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  padding: 14px 14px;
+  border: 1px solid rgba(17, 38, 58, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.footer-info-page__link-card:hover,
+.footer-info-page__link-card:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(19, 108, 242, 0.22);
+  box-shadow: 0 14px 24px rgba(17, 38, 61, 0.08);
+}
+
+.footer-info-page__link-title {
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.footer-info-page__link-text {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.footer-info-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 767px) {
+  .footer-info-page {
+    padding-top: 12px;
+    gap: var(--space-4);
+  }
+
+  .footer-info-page__hero h1 {
+    font-size: clamp(1.45rem, 5.6vw, 2.05rem);
+    line-height: 1.1;
+  }
+
+  .footer-info-page__card .section-card__eyebrow {
+    font-size: 0.88rem;
+  }
+
+  .footer-info-page__card .section-card__header h2 {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .footer-info-page__card .section-card__header p {
+    font-size: 0.96rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .footer-info-page__grid {
+    grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.85fr);
+    align-items: start;
+  }
+}

@@ -284,6 +284,11 @@
     font-size: calc(0.78rem * var(--support-scale));
     line-height: 1.32;
   }
+
+  .support-recovery-page__bullet-list,
+  .support-recovery-page__number-list {
+    font-size: 0.9em;
+  }
 }
 
 .support-recovery-page__bullet-list,
@@ -903,7 +908,7 @@
 @media (max-width: 767px) {
   .support-recovery-page__hotline--other strong {
     font-size: 0.9rem;
-    text-align: right;
+    text-align: left;
   }
 }
 

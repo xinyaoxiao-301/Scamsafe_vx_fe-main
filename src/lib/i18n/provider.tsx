@@ -23,6 +23,9 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.support]: 'Get Help',
       [appRoutes.knowledgeHub]: 'Scam News',
       [appRoutes.notificationReveal]: 'Notification Result',
+      [appRoutes.dataSources]: 'Data Sources',
+      [appRoutes.aboutUs]: 'About Us',
+      [appRoutes.riskGuide]: 'Risk Guide',
     },
     ui: {
       openMenu: 'Open navigation menu',
@@ -51,11 +54,36 @@ const STRINGS: Record<Language, Strings> = {
     footer: {
       title: 'References & Information',
       sourcesTitle: 'Data sources',
-      sourcesHint: 'Coming soon',
+      sourcesLead: 'ScamSafe uses public reports, open data, and trusted Malaysian sources.',
+      sourcesItems: [
+        'Malaysia scam impact figures come from the State of Scam Report 2024 and related public references.',
+        'Scam News articles are loaded with source links so users can read the original reporting in full.',
+        'Detection, quiz, and simulation flows are shaped around real scam patterns from calls, texts, impersonation, and phishing cases.',
+      ],
       aboutTitle: 'About ScamSafe',
-      aboutHint: 'Coming soon',
+      aboutLead: 'ScamSafe is a simple website that helps older adults in Malaysia check suspicious messages and stay safer online.',
+      aboutPoints: [
+        'Use Scam Checker before you reply, click a link, or transfer money.',
+        'Practice with AI Scam Chat in a calm, step-by-step way.',
+        'Read scam news, try short quizzes, and get help after a scam.',
+      ],
+      aboutTags: ['Senior-friendly', 'Malaysia-focused', 'AI-assisted', 'Mobile-first'],
       riskTitle: 'Risk level guide',
-      riskHint: 'Coming soon',
+      riskLead: 'These labels help users stay calm and act in the right order.',
+      riskItems: [
+        {
+          label: 'Low / Very Low',
+          text: 'Few warning signs were found, but users should still verify through official channels before acting.',
+        },
+        {
+          label: 'Medium',
+          text: 'Mixed signals were detected, so the safest next step is to pause, confirm identity, and avoid sharing codes or money.',
+        },
+        {
+          label: 'High / Very High',
+          text: 'Strong scam indicators were found, so users should stop engaging immediately and switch to trusted official contact points.',
+        },
+      ],
       imageCreditLabel: 'Image credit:',
       imageCreditText: 'Image by Lifestylememory on Freepik',
     },
@@ -217,7 +245,7 @@ const STRINGS: Record<Language, Strings> = {
     },
     postScamSupport: {
       eyebrow: 'Get Help',
-      title: 'Get calm support after a scam.',
+      title: 'Get calm support after a scam',
       description: 'This page is prepared for recovery guidance, reporting actions, emergency contacts, and practical support after harm has already happened.',
       highlights: [
         'Show urgent steps in a calm and readable order.',
@@ -528,6 +556,9 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.support]: 'Dapatkan Bantuan',
       [appRoutes.knowledgeHub]: 'Berita Scam',
       [appRoutes.notificationReveal]: 'Hasil Pemberitahuan',
+      [appRoutes.dataSources]: 'Sumber Data',
+      [appRoutes.aboutUs]: 'Tentang Kami',
+      [appRoutes.riskGuide]: 'Panduan Risiko',
     },
     ui: {
       openMenu: 'Buka menu navigasi',
@@ -556,11 +587,36 @@ const STRINGS: Record<Language, Strings> = {
     footer: {
       title: 'Rujukan & Maklumat',
       sourcesTitle: 'Sumber data',
-      sourcesHint: 'Akan datang',
+      sourcesLead: 'ScamSafe menggunakan laporan awam, data terbuka, dan sumber Malaysia yang dipercayai.',
+      sourcesItems: [
+        'Angka kesan scam di Malaysia dirujuk daripada State of Scam Report 2024 dan sumber awam berkaitan.',
+        'Artikel Berita Scam dimuatkan bersama pautan sumber supaya pengguna boleh membaca laporan asal sepenuhnya.',
+        'Aliran pengesanan, kuiz, dan simulasi dibentuk berdasarkan corak scam sebenar seperti panggilan, mesej, penyamaran, dan pancingan data.',
+      ],
       aboutTitle: 'Tentang ScamSafe',
-      aboutHint: 'Akan datang',
+      aboutLead: 'ScamSafe ialah laman web ringkas yang membantu warga emas di Malaysia menyemak mesej mencurigakan dan kekal lebih selamat dalam talian.',
+      aboutPoints: [
+        'Gunakan Scam Checker sebelum membalas, menekan pautan, atau memindahkan wang.',
+        'Berlatih dengan AI Scam Chat secara tenang dan langkah demi langkah.',
+        'Baca berita scam, cuba kuiz ringkas, dan dapatkan bantuan selepas scam.',
+      ],
+      aboutTags: ['Mesra warga emas', 'Fokus Malaysia', 'Bantuan AI', 'Mobile-first'],
       riskTitle: 'Panduan tahap risiko',
-      riskHint: 'Akan datang',
+      riskLead: 'Label ini membantu pengguna kekal tenang dan bertindak mengikut turutan yang betul.',
+      riskItems: [
+        {
+          label: 'Rendah / Sangat Rendah',
+          text: 'Sedikit tanda amaran ditemui, tetapi pengguna masih perlu mengesahkan melalui saluran rasmi sebelum bertindak.',
+        },
+        {
+          label: 'Sederhana',
+          text: 'Terdapat isyarat bercampur, jadi langkah paling selamat ialah berhenti seketika, sahkan identiti, dan elakkan berkongsi kod atau wang.',
+        },
+        {
+          label: 'Tinggi / Sangat Tinggi',
+          text: 'Tanda scam yang kuat telah dikesan, jadi pengguna perlu berhenti berinteraksi serta-merta dan beralih kepada saluran rasmi yang dipercayai.',
+        },
+      ],
       imageCreditLabel: 'Kredit imej:',
       imageCreditText: 'Imej oleh Lifestylememory di Freepik',
     },
@@ -1032,6 +1088,9 @@ const STRINGS: Record<Language, Strings> = {
       [appRoutes.support]: '获取帮助',
       [appRoutes.knowledgeHub]: '诈骗新闻',
       [appRoutes.notificationReveal]: '通知结果',
+      [appRoutes.dataSources]: '数据来源',
+      [appRoutes.aboutUs]: '关于我们',
+      [appRoutes.riskGuide]: '风险说明',
     },
     ui: {
       openMenu: '打开导航菜单',
@@ -1060,11 +1119,36 @@ const STRINGS: Record<Language, Strings> = {
     footer: {
       title: '参考与说明',
       sourcesTitle: '数据来源',
-      sourcesHint: '即将推出',
+      sourcesLead: 'ScamSafe 使用公开报告、开放数据和可信的马来西亚资料。',
+      sourcesItems: [
+        '马来西亚诈骗影响数据参考了《State of Scam Report 2024》及相关公开资料。',
+        '诈骗新闻文章会附上来源链接，方便用户查看原始报道全文。',
+        '识别、测验与模拟功能都围绕真实诈骗模式设计，包括电话、短信、冒充和钓鱼案例。',
+      ],
       aboutTitle: '关于 ScamSafe',
-      aboutHint: '即将推出',
+      aboutLead: 'ScamSafe 是一个简单易用的网站，帮助马来西亚长者检查可疑信息，并在网上更安全。',
+      aboutPoints: [
+        '在回复、点链接或转账前，先用 Scam Checker 检查。',
+        '通过 AI Scam Chat 平静地一步一步练习应对方式。',
+        '阅读诈骗新闻、完成简短测验，并在受骗后获得帮助。',
+      ],
+      aboutTags: ['长者友好', '聚焦马来西亚', 'AI 辅助', '移动优先'],
       riskTitle: '风险等级说明',
-      riskHint: '即将推出',
+      riskLead: '这些标签帮助用户先冷静，再按正确顺序行动。',
+      riskItems: [
+        {
+          label: '低 / 很低',
+          text: '明显警示信号较少，但仍应先通过官方渠道核实后再行动。',
+        },
+        {
+          label: '中等',
+          text: '检测到混合信号，最安全的做法是先暂停、确认身份，并避免提供验证码或转账。',
+        },
+        {
+          label: '高 / 很高',
+          text: '检测到强烈诈骗迹象，应立即停止互动，并改用可信的官方联系方式。',
+        },
+      ],
       imageCreditLabel: '图片来源：',
       imageCreditText: '图片来自 Freepik 的 Lifestylememory',
     },

@@ -68,7 +68,11 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
 
         if (options.scrollToResults ?? true) {
           setTimeout(() => {
-            resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            const resultCard = resultsRef.current?.closest('.section-card')
+            ;(resultCard instanceof HTMLElement ? resultCard : resultsRef.current)?.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            })
           }, 100)
         }
       } catch (err) {

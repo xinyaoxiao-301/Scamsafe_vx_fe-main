@@ -226,6 +226,9 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   // ── Reset ───────────────────────────────────────────────────────────────────
   const resetScenario = () => {
+    recognitionRef.current?.stop?.()
+    recognitionRef.current = null
+    setIsListening(false)
     setScenarioType(null)
     setSessionId(null)
     setMessages([])
@@ -236,6 +239,19 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     setLastOutcome(null)
     setIsChatPopping(false)
   }
+
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.stop?.()
+      recognitionRef.current = null
+
+      if (!sessionId) return
+
+      void quitSimulationSession(sessionId).catch(() => {
+        // Best-effort cleanup only; the next mount will start a fresh localized session.
+      })
+    }
+  }, [sessionId])
 
   useEffect(() => {
     if (!isChatPopping) return

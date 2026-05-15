@@ -89,6 +89,23 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
   const { language, setLanguage, strings } = useI18n()
   const lastHeroTriggerRef = useRef<string | null>(null)
   const langMenuRef = useRef<HTMLDivElement | null>(null)
+  const footerCards: Array<{ route: AppRoute; title: string; text: string }> = [
+    {
+      route: appRoutes.dataSources,
+      title: strings.footer.sourcesTitle,
+      text: strings.footer.sourcesLead,
+    },
+    {
+      route: appRoutes.aboutUs,
+      title: strings.footer.aboutTitle,
+      text: strings.footer.aboutLead,
+    },
+    {
+      route: appRoutes.riskGuide,
+      title: strings.footer.riskTitle,
+      text: strings.footer.riskLead,
+    },
+  ]
 
   useEffect(() => {
     setIsMenuOpen(false)
@@ -390,29 +407,28 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                 <h2 className="app-footer__title">{strings.footer.title}</h2>
               </div>
               <div className="app-footer__grid">
-                <section className="app-footer__card" aria-label={strings.footer.sourcesTitle}>
-                  <h3 className="app-footer__card-title">{strings.footer.sourcesTitle}</h3>
-                  <p className="app-footer__card-text">{strings.footer.sourcesHint}</p>
-                  <p className="app-footer__credit">
-                    <span className="app-footer__credit-label">{strings.footer.imageCreditLabel}</span>{' '}
-                    <a
-                      className="app-footer__credit-link"
-                      href="https://www.freepik.com/free-photo/elderly-senior-asian-male-freelancer-casual-clothes-typing-laptop-keyboard-while-talking-smartphone-standing-desk-busy-working-home-office_25117731.htm#fromView=search&page=1&position=2&uuid=ff5cca6a-b8fa-489a-ba36-8c4ab535e59c&query=Elderly+fraud+asian+technical"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {strings.footer.imageCreditText}
-                    </a>
-                  </p>
-                </section>
-                <section className="app-footer__card" aria-label={strings.footer.aboutTitle}>
-                  <h3 className="app-footer__card-title">{strings.footer.aboutTitle}</h3>
-                  <p className="app-footer__card-text">{strings.footer.aboutHint}</p>
-                </section>
-                <section className="app-footer__card" aria-label={strings.footer.riskTitle}>
-                  <h3 className="app-footer__card-title">{strings.footer.riskTitle}</h3>
-                  <p className="app-footer__card-text">{strings.footer.riskHint}</p>
-                </section>
+                {footerCards.map((card) => (
+                  <a
+                    key={card.route}
+                    className={[
+                      'app-footer__card',
+                      'app-footer__card--link',
+                      currentRoute === card.route ? 'app-footer__card--active' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                    href={card.route}
+                    aria-current={currentRoute === card.route ? 'page' : undefined}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      onNavigate(card.route)
+                    }}
+                  >
+                    <h3 className="app-footer__card-title">{card.title}</h3>
+                    <p className="app-footer__card-text app-footer__card-text--lead">{card.text}</p>
+                    <span className="app-footer__cta">{strings.homeFeatures.open}</span>
+                  </a>
+                ))}
               </div>
               <p className="app-footer__copyright">© {new Date().getFullYear()} ScamSafe</p>
             </div>

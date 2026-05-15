@@ -183,6 +183,8 @@
 
 .scam-detection-page__risk-wrap {
   display: grid;
+  place-self: center;
+  align-self: center;
   justify-items: center;
   gap: 10px;
 }

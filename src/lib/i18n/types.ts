@@ -35,11 +35,18 @@ export type Strings = {
   footer: {
     title: string
     sourcesTitle: string
-    sourcesHint: string
+    sourcesLead: string
+    sourcesItems: string[]
     aboutTitle: string
-    aboutHint: string
+    aboutLead: string
+    aboutPoints: string[]
+    aboutTags: string[]
     riskTitle: string
-    riskHint: string
+    riskLead: string
+    riskItems: Array<{
+      label: string
+      text: string
+    }>
     imageCreditLabel: string
     imageCreditText: string
   }

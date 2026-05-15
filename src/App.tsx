@@ -7,6 +7,7 @@ import { useNotificationTraining } from '@/hooks/useNotificationTraining'
 import { I18nProvider, useI18n } from '@/lib/i18n'
 import { fetchNotificationReveal } from '@/services/notificationTraining'
 import { HomePage } from '@/pages/home'
+import { FooterInfoPage } from '@/pages/footer-info'
 import { KnowledgeHubPage } from '@/pages/knowledge-hub'
 import { NotificationRevealPage } from '@/pages/notification-reveal'
 import { PostScamSupportPage } from '@/pages/post-scam-support'
@@ -143,15 +144,39 @@ function AppContent() {
       case appRoutes.detection:
         return <ScamDetectionPage onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.simulation:
-        return <ScamSimulationPage onBackHome={() => handleNavigate(appRoutes.home)} />
+        return <ScamSimulationPage key={`${currentRoute}:${language}`} onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.studyCenter:
-        return <StudyCenterPage onBackHome={() => handleNavigate(appRoutes.home)} />
+        return <StudyCenterPage key={`${currentRoute}:${language}`} onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.support:
         return <PostScamSupportPage onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.knowledgeHub:
-        return <KnowledgeHubPage onBackHome={() => handleNavigate(appRoutes.home)} />
+        return <KnowledgeHubPage key={`${currentRoute}:${language}`} onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.notificationReveal:
-        return <NotificationRevealPage onBackHome={() => handleNavigate(appRoutes.home)} />
+        return <NotificationRevealPage key={`${currentRoute}:${language}`} onBackHome={() => handleNavigate(appRoutes.home)} />
+      case appRoutes.dataSources:
+        return (
+          <FooterInfoPage
+            kind="sources"
+            onBackHome={() => handleNavigate(appRoutes.home)}
+            onNavigate={handleNavigate}
+          />
+        )
+      case appRoutes.aboutUs:
+        return (
+          <FooterInfoPage
+            kind="about"
+            onBackHome={() => handleNavigate(appRoutes.home)}
+            onNavigate={handleNavigate}
+          />
+        )
+      case appRoutes.riskGuide:
+        return (
+          <FooterInfoPage
+            kind="risk"
+            onBackHome={() => handleNavigate(appRoutes.home)}
+            onNavigate={handleNavigate}
+          />
+        )
       case appRoutes.home:
       default:
         return <HomePage onNavigate={handleNavigate} />

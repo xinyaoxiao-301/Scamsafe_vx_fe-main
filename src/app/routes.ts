@@ -9,13 +9,12 @@ export const appRoutes = {
   support: '#/post-scam-support',
   knowledgeHub: '#/knowledge-hub',
   notificationReveal: '#/notification-reveal',
+  dataSources: '#/data-sources',
+  aboutUs: '#/about-us',
+  riskGuide: '#/risk-guide',
 } as const
 
 export type AppRoute = (typeof appRoutes)[keyof typeof appRoutes]
-
-const legacyRoutes = {
-  aboutUs: '#/about-us',
-} as const
 
 export const primaryNavItems = [
   { route: appRoutes.detection, label: 'Scam Checker' },
@@ -42,8 +41,12 @@ export function getRouteFromHash(hash: string): AppRoute {
       return appRoutes.knowledgeHub
     case appRoutes.notificationReveal:
       return appRoutes.notificationReveal
-    case legacyRoutes.aboutUs:
-      return appRoutes.knowledgeHub
+    case appRoutes.dataSources:
+      return appRoutes.dataSources
+    case appRoutes.aboutUs:
+      return appRoutes.aboutUs
+    case appRoutes.riskGuide:
+      return appRoutes.riskGuide
     case appRoutes.home:
     case '':
       return appRoutes.home
