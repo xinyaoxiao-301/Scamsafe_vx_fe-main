@@ -286,6 +286,7 @@ export type Strings = {
     chooseTopicLabel: string
     startQuiz: string
     loadingLabel: string
+    loadingStateLabel: string
     questionCountLabel: string
     submitAnswer: string
     errorPickAnswer: string

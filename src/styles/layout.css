@@ -958,6 +958,15 @@
 }
 
 @media (max-width: 767px) {
+  .app-shell {
+    --shell-top-pad: 0px;
+    padding-top: 0;
+  }
+
+  .app-shell::before {
+    display: none;
+  }
+
   .section-card__eyebrow {
     font-size: 0.88rem;
   }
@@ -976,25 +985,35 @@
     width: 100%;
     margin-left: 0;
     margin-right: 0;
-    transform: translate(4%, calc(18px - 5%)) scale(0.666);
+    transform: translate(4%, calc(24px - 5%)) scale(0.666);
     transform-origin: top left;
   }
 
   .app-shell__brand {
     flex-wrap: nowrap;
+    justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    padding-top: 8px;
-    padding-bottom: 14px;
+    gap: 6px;
+    min-height: 60px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+    margin-left: -14px;
+    margin-right: -14px;
+    margin-bottom: 8px;
   }
 
   .app-shell__brand-copy {
     width: auto;
-    flex: 0 0 auto;
+    min-width: 0;
+    flex: 1 1 auto;
   }
 
   .app-shell__brand-home {
-    gap: 10px;
+    gap: 8px;
+    min-width: 0;
+    max-width: 100%;
   }
 
   .app-shell__brand-logo {
@@ -1003,9 +1022,12 @@
   }
 
   .app-shell__brand-mark {
-    font-size: 1.5rem;
+    min-width: 0;
+    font-size: 1.34rem;
     line-height: 0.92;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .app-shell__nav {
@@ -1021,32 +1043,35 @@
     align-items: center;
     justify-content: flex-end;
     width: auto;
+    flex: 0 0 auto;
   }
 
   .app-shell__menu-button {
-    width: 26px;
-    height: 26px;
-    border-radius: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
     margin-bottom: 0;
     align-self: auto;
+    flex: 0 0 auto;
   }
 
   .app-shell__menu-button span {
-    width: 14px;
+    width: 16px;
   }
 
   .app-shell__lang select {
-    height: 30px;
-    width: 48px;
+    height: 34px;
+    width: 50px;
     padding: 0 6px;
     border-radius: 11px;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     text-align: center;
     text-align-last: center;
     margin-bottom: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 0 0 auto;
   }
 
   .app-shell__lang {
@@ -1077,7 +1102,7 @@
 
   .app-shell__hero-body {
     gap: var(--space-6);
-    margin-top: 22px;
+    margin-top: 26px;
   }
 
   .app-shell__hero-copy {
@@ -1086,7 +1111,7 @@
   }
 
   .app-shell__hero-title {
-    font-size: calc(clamp(2rem, 7.8vw, 2.75rem) * 0.9025);
+    font-size: calc(clamp(2.08rem, 8vw, 2.88rem) * 0.93);
     line-height: 1.22;
     letter-spacing: -0.05em;
   }
@@ -1096,29 +1121,11 @@
   }
 
   .app-shell__hero-subtitle {
-    max-width: none;
-    font-size: 0.708rem;
-    font-weight: 860;
-    line-height: 1.36;
-    text-align: left;
-    hyphens: none;
-    overflow-wrap: normal;
-    word-break: normal;
-    margin-left: 0;
-    margin-right: 0;
+    display: none;
   }
 
   .app-shell__hero-tagline {
-    max-width: none;
-    font-size: 0.736rem;
-    font-weight: 650;
-    line-height: 1.42;
-    text-align: left;
-    hyphens: none;
-    overflow-wrap: normal;
-    word-break: normal;
-    margin-left: 0;
-    margin-right: 0;
+    display: none;
   }
 
   .app-shell__hero-video-wrap {
@@ -1126,14 +1133,77 @@
   }
 
   .app-shell__hero-video-button {
-    width: clamp(150px, 44vw, 220px);
-    border-radius: 16px;
-    margin-top: 10px;
+    width: clamp(132px, 39vw, 184px);
+    border-radius: 14px;
+    margin-top: 14px;
   }
 
   .app-shell__hero-video-frame {
     border-radius: 24px;
     padding: 16px;
+  }
+
+  .app-shell__stats {
+    padding: 14px 14px;
+  }
+
+  .app-shell__stats-header {
+    gap: 6px;
+    padding: 4px 8px 10px;
+  }
+
+  .app-shell__stats-eyebrow {
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+  }
+
+  .app-shell__stats-title {
+    font-size: 1.46rem;
+    line-height: 1.08;
+  }
+
+  .app-shell__stats-grid {
+    margin-top: 10px;
+    gap: 10px;
+  }
+
+  .app-shell__stats-card {
+    padding: 12px 10px;
+    gap: 4px;
+    border-radius: 18px;
+  }
+
+  .app-shell__stats-icon {
+    width: 72px;
+    height: 72px;
+  }
+
+  .app-shell__stats-icon img {
+    width: 72px;
+    height: 72px;
+  }
+
+  .app-shell__stats-label {
+    margin-top: 2px;
+    font-size: 0.82rem;
+    line-height: 1.22;
+  }
+
+  .app-shell__stats-value {
+    font-size: clamp(1.52rem, 6.6vw, 2rem);
+    line-height: 1;
+  }
+
+  .app-shell__stats-hint {
+    font-size: 0.82rem;
+    line-height: 1.34;
+  }
+
+  .app-shell__stats-sources {
+    margin-top: 10px;
+    padding-top: 10px;
+    font-size: 0.8rem;
+    line-height: 1.35;
   }
 
 
@@ -1503,7 +1573,7 @@
     font-size: 0.86rem;
     font-weight: 800;
     letter-spacing: -0.01em;
-    text-align: left;
+    text-align: center;
     cursor: pointer;
     transition:
       background-color 160ms ease,

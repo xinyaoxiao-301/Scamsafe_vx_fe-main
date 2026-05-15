@@ -249,6 +249,32 @@
   margin-left: auto;
 }
 
+.study-center-page__workspace {
+  display: grid;
+  gap: 12px;
+}
+
+.study-center-page__workspace--pop {
+  animation: study-center-step2-pop 620ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+@keyframes study-center-step2-pop {
+  0% {
+    transform: translateY(44px) scale(0.96);
+    opacity: 0.76;
+  }
+
+  58% {
+    transform: translateY(-8px) scale(1.02);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
 .study-center-page__question-meta {
   display: flex;
   justify-content: space-between;

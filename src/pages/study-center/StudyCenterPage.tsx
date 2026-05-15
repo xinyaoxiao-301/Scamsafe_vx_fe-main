@@ -53,6 +53,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const [isFinished,      setIsFinished]      = useState(false)
   const [isLoadingQuiz,   setIsLoadingQuiz]   = useState(false)
   const [isTopicBreakdownOpen, setIsTopicBreakdownOpen] = useState(false)
+  const [isStep2Popping,  setIsStep2Popping]  = useState(false)
 
   const topics    = useMemo(() => getTopics(language), [language])
   const featuredTopic = topics.find((item) => item.topic === 'mixed') ?? topics[0]
@@ -92,8 +93,9 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const scrollElementToViewportCenter = (element: HTMLElement | null) => {
     if (!element) return
     const rect = element.getBoundingClientRect()
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const targetTop = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2
-    window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' })
+    window.scrollTo({ top: Math.max(0, targetTop), behavior: reduceMotion ? 'auto' : 'smooth' })
   }
 
   useEffect(() => {
@@ -137,12 +139,12 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     setCorrectCount(0)
     setSessionByTopic({})
     setIsFinished(false)
+    setIsStep2Popping(false)
 
-    if (isMobile) {
-      window.requestAnimationFrame(() => {
-        step2CardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      })
-    }
+    window.requestAnimationFrame(() => {
+      scrollElementToViewportCenter(step2CardRef.current)
+      window.setTimeout(() => setIsStep2Popping(true), 120)
+    })
 
     try {
       const questions = await fetchQuizQuestions(topicToUse, questionCount, language)
@@ -169,7 +171,18 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     setError(null)
     setIsFinished(false)
     setIsLoadingQuiz(false)
+    setIsStep2Popping(false)
   }
+
+  useEffect(() => {
+    if (!isStep2Popping) return
+
+    const timeoutId = window.setTimeout(() => {
+      setIsStep2Popping(false)
+    }, 620)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [isStep2Popping])
 
   const submitAnswer = () => {
     if (!current || hasSubmitted) return
@@ -424,14 +437,21 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
           footer={step2Footer}
         >
           <div ref={step2CardRef} />
-          {/* Loading state */}
-          {isLoadingQuiz ? (
-            <div className="study-center-page__loading" role="status" aria-live="polite">
-              <div className="study-center-page__spinner" aria-hidden="true" />
-              <p>{strings.studyCenter.loadingLabel}</p>
-            </div>
-          ) : quizQuestions && current ? (
-            <>
+          <div
+            className={
+              isStep2Popping
+                ? 'study-center-page__workspace study-center-page__workspace--pop'
+                : 'study-center-page__workspace'
+            }
+          >
+            {/* Loading state */}
+            {isLoadingQuiz ? (
+              <div className="study-center-page__loading" role="status" aria-live="polite">
+                <div className="study-center-page__spinner" aria-hidden="true" />
+                <p>{strings.studyCenter.loadingStateLabel}</p>
+              </div>
+            ) : quizQuestions && current ? (
+              <>
               <div className="study-center-page__question-meta" aria-label={strings.studyCenter.questionProgressLabel}>
                 <span>
                   {strings.studyCenter.questionCountLabel}: {index + 1}/{quizQuestions.length}
@@ -546,13 +566,14 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
                   </>
                 ) : null}
               </div>
-            </>
-          ) : (
-            /* Empty / error state */
-            error ? (
-              <p className="study-center-page__error" role="alert">{error}</p>
-            ) : null
-          )}
+              </>
+            ) : (
+              /* Empty / error state */
+              error ? (
+                <p className="study-center-page__error" role="alert">{error}</p>
+              ) : null
+            )}
+          </div>
         </SectionCard>
       </section>
 

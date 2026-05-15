@@ -263,7 +263,6 @@ function AppContent() {
                     <p className="entry-consent-modal__point-text">{siteDisclaimerStrings.referenceText}</p>
                   </article>
                 </div>
-                <p className="entry-consent-modal__helper">{siteDisclaimerStrings.permissionText}</p>
                 <div className="entry-consent-modal__actions">
                   <Button onClick={handleEnterWebsite}>{siteDisclaimerStrings.agree}</Button>
                   <Button variant="secondary" onClick={handleExitWebsite}>
