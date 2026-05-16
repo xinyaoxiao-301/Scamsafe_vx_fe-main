@@ -952,6 +952,7 @@
   }
 
   .notification-modal__panel {
+    padding: 15px;
     text-align: center;
   }
 
@@ -964,11 +965,17 @@
     grid-template-columns: minmax(0, 1fr);
     justify-items: center;
     text-align: center;
+    width: 100%;
+  }
+
+  .notification-modal__logo {
+    justify-self: center;
   }
 
   .notification-modal__source-copy {
     justify-items: center;
     text-align: center;
+    width: 100%;
   }
 
   .notification-modal__body {

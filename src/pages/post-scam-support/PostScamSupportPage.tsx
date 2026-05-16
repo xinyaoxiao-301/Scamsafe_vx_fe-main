@@ -1,6 +1,7 @@
 ﻿import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useI18n } from '@/lib/i18n'
 
 type PostScamSupportPageProps = {
@@ -10,6 +11,7 @@ type PostScamSupportPageProps = {
 export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
   const { strings } = useI18n()
   const s = strings.postScamSupport
+  const isMobile = useMediaQuery('(max-width: 767px)')
   const [selectedIncident, setSelectedIncident] = useState<'transferred-money' | null>(null)
   const [completedCount, setCompletedCount] = useState(0)
   const [isCurrentStepConfirmed, setIsCurrentStepConfirmed] = useState(false)
@@ -119,7 +121,11 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
               className="support-recovery-page__card support-recovery-page__card--tracker"
               eyebrow={s.trackerEyebrow}
               title={s.trackerTitle}
-              description={s.trackerDescription}
+              description={
+                isMobile
+                  ? `${s.trackerDescription} ${s.trackerMobileHint}`
+                  : s.trackerDescription
+              }
             >
               <ol className="support-recovery-page__tracker" aria-label={s.recoveryStepsLabel}>
                 {steps.map((step, index) => {

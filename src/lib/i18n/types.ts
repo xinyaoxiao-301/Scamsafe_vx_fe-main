@@ -192,6 +192,7 @@ export type Strings = {
     trackerEyebrow: string
     trackerTitle: string
     trackerDescription: string
+    trackerMobileHint: string
     selectedCaseLabel: string
     selectedCaseText: string
     recoveryStepsLabel: string
