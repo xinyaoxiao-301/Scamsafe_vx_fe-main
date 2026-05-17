@@ -1,3 +1,5 @@
+// Service layer for scam news discovery and article detail retrieval. The page
+// consumes these typed helpers so API response mapping stays outside the UI.
 import { env } from '@/lib/env'
 
 const API_BASE = env.apiBaseUrl

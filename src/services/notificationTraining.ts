@@ -1,3 +1,5 @@
+// Service layer for the notification training flow. These calls keep the popup
+// hook and reveal page aligned with the backend's simulated alert content.
 import { env } from '@/lib/env'
 import type { NotificationReveal } from '@/lib/notification-training/types'
 

@@ -1,3 +1,5 @@
+/* Base browser reset and document-level defaults. These rules normalize box
+   sizing, typography, media behavior, and form inheritance across the app. */
 *,
 *::before,
 *::after {

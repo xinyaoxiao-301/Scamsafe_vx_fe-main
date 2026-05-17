@@ -1,3 +1,5 @@
+// NotificationRevealPage explains a simulated push notification after the user
+// opens it, turning the popup training hook into a guided learning screen.
 import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'

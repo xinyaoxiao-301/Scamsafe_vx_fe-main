@@ -1,3 +1,5 @@
+// KnowledgeHubPage handles the news-reading flow: fetch the article list,
+// lazily load article details, and present a calm reading experience.
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'

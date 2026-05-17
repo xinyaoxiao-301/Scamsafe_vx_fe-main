@@ -1,3 +1,5 @@
+// Backend adapter for quiz content. It converts backend row shapes into the
+// cleaner structures expected by the study center UI and local session logic.
 import type { QuizQuestion, QuizTopic } from '@/types/studyCenterQuiz'
 
 // These row shapes mirror the quiz tables returned by the backend. They are kept

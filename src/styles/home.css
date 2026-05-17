@@ -1,3 +1,5 @@
+/* Homepage layout and feature-card presentation. The homepage acts as the
+   simple entry dashboard, so spacing and cards stay welcoming and scannable. */
 .home-page {
   display: grid;
   gap: 0;

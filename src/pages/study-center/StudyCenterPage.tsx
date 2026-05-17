@@ -1,3 +1,5 @@
+// StudyCenterPage presents bite-sized quizzes while tracking local progress,
+// points, and category-based review state for repeat practice.
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'

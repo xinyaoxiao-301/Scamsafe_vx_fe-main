@@ -1,8 +1,12 @@
+// AppShell owns the shared chrome for every route: branding, navigation,
+// desktop/mobile layout shifts, the homepage hero, and the common footer.
+// Keeping those concerns here prevents feature pages from duplicating shell UI.
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, PropsWithChildren } from 'react'
 import { primaryNavItems, type AppRoute, appRoutes } from '@/app/routes'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useI18n, type Language } from '@/lib/i18n'
+import type { ScamRiskLevel } from '@/types/scamDetection'
 import logo from '@/assets/scamsafe-logo.png'
 import homeHeroBackground from '@/assets/home-hero-background.png'
 import seniorsIcon from '@/assets/seniors.png'
@@ -89,21 +93,32 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
   const { language, setLanguage, strings } = useI18n()
   const lastHeroTriggerRef = useRef<string | null>(null)
   const langMenuRef = useRef<HTMLDivElement | null>(null)
-  const footerCards: Array<{ route: AppRoute; title: string; text: string }> = [
+  const footerRiskLevels: Array<{ level: ScamRiskLevel; tone: string }> = [
+    { level: 'Very Low', tone: 'very-low' },
+    { level: 'Low', tone: 'low' },
+    { level: 'Medium', tone: 'medium' },
+    { level: 'High', tone: 'high' },
+    { level: 'Very High', tone: 'very-high' },
+  ]
+  const footerCards: Array<
+    | { kind: 'link'; route: AppRoute; title: string; text: string }
+    | { kind: 'risk'; title: string }
+  > = [
     {
-      route: appRoutes.dataSources,
-      title: strings.footer.sourcesTitle,
-      text: strings.footer.sourcesLead,
-    },
-    {
+      kind: 'link',
       route: appRoutes.aboutUs,
       title: strings.footer.aboutTitle,
       text: strings.footer.aboutLead,
     },
     {
-      route: appRoutes.riskGuide,
+      kind: 'link',
+      route: appRoutes.dataSources,
+      title: strings.footer.sourcesTitle,
+      text: strings.footer.sourcesLead,
+    },
+    {
+      kind: 'risk',
       title: strings.footer.riskTitle,
-      text: strings.footer.riskLead,
     },
   ]
 
@@ -408,29 +423,59 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
               </div>
               <div className="app-footer__grid">
                 {footerCards.map((card) => (
-                  <a
-                    key={card.route}
-                    className={[
-                      'app-footer__card',
-                      'app-footer__card--link',
-                      currentRoute === card.route ? 'app-footer__card--active' : '',
-                    ]
-                      .filter(Boolean)
-                      .join(' ')}
-                    href={card.route}
-                    aria-current={currentRoute === card.route ? 'page' : undefined}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      onNavigate(card.route)
-                    }}
-                  >
-                    <h3 className="app-footer__card-title">{card.title}</h3>
-                    <p className="app-footer__card-text app-footer__card-text--lead">{card.text}</p>
-                    <span className="app-footer__cta">{strings.homeFeatures.open}</span>
-                  </a>
+                  card.kind === 'link' ? (
+                    <a
+                      key={card.route}
+                      className={[
+                        'app-footer__card',
+                        'app-footer__card--link',
+                        card.route === appRoutes.aboutUs || card.route === appRoutes.dataSources
+                          ? 'app-footer__card--feature-info'
+                          : '',
+                        currentRoute === card.route ? 'app-footer__card--active' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                      href={card.route}
+                      aria-current={currentRoute === card.route ? 'page' : undefined}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        onNavigate(card.route)
+                      }}
+                    >
+                      <h3 className="app-footer__card-title">{card.title}</h3>
+                      <p
+                        className={
+                          card.route === appRoutes.aboutUs || card.route === appRoutes.dataSources
+                            ? 'app-footer__card-text app-footer__card-text--lead app-footer__card-text--feature-info'
+                            : 'app-footer__card-text app-footer__card-text--lead'
+                        }
+                      >
+                        {card.text}
+                      </p>
+                      <span className="app-footer__cta">{strings.homeFeatures.open}</span>
+                    </a>
+                  ) : (
+                    <section key={card.title} className="app-footer__card app-footer__card--risk" aria-label={card.title}>
+                      <h3 className="app-footer__card-title">{card.title}</h3>
+                      <div className="app-footer__risk-table" aria-label={card.title}>
+                        {footerRiskLevels.map((item) => (
+                          <div key={item.level} className="app-footer__risk-row">
+                            <span className="app-footer__risk-level">{strings.scamDetection.riskLabels[item.level]}</span>
+                            <span className="app-footer__risk-color">
+                              <span
+                                className={`app-footer__risk-swatch app-footer__risk-swatch--${item.tone}`}
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )
                 ))}
               </div>
-              <p className="app-footer__copyright">© {new Date().getFullYear()} ScamSafe</p>
+              <p className="app-footer__copyright">© {new Date().getFullYear()} ScamSafe, designed by Team 08.exe</p>
             </div>
           </footer>
         </div>

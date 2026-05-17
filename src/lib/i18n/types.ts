@@ -1,3 +1,6 @@
+// Shared i18n contracts used by the provider and all translated views. These
+// types define the complete shape of the string dictionary so missing content
+// is caught at compile time instead of surfacing as runtime UI gaps.
 import type { AppRoute } from '@/app/routes'
 import type { ScamRiskLevel, ScamType } from '@/types/scamDetection'
 
@@ -35,12 +38,25 @@ export type Strings = {
   footer: {
     title: string
     sourcesTitle: string
+    sourcesKicker: string
     sourcesLead: string
     sourcesItems: string[]
+    sourcesTags: string[]
+    sourcesSections: Array<{
+      title: string
+      text: string
+    }>
+    sourcesCreditsTitle: string
+    sourcesCreditsNote: string
     aboutTitle: string
     aboutLead: string
+    aboutHighlights: string[]
     aboutPoints: string[]
     aboutTags: string[]
+    aboutSections: Array<{
+      title: string
+      text: string
+    }>
     riskTitle: string
     riskLead: string
     riskItems: Array<{

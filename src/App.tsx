@@ -1,3 +1,6 @@
+// App.tsx is the single composition root for the frontend. It keeps hash-based
+// routing, notification prefetching, disclaimer gating, and page selection in
+// one place so feature pages can stay focused on their own UI logic.
 import { useEffect, useState } from 'react'
 import logo from '@/assets/scamsafe-logo.png'
 import { AppShell } from '@/app/AppShell'
@@ -154,29 +157,11 @@ function AppContent() {
       case appRoutes.notificationReveal:
         return <NotificationRevealPage key={`${currentRoute}:${language}`} onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.dataSources:
-        return (
-          <FooterInfoPage
-            kind="sources"
-            onBackHome={() => handleNavigate(appRoutes.home)}
-            onNavigate={handleNavigate}
-          />
-        )
+        return <FooterInfoPage kind="sources" onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.aboutUs:
-        return (
-          <FooterInfoPage
-            kind="about"
-            onBackHome={() => handleNavigate(appRoutes.home)}
-            onNavigate={handleNavigate}
-          />
-        )
+        return <FooterInfoPage kind="about" onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.riskGuide:
-        return (
-          <FooterInfoPage
-            kind="risk"
-            onBackHome={() => handleNavigate(appRoutes.home)}
-            onNavigate={handleNavigate}
-          />
-        )
+        return <FooterInfoPage kind="risk" onBackHome={() => handleNavigate(appRoutes.home)} />
       case appRoutes.home:
       default:
         return <HomePage onNavigate={handleNavigate} />

@@ -1,3 +1,5 @@
+// Shared content card wrapper used throughout the app. It standardizes the
+// eyebrow, title, description, body, and footer structure for consistent UI.
 import type { PropsWithChildren, ReactNode } from 'react'
 
 type SectionCardProps = PropsWithChildren<{

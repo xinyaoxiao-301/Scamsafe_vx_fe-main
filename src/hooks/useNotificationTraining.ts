@@ -1,3 +1,6 @@
+// useNotificationTraining simulates scam-style browser notifications in a
+// controlled way. It coordinates permission handling, fetch timing, local
+// persistence, and the handoff into the reveal page experience.
 import { useEffect, useRef, useState } from 'react'
 import logo from '@/assets/scamsafe-logo.png'
 import { appRoutes } from '@/app/routes'

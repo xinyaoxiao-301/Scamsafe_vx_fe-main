@@ -1,4 +1,5 @@
-//src/services/studyCenterQuiz.ts
+// Study center data/service helpers. This module bridges backend quiz content,
+// local progress storage, and the UI's topic/session view of the feature.
 
 import { env } from '@/lib/env'
 import type { Language } from '@/lib/i18n'
@@ -8,18 +9,19 @@ import type { QuizQuestion, QuizSessionRecord, QuizTopic } from '@/types/studyCe
 const API_BASE = env.apiBaseUrl
 
 const SESSIONS_KEY = 'scamsafe_study_center_sessions_v1'
-const POINTS_KEY   = 'scamsafe_study_center_points_v1'
+const POINTS_KEY = 'scamsafe_study_center_points_v1'
 
-// Maps frontend QuizTopic keys → DB quiz slugs
+// Maps frontend QuizTopic keys to backend slugs so routing/UI labels can stay
+// human-friendly while the database keeps its own naming convention.
 const TOPIC_TO_SLUG: Record<Exclude<QuizTopic, 'mixed'>, string> = {
-  'romance':            'romance-scams',
-  'investment':         'investment-scams',
-  'tech-support':       'tech-support-scams',
-  'government-imposter':'government-imposters',
-  'marketplace':        'marketplace-scams',
-  'charity':            'charity-scams',
-  'lottery-prize':      'lottery-prize-scams',
-  'family-emergency':   'family-emergency-scams',
+  romance: 'romance-scams',
+  investment: 'investment-scams',
+  'tech-support': 'tech-support-scams',
+  'government-imposter': 'government-imposters',
+  marketplace: 'marketplace-scams',
+  charity: 'charity-scams',
+  'lottery-prize': 'lottery-prize-scams',
+  'family-emergency': 'family-emergency-scams',
 }
 
 export const TOPIC_ORDER: Exclude<QuizTopic, 'mixed'>[] = [
@@ -33,7 +35,7 @@ export const TOPIC_ORDER: Exclude<QuizTopic, 'mixed'>[] = [
   'family-emergency',
 ]
 
-export type TopicMeta = {
+type TopicMeta = {
   topic: QuizTopic
   title: string
   description: string
@@ -136,7 +138,7 @@ export function getSessions(): QuizSessionRecord[] {
   return readSessions().sort((a, b) => a.completedAt - b.completedAt)
 }
 
-export function getTotalPoints(): number {
+function getTotalPoints(): number {
   const raw   = window.localStorage.getItem(POINTS_KEY)
   const value = raw ? Number(raw) : 0
   return Number.isFinite(value) ? Math.max(0, Math.floor(value)) : 0

@@ -1,3 +1,5 @@
+// HomePage is the feature gateway for first-time users. It keeps navigation
+// choices visual and simple while deferring full detail to each destination.
 import { FeatureIcon } from '@/components/ui/FeatureIcon'
 import { appRoutes, type AppRoute } from '@/app/routes'
 import { useI18n } from '@/lib/i18n'

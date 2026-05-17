@@ -1,3 +1,5 @@
+// ScamSimulationPage drives the guided chat practice experience. It coordinates
+// scenario picking, message flow, scoring, and post-chat feedback display.
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
@@ -452,7 +454,15 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
         {/* ── Chat phone UI ───────────────────────────────────────────── */}
         <SectionCard
-          className="scam-simulation-page__card"
+          className={
+            [
+              'scam-simulation-page__card',
+              'scam-simulation-page__card--chat',
+              showSpecificScenarios ? 'scam-simulation-page__card--chat-condensed' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')
+          }
           eyebrow={s.step2Eyebrow}
           title={s.step2Title}
           description={s.step2Description}

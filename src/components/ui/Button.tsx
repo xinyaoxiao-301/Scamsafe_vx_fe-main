@@ -1,3 +1,5 @@
+// Reusable button primitive that centralizes variant handling so pages can keep
+// their JSX clean and consistent without reimplementing button classes.
 import { forwardRef } from 'react'
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react'
 

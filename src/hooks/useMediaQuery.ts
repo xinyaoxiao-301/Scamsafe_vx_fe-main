@@ -1,3 +1,6 @@
+// useMediaQuery keeps React behavior aligned with CSS breakpoints. Components
+// can subscribe to the same viewport rules used by stylesheets without each
+// page re-implementing matchMedia setup and cleanup logic.
 import { useEffect, useState } from 'react'
 
 function getMatches(query: string) {
@@ -8,8 +11,6 @@ function getMatches(query: string) {
   return window.matchMedia(query).matches
 }
 
-// Shared responsive hook for behavior that must match the CSS breakpoint
-// strategy without duplicating media query listener setup in components.
 export function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(() => getMatches(query))
 

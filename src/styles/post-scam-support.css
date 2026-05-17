@@ -1,3 +1,5 @@
+/* Post-scam support page styling. This file prioritizes high-contrast actions,
+   urgent contact blocks, and recovery guidance that is easy to scan quickly. */
 .support-recovery-page {
   --support-scale: 1.3;
   display: grid;
@@ -569,8 +571,8 @@
 }
 
 .support-recovery-page__emergency-icon svg {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   stroke: currentColor;
   stroke-width: 1.8;
   fill: none;

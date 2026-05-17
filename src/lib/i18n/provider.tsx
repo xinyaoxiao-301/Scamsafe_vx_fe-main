@@ -1,4 +1,7 @@
-﻿import { useEffect, useMemo, useState } from 'react'
+﻿// I18nProvider owns language selection, persistence, and the complete
+// translation dictionary for the app. Centralizing the strings here keeps page
+// components declarative and ensures route labels stay language-aware.
+import { useEffect, useMemo, useState } from 'react'
 import type { PropsWithChildren } from 'react'
 import { appRoutes } from '@/app/routes'
 import { I18nContext } from './context'
@@ -54,12 +57,30 @@ const STRINGS: Record<Language, Strings> = {
     footer: {
       title: 'References & Information',
       sourcesTitle: 'Data sources',
-      sourcesLead: 'ScamSafe uses public reports, open data, and trusted Malaysian sources.',
+      sourcesKicker: 'Trusted sources used in ScamSafe',
+      sourcesLead: 'These are the main websites, datasets, and official references used to support ScamSafe.',
       sourcesItems: [
         'Malaysia scam impact figures come from the State of Scam Report 2024 and related public references.',
         'Scam News articles are loaded with source links so users can read the original reporting in full.',
         'Detection, quiz, and simulation flows are shaped around real scam patterns from calls, texts, impersonation, and phishing cases.',
       ],
+      sourcesTags: ['Trusted websites', 'Public examples', 'News links', 'Official help'],
+      sourcesSections: [
+        {
+          title: 'Used directly in ScamSafe',
+          text: 'These services are directly connected to the website and help it run.',
+        },
+        {
+          title: 'Reference sources for the project',
+          text: 'These public sources help us study scam patterns, review articles, and support project content decisions.',
+        },
+        {
+          title: 'Official Malaysia reference',
+          text: 'This official source supports trusted scam-response guidance for users in Malaysia.',
+        },
+      ],
+      sourcesCreditsTitle: 'Source credits',
+      sourcesCreditsNote: 'External source rights remain with their original owners and contributors.',
       aboutTitle: 'About ScamSafe',
       aboutLead: 'ScamSafe is a simple website that helps older adults in Malaysia check suspicious messages and stay safer online.',
       aboutPoints: [
@@ -67,7 +88,22 @@ const STRINGS: Record<Language, Strings> = {
         'Practice with AI Scam Chat in a calm, step-by-step way.',
         'Read scam news, try short quizzes, and get help after a scam.',
       ],
-      aboutTags: ['Senior-friendly', 'Malaysia-focused', 'AI-assisted', 'Mobile-first'],
+      aboutHighlights: ['Simple visuals', 'Reliable data', 'Safety first'],
+      aboutTags: ['Senior-friendly', 'Malaysia-first', 'AI-assisted', 'Mobile-first'],
+      aboutSections: [
+        {
+          title: 'Simple visuals',
+          text: 'Large text, clear buttons, and guided steps make each action easier to follow without digital overload.',
+        },
+        {
+          title: 'Reliable data',
+          text: 'ScamSafe is shaped around trusted Malaysian references, public reports, and real scam patterns seen in messages, calls, and impersonation cases.',
+        },
+        {
+          title: 'Safety first',
+          text: 'Every tool is designed to slow risky actions down, encourage verification, and point users to safer next steps before money or personal details are shared.',
+        },
+      ],
       riskTitle: 'Risk level guide',
       riskLead: 'These labels help users stay calm and act in the right order.',
       riskItems: [
@@ -588,20 +624,53 @@ const STRINGS: Record<Language, Strings> = {
     footer: {
       title: 'Rujukan & Maklumat',
       sourcesTitle: 'Sumber data',
-      sourcesLead: 'ScamSafe menggunakan laporan awam, data terbuka, dan sumber Malaysia yang dipercayai.',
+      sourcesKicker: 'Sumber dipercayai yang digunakan dalam ScamSafe',
+      sourcesLead: 'Ini ialah laman web, dataset, dan rujukan rasmi utama yang digunakan untuk menyokong ScamSafe.',
       sourcesItems: [
         'Angka kesan scam di Malaysia dirujuk daripada State of Scam Report 2024 dan sumber awam berkaitan.',
         'Artikel Berita Scam dimuatkan bersama pautan sumber supaya pengguna boleh membaca laporan asal sepenuhnya.',
         'Aliran pengesanan, kuiz, dan simulasi dibentuk berdasarkan corak scam sebenar seperti panggilan, mesej, penyamaran, dan pancingan data.',
       ],
+      sourcesTags: ['Laman dipercayai', 'Contoh awam', 'Pautan berita', 'Bantuan rasmi'],
+      sourcesSections: [
+        {
+          title: 'Digunakan terus dalam ScamSafe',
+          text: 'Perkhidmatan ini disambungkan terus kepada laman web dan membantu ia berfungsi.',
+        },
+        {
+          title: 'Sumber rujukan untuk projek',
+          text: 'Sumber awam ini membantu kami mengkaji corak scam, menyemak artikel, dan menyokong keputusan kandungan projek.',
+        },
+        {
+          title: 'Rujukan rasmi Malaysia',
+          text: 'Sumber rasmi ini menyokong panduan tindak balas scam yang dipercayai untuk pengguna di Malaysia.',
+        },
+      ],
+      sourcesCreditsTitle: 'Kredit sumber',
+      sourcesCreditsNote: 'Hak sumber luaran kekal milik pemilik dan penyumbang asal.',
       aboutTitle: 'Tentang ScamSafe',
       aboutLead: 'ScamSafe ialah laman web ringkas yang membantu warga emas di Malaysia menyemak mesej mencurigakan dan kekal lebih selamat dalam talian.',
       aboutPoints: [
-        'Gunakan Scam Checker sebelum membalas, menekan pautan, atau memindahkan wang.',
-        'Berlatih dengan AI Scam Chat secara tenang dan langkah demi langkah.',
-        'Baca berita scam, cuba kuiz ringkas, dan dapatkan bantuan selepas scam.',
+        'Gunakan Semak Scam sebelum membalas, menekan pautan, atau memindahkan wang.',
+        'Berlatih dengan Latihan Chat AI secara tenang dan langkah demi langkah.',
+        'Baca Berita Scam, cuba Uji Diri, dan dapatkan bantuan melalui Dapatkan Bantuan selepas scam.',
       ],
+      aboutHighlights: ['Visual ringkas', 'Data boleh dipercayai', 'Utamakan keselamatan'],
       aboutTags: ['Mesra warga emas', 'Fokus Malaysia', 'Bantuan AI', 'Mobile-first'],
+      aboutSections: [
+        {
+          title: 'Visual ringkas',
+          text: 'Teks besar, butang jelas, dan langkah berpandu membantu setiap tindakan lebih mudah diikuti tanpa membebankan pengguna.',
+        },
+        {
+          title: 'Data boleh dipercayai',
+          text: 'ScamSafe dibina berasaskan rujukan Malaysia yang dipercayai, laporan awam, dan corak scam sebenar daripada mesej, panggilan, serta kes penyamaran.',
+        },
+        {
+          title: 'Utamakan keselamatan',
+          text: 'Setiap alat direka untuk memperlahankan tindakan berisiko, menggalakkan semakan, dan menunjukkan langkah seterusnya yang lebih selamat sebelum wang atau maklumat peribadi dikongsi.',
+        },
+      ],
       riskTitle: 'Panduan tahap risiko',
       riskLead: 'Label ini membantu pengguna kekal tenang dan bertindak mengikut turutan yang betul.',
       riskItems: [
@@ -1121,20 +1190,53 @@ const STRINGS: Record<Language, Strings> = {
     footer: {
       title: '参考与说明',
       sourcesTitle: '数据来源',
-      sourcesLead: 'ScamSafe 使用公开报告、开放数据和可信的马来西亚资料。',
+      sourcesKicker: 'ScamSafe 使用的可信来源',
+      sourcesLead: '这里列出支持 ScamSafe 的主要网站、数据集和官方参考资料。',
       sourcesItems: [
         '马来西亚诈骗影响数据参考了《State of Scam Report 2024》及相关公开资料。',
         '诈骗新闻文章会附上来源链接，方便用户查看原始报道全文。',
         '识别、测验与模拟功能都围绕真实诈骗模式设计，包括电话、短信、冒充和钓鱼案例。',
       ],
+      sourcesTags: ['可信网站', '公开示例', '新闻链接', '官方帮助'],
+      sourcesSections: [
+        {
+          title: 'ScamSafe 直接使用的服务',
+          text: '这些服务直接连接到网站本身，帮助网站正常运行。',
+        },
+        {
+          title: '项目参考来源',
+          text: '这些公开来源帮助我们学习诈骗模式、查阅文章，并支持项目内容判断。',
+        },
+        {
+          title: '马来西亚官方参考',
+          text: '这个官方来源为马来西亚用户提供可信的诈骗应对参考信息。',
+        },
+      ],
+      sourcesCreditsTitle: '来源版权',
+      sourcesCreditsNote: '所有外部来源的权利仍归其原始所有者和贡献者所有。',
       aboutTitle: '关于 ScamSafe',
       aboutLead: 'ScamSafe 是一个简单易用的网站，帮助马来西亚长者检查可疑信息，并在网上更安全。',
       aboutPoints: [
-        '在回复、点链接或转账前，先用 Scam Checker 检查。',
-        '通过 AI Scam Chat 平静地一步一步练习应对方式。',
-        '阅读诈骗新闻、完成简短测验，并在受骗后获得帮助。',
+        '在回复、点链接或转账前，先用诈骗检查查看。',
+        '通过 AI 防诈聊天 平静地一步一步练习应对方式。',
+        '阅读诈骗新闻、完成自我测验，并通过获取帮助了解受骗后的下一步。',
       ],
+      aboutHighlights: ['界面简洁', '数据可靠', '安全优先'],
       aboutTags: ['长者友好', '聚焦马来西亚', 'AI 辅助', '移动优先'],
+      aboutSections: [
+        {
+          title: '界面简洁',
+          text: '大字体、清晰按钮和分步骤引导，让用户在不被复杂操作干扰的情况下完成每一步。',
+        },
+        {
+          title: '数据可靠',
+          text: 'ScamSafe 基于可信的马来西亚资料、公开报告和真实诈骗模式来设计，包括短信、电话和冒充案例。',
+        },
+        {
+          title: '安全优先',
+          text: '每个工具都强调先暂停、先核实，再行动，在分享金钱或个人信息之前先给出更安全的下一步建议。',
+        },
+      ],
       riskTitle: '风险等级说明',
       riskLead: '这些标签帮助用户先冷静，再按正确顺序行动。',
       riskItems: [

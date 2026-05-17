@@ -1,3 +1,5 @@
+// Small inline icon switch used by the homepage feature cards. Keeping the SVGs
+// together avoids extra asset files and keeps visual updates lightweight.
 type FeatureIconProps = {
   name: 'detection' | 'study' | 'simulation' | 'support'
 }

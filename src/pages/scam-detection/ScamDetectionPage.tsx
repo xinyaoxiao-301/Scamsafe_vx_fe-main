@@ -1,3 +1,5 @@
+// ScamDetectionPage is the text analysis workflow. It manages the textarea,
+// submission state, localized validation, and the result card presentation.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { ClipboardEvent } from 'react'
 import { Button } from '@/components/ui/Button'

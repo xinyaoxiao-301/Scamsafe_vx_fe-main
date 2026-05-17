@@ -1,6 +1,6 @@
-// types/scamDetection.ts
-// Labels are intentionally human-readable because the backend/model returns
-// these exact strings and the UI maps them directly to localized display labels.
+// Shared type contracts for the scam checker feature. These labels intentionally
+// stay human-readable because the backend returns the same values and the UI
+// maps them directly into localized presentation labels.
 export type ScamRiskLevel = 'Very Low' | 'Low' | 'Medium' | 'High' | 'Very High'
 
 export type ScamType =

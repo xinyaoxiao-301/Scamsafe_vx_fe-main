@@ -1,3 +1,5 @@
+/* Shared application shell styles: brand bar, hero, navigation, common cards,
+   and the global footer. Feature pages layer on top of these primitives. */
 .app-shell {
   --shell-top-pad: clamp(6px, 3vh, 20px);
   position: relative;
@@ -791,7 +793,8 @@
 }
 
 .app-footer__card {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   align-content: start;
   gap: 12px;
   border: 1px solid rgba(17, 38, 58, 0.14);
@@ -843,11 +846,44 @@
   color: var(--muted-strong);
 }
 
+.app-footer__card--feature-info {
+  background:
+    radial-gradient(circle at top right, rgba(19, 108, 242, 0.12), rgba(19, 108, 242, 0) 38%),
+    rgba(255, 255, 255, 0.92);
+}
+
+.app-footer__card-text--feature-info {
+  font-size: 1.14rem;
+  line-height: 1.8;
+}
+
+.app-footer__about-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-footer__about-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(19, 108, 242, 0.14);
+  background: rgba(19, 108, 242, 0.08);
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
 .app-footer__cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: fit-content;
+  margin-top: auto;
   min-height: 38px;
   padding: 0 16px;
   border-radius: 999px;
@@ -857,6 +893,74 @@
   font-weight: 900;
   letter-spacing: 0.03em;
   line-height: 1;
+}
+
+.app-footer__card--risk {
+  cursor: default;
+}
+
+.app-footer__risk-table {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.app-footer__risk-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(17, 38, 58, 0.1);
+  background: linear-gradient(180deg, rgba(244, 248, 255, 0.92), rgba(255, 255, 255, 0.98));
+}
+
+.app-footer__risk-level {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 850;
+  line-height: 1.3;
+}
+
+.app-footer__risk-color {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.app-footer__risk-swatch {
+  display: inline-flex;
+  width: 54px;
+  height: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(17, 38, 58, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
+.app-footer__risk-swatch--very-low {
+  border-color: rgba(15, 74, 42, 0.24);
+  background: rgba(39, 174, 96, 0.14);
+}
+
+.app-footer__risk-swatch--low {
+  border-color: rgba(13, 79, 179, 0.22);
+  background: rgba(19, 108, 242, 0.12);
+}
+
+.app-footer__risk-swatch--medium {
+  border-color: rgba(107, 75, 0, 0.26);
+  background: rgba(255, 196, 0, 0.2);
+}
+
+.app-footer__risk-swatch--high {
+  border-color: rgba(184, 74, 38, 0.35);
+  background: linear-gradient(180deg, rgba(211, 84, 0, 0.95), rgba(184, 74, 38, 0.95));
+}
+
+.app-footer__risk-swatch--very-high {
+  border-color: rgba(255, 0, 0, 0.55);
+  background: linear-gradient(180deg, rgba(255, 0, 0, 0.96), rgba(176, 0, 0, 0.96));
 }
 
 .app-footer__tag-list {
@@ -1361,6 +1465,10 @@
   .app-footer__title {
     font-size: 1.15rem;
     white-space: normal;
+  }
+
+  .app-footer {
+    margin-top: 8px;
   }
 }
 

@@ -1,4 +1,6 @@
-﻿import { useRef, useState } from 'react'
+// PostScamSupportPage prioritizes urgent next steps after a scam. The page is
+// intentionally action-first so users can quickly spot who to contact.
+import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -208,10 +210,8 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                     <div className="support-recovery-page__emergency-item">
                       <span className="support-recovery-page__emergency-icon">
                         <svg viewBox="0 0 24 24">
-                          <path d="M6 8.2 12 5l6 3.2-6 2.7L6 8.2Z" />
-                          <path d="M9 9.7h6" />
-                          <path d="M12 11.2a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z" />
-                          <path d="M7.9 21v-.7a4.1 4.1 0 0 1 4.1-4.1h0a4.1 4.1 0 0 1 4.1 4.1v.7" />
+                          <path d="M12 4.5 18 7v4.5c0 4-2.5 6.5-6 8-3.5-1.5-6-4-6-8V7l6-2.5Z" />
+                          <path d="m12 8.3.9 1.8 2 .3-1.45 1.42.35 2-1.8-.95-1.8.95.35-2-1.45-1.42 2-.3.9-1.8Z" />
                         </svg>
                       </span>
                       <span className="support-recovery-page__emergency-item-copy">
@@ -236,8 +236,8 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                       <span className="support-recovery-page__emergency-icon">
                         <svg viewBox="0 0 24 24">
                           <path d="M12 3 3.8 18h16.4L12 3Z" />
-                          <path d="M12 9v4.6" />
-                          <path d="M12 17.2h.01" />
+                          <path d="M12 10.8v2.3" />
+                          <circle cx="12" cy="15.4" r="0.42" fill="currentColor" stroke="none" />
                         </svg>
                       </span>
                       <span className="support-recovery-page__emergency-item-copy">

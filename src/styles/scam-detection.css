@@ -1,3 +1,5 @@
+/* Scam checker page styling. These rules support the text-input workflow,
+   result summary blocks, and larger readability targets for older users. */
 .scam-detection-page {
   /* Page-level scale is used to keep this senior-friendly feature readable
      without multiplying every font token in the shared design system. */

@@ -54,9 +54,9 @@ export const API_SCENARIO_SLUGS: ApiScenarioType[] = [
   'family-emergency-scams',
 ]
 
-export const SCENARIO_SLUGS: ScamScenarioType[] = ['mixed-scams', ...API_SCENARIO_SLUGS]
+const SCENARIO_SLUGS: ScamScenarioType[] = ['mixed-scams', ...API_SCENARIO_SLUGS]
 
-export const SCENARIO_LABELS: Record<ScamScenarioType, string> = {
+const SCENARIO_LABELS: Record<ScamScenarioType, string> = {
   'mixed-scams':            'Random Category',
   'romance-scams':          'Romance scams',
   'investment-scams':       'Investment scams',
@@ -68,7 +68,7 @@ export const SCENARIO_LABELS: Record<ScamScenarioType, string> = {
   'family-emergency-scams': 'Family emergency scams',
 }
 
-export const SCENARIO_DESCRIPTIONS: Record<ScamScenarioType, string> = {
+const SCENARIO_DESCRIPTIONS: Record<ScamScenarioType, string> = {
   'mixed-scams':            'A short mix of common scam patterns.',
   'romance-scams':          'Protect yourself when someone online pretends to be a lover to scam you.',
   'investment-scams':       'Recognize offers that sound too good to be true.',
@@ -145,7 +145,7 @@ export function getScenarioDescriptions(language: Language): Record<ScamScenario
 // Checked client-side so the frontend can route to /api/simulate/quit
 // (success path) instead of /api/simulate/message.
 
-export const GOODBYE_PHRASES: string[] = [
+const GOODBYE_PHRASES: string[] = [
   'bye', 'goodbye', 'see you', 'later', 'farewell',
   'quit', 'exit', 'stop', 'cya', 'take care', 'gotta go',
 ]

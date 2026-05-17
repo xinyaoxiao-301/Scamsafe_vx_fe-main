@@ -1,3 +1,5 @@
+/* Study center page styling. The quiz interface uses this file for question
+   cards, answer grids, progress feedback, and mobile-friendly review spacing. */
 .study-center-page {
   /* Learning screens use larger text than the shared baseline so questions and
      answer buttons stay comfortable on mobile devices. */

@@ -1,3 +1,5 @@
+// Centralized environment access for frontend service modules. Keeping env
+// parsing here avoids repeated `import.meta.env` checks throughout the app.
 const fallbackApiBaseUrl = ''
 
 export const env = {
