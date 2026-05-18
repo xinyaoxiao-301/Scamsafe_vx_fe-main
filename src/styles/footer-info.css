@@ -604,6 +604,10 @@
     font-size: 0.76rem;
   }
 
+  .footer-info-page__sources-groups {
+    margin-top: 12px;
+  }
+
   .footer-info-page__sources-group,
   .footer-info-page__sources-credits {
     gap: 12px;

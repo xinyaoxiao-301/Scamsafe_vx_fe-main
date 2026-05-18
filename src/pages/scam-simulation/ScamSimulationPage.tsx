@@ -162,6 +162,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const [isChatPopping, setIsChatPopping] = useState(false)
 
   const listRef        = useRef<HTMLDivElement | null>(null)
+  const messageEndRef  = useRef<HTMLDivElement | null>(null)
   const feedbackRef    = useRef<HTMLElement | null>(null)
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null)
   const speechDraftBeforeListenRef = useRef('')
@@ -174,6 +175,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   // the collapsible breakdown below to keep the mobile view compact first.
   const featuredPerformance = performance.find((row) => row.type === 'mixed-scams') ?? performance[0]
   const categoryPerformance = performance.filter((row) => row.type !== 'mixed-scams')
+  const canCompose = Boolean(scenarioType && sessionId && !isFinished)
+  const canSend = canCompose && !isBotTyping && draft.trim().length > 0
 
   // The backend returns a prose feedback report. Normalizing it here keeps the
   // display clean without requiring a stricter response shape from the API.
@@ -189,7 +192,11 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const isApiMode = true
 
   useEffect(() => {
-    listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
+    const frameId = window.requestAnimationFrame(() => {
+      keepLatestChatVisible()
+    })
+
+    return () => window.cancelAnimationFrame(frameId)
   }, [messages, isBotTyping])
 
   useEffect(() => {
@@ -205,9 +212,9 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   }, [])
 
   useEffect(() => {
-    if (!scenarioType || !sessionId || isFinished || isListening) return
+    if (!canCompose || isListening) return
     focusComposerInput()
-  }, [scenarioType, sessionId, isBotTyping, isFinished, isListening])
+  }, [canCompose, isBotTyping, isListening])
 
   useEffect(() => {
     if (scenarioType && scenarioType !== 'mixed-scams') {
@@ -234,6 +241,26 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     lastSpeechTranscriptRef.current = ''
     recognitionRef.current = null
     setIsListening(false)
+  }
+
+  const scrollMessagesToBottom = (behavior: ScrollBehavior = 'smooth') => {
+    const list = listRef.current
+    if (!list) return
+
+    list.scrollTo({
+      top: list.scrollHeight,
+      behavior,
+    })
+  }
+
+  const keepLatestChatVisible = () => {
+    if (isMobile) {
+      messageEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+      return
+    }
+
+    scrollMessagesToBottom('smooth')
   }
 
   const stopSpeechRecognition = () => {
@@ -277,6 +304,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   // ── Voice input ─────────────────────────────────────────────────────────────
   const handleVoiceInput = () => {
+    if (!canCompose) return
+
     // Browser speech recognition is optional and vendor-prefixed in Chromium,
     // so the UI treats it as a progressive enhancement.
     const { SpeechRecognition, webkitSpeechRecognition } = window as unknown as {
@@ -307,13 +336,13 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     recognition.onstart  = () => setIsListening(true)
     recognition.onend    = () => {
       clearSpeechRecognitionState()
-      if (isMobile && scenarioType && sessionId && !isFinished) {
+      if (isMobile && canCompose) {
         window.requestAnimationFrame(() => focusComposerInput())
       }
     }
     recognition.onerror  = () => {
       clearSpeechRecognitionState()
-      if (isMobile && scenarioType && sessionId && !isFinished) {
+      if (isMobile && canCompose) {
         window.requestAnimationFrame(() => focusComposerInput())
       }
     }
@@ -328,6 +357,11 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
       lastSpeechTranscriptRef.current = transcript
       setDraft(mergeSpeechTranscript(speechDraftBeforeListenRef.current, transcript, language))
     }
+
+    if (isMobile) {
+      inputRef.current?.blur()
+    }
+
     recognition.start()
   }
 
@@ -425,6 +459,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     setDraft('')
     if (isMobile) {
       focusComposerInput()
+      window.requestAnimationFrame(() => keepLatestChatVisible())
     }
     setMessages((current) => [
       ...current,
@@ -735,6 +770,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                       <p>{s.emptyState}</p>
                     </div>
                   )}
+                  <div ref={messageEndRef} aria-hidden="true" />
                 </div>
 
                 <div className="scam-simulation-page__composer" aria-label={s.composerLabel}>
@@ -746,8 +782,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                     placeholder={scenarioType ? s.inputPlaceholderActive : s.inputPlaceholderInactive}
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
-                    disabled={!scenarioType || !sessionId || isFinished}
-                    onKeyDown={(e) => { if (e.key === 'Enter') sendUserMessage() }}
+                    disabled={!canCompose}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && canSend) sendUserMessage() }}
                   />
                   <button
                     type="button"
@@ -758,7 +794,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                     }
                     onClick={handleVoiceInput}
                     aria-label={s.mic}
-                    disabled={!scenarioType || !sessionId || isBotTyping || isFinished}
+                    aria-pressed={isListening}
+                    disabled={!canCompose}
                   >
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M12 14.5c1.7 0 3-1.3 3-3V6.5c0-1.7-1.3-3-3-3s-3 1.3-3 3v5c0 1.7 1.3 3 3 3Z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -771,7 +808,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                     className="scam-simulation-page__icon-button scam-simulation-page__icon-button--send"
                     onClick={sendUserMessage}
                     aria-label={s.send}
-                    disabled={!scenarioType || !sessionId || isBotTyping || isFinished}
+                    disabled={!canSend}
                   >
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                       <path d="M3.5 11.7 20.5 3.5 12.3 20.5l-1.7-6.1-7.1-2.7Z" fill="currentColor" />

@@ -416,7 +416,7 @@ const STRINGS: Record<Language, Strings> = {
       explanationsLabel: 'Notification explanations',
       scam: {
         title: 'This was a scam notification!',
-        summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
+        summary: '',
         cardDescription: 'Review the original message below.',
         reasonsTitle: 'You allowed notifications on this site.',
         reasonsDescription: 'Here are reasons why this message is a scam:',
@@ -425,7 +425,7 @@ const STRINGS: Record<Language, Strings> = {
       },
       safe: {
         title: 'This was a non-scam notification.',
-        summary: 'This result came from the backend reveal endpoint after you opened the practice notification.',
+        summary: '',
         cardDescription: 'Review the original message below.',
         reasonsTitle: 'You allowed notifications on this site.',
         reasonsDescription: 'Here are reasons why this message is safe:',
@@ -982,7 +982,7 @@ const STRINGS: Record<Language, Strings> = {
       explanationsLabel: 'Penjelasan pemberitahuan',
       scam: {
         title: 'Ini ialah pemberitahuan scam!',
-        summary: 'Hasil ini datang daripada endpoint reveal backend selepas anda membuka pemberitahuan latihan.',
+        summary: '',
         cardDescription: 'Semak mesej asal di bawah.',
         reasonsTitle: 'Anda membenarkan pemberitahuan di laman ini.',
         reasonsDescription: 'Ini sebab mesej ini ialah scam:',
@@ -991,7 +991,7 @@ const STRINGS: Record<Language, Strings> = {
       },
       safe: {
         title: 'Ini bukan pemberitahuan scam.',
-        summary: 'Hasil ini datang daripada endpoint reveal backend selepas anda membuka pemberitahuan latihan.',
+        summary: '',
         cardDescription: 'Semak mesej asal di bawah.',
         reasonsTitle: 'Anda membenarkan pemberitahuan di laman ini.',
         reasonsDescription: 'Ini sebab mesej ini selamat:',
@@ -1546,7 +1546,7 @@ const STRINGS: Record<Language, Strings> = {
       explanationsLabel: '通知解释',
       scam: {
         title: '这是一条诈骗通知！',
-        summary: '这个结果来自后端 reveal 接口，会在你打开练习通知后显示。',
+        summary: '',
         cardDescription: '请查看下方原始消息。',
         reasonsTitle: '你允许了本站通知。',
         reasonsDescription: '以下是这条消息属于诈骗的原因：',
@@ -1555,7 +1555,7 @@ const STRINGS: Record<Language, Strings> = {
       },
       safe: {
         title: '这不是诈骗通知。',
-        summary: '这个结果来自后端 reveal 接口，会在你打开练习通知后显示。',
+        summary: '',
         cardDescription: '请查看下方原始消息。',
         reasonsTitle: '你允许了本站通知。',
         reasonsDescription: '以下是这条消息安全的原因：',

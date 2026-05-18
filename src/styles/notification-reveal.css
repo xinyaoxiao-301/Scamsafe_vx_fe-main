@@ -145,6 +145,27 @@
     font-size: 1.03rem;
     line-height: 1.55;
   }
+
+  .notification-reveal-page__card .section-card__footer {
+    padding-top: 16px;
+  }
+
+  .notification-reveal-page__body-preview {
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .notification-reveal-page__body-text {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .notification-reveal-page__body-action {
+    font-size: 0.76rem;
+  }
 }
 
 .notification-reveal-page__verdict-pill--danger {
