@@ -60,7 +60,7 @@ const STRINGS: Record<Language, Strings> = {
       sourcesKicker: 'Trusted sources used in ScamSafe',
       sourcesLead: 'These are the main websites, datasets, and official references used to support ScamSafe.',
       sourcesItems: [
-        'Malaysia scam impact figures come from the State of Scam Report 2024 and related public references.',
+        'Malaysia senior scam figures come from Malay Mail and The Star reports from 2024.',
         'Scam News articles are loaded with source links so users can read the original reporting in full.',
         'Detection, quiz, and simulation flows are shaped around real scam patterns from calls, texts, impersonation, and phishing cases.',
       ],
@@ -191,19 +191,19 @@ const STRINGS: Record<Language, Strings> = {
       description: '',
       cards: {
         monthlyExposure: {
-          value: '74%',
-          label: 'Monthly scam exposure',
-          hint: 'Adults face scams via calls, social media, and texts.',
+          value: 'SMS/calls',
+          label: 'Telecommunication scams',
+          hint: 'Among common methods used against senior citizens.',
         },
         totalLosses: {
-          value: 'RM54.02b',
-          label: 'Total losses (Malaysia)',
-          hint: 'Reported in the State of Scam Report 2024.',
+          value: 'RM255.37m',
+          label: 'Elderly fraud losses',
+          hint: 'Reported by August 2024.',
         },
         gdpShare: {
-          value: '~3%',
-          label: 'Share of national GDP',
-          hint: 'Estimated impact of scam losses.',
+          value: '27.9%',
+          label: 'Elderly online fraud cases',
+          hint: 'Share of cases recorded by August 2024.',
         },
         seniorsAffected: {
           value: '44%',
@@ -211,7 +211,7 @@ const STRINGS: Record<Language, Strings> = {
           hint: 'Nearly RM910m of RM2.07b losses in 2022-2023.',
         },
       },
-      sources: 'Sources: Global Anti-Scam Alliance (2024); Saifuddin et al. (2024).',
+      sources: 'Sources: Ramli Mohamed Yoosuf, Malay Mail (2024); The Star (2024).',
     },
     hero: {
       titleTokens: [
@@ -627,7 +627,7 @@ const STRINGS: Record<Language, Strings> = {
       sourcesKicker: 'Sumber dipercayai yang digunakan dalam ScamSafe',
       sourcesLead: 'Ini ialah laman web, dataset, dan rujukan rasmi utama yang digunakan untuk menyokong ScamSafe.',
       sourcesItems: [
-        'Angka kesan scam di Malaysia dirujuk daripada State of Scam Report 2024 dan sumber awam berkaitan.',
+        'Angka scam warga emas di Malaysia dirujuk daripada laporan Malay Mail dan The Star pada 2024.',
         'Artikel Berita Scam dimuatkan bersama pautan sumber supaya pengguna boleh membaca laporan asal sepenuhnya.',
         'Aliran pengesanan, kuiz, dan simulasi dibentuk berdasarkan corak scam sebenar seperti panggilan, mesej, penyamaran, dan pancingan data.',
       ],
@@ -758,19 +758,19 @@ const STRINGS: Record<Language, Strings> = {
       description: '',
       cards: {
         monthlyExposure: {
-          value: '74%',
-          label: 'Pendedahan penipuan bulanan',
-          hint: 'Melalui panggilan, media sosial, dan mesej teks.',
+          value: 'SMS/panggilan',
+          label: 'Penipuan telekomunikasi',
+          hint: 'Antara kaedah biasa terhadap warga emas.',
         },
         totalLosses: {
-          value: 'RM54.02b',
-          label: 'Jumlah kerugian (Malaysia)',
-          hint: 'Dilaporkan dalam State of Scam Report 2024.',
+          value: 'RM255.37j',
+          label: 'Kerugian fraud warga emas',
+          hint: 'Dilaporkan sehingga Ogos 2024.',
         },
         gdpShare: {
-          value: '~3%',
-          label: 'Perkongsian KDNK negara',
-          hint: 'Anggaran kesan kerugian penipuan.',
+          value: '27.9%',
+          label: 'Kes fraud dalam talian warga emas',
+          hint: 'Bahagian kes direkodkan sehingga Ogos 2024.',
         },
         seniorsAffected: {
           value: '44%',
@@ -778,7 +778,7 @@ const STRINGS: Record<Language, Strings> = {
           hint: 'Hampir RM910j daripada RM2.07b pada 2022-2023.',
         },
       },
-      sources: 'Sumber: Global Anti-Scam Alliance (2024); Saifuddin et al. (2024).',
+      sources: 'Sumber: Ramli Mohamed Yoosuf, Malay Mail (2024); The Star (2024).',
     },
     hero: {
       titleTokens: [
@@ -1193,7 +1193,7 @@ const STRINGS: Record<Language, Strings> = {
       sourcesKicker: 'ScamSafe 使用的可信来源',
       sourcesLead: '这里列出支持 ScamSafe 的主要网站、数据集和官方参考资料。',
       sourcesItems: [
-        '马来西亚诈骗影响数据参考了《State of Scam Report 2024》及相关公开资料。',
+        '马来西亚老年人诈骗数据参考 Malay Mail 与 The Star 在 2024 年的报道。',
         '诈骗新闻文章会附上来源链接，方便用户查看原始报道全文。',
         '识别、测验与模拟功能都围绕真实诈骗模式设计，包括电话、短信、冒充和钓鱼案例。',
       ],
@@ -1324,19 +1324,19 @@ const STRINGS: Record<Language, Strings> = {
       description: '',
       cards: {
         monthlyExposure: {
-          value: '74%',
-          label: '每月遭遇诈骗',
-          hint: '电话、社交媒体与短信等渠道。',
+          value: '短信/电话',
+          label: '电信诈骗',
+          hint: '常用于针对老年人的手法之一。',
         },
         totalLosses: {
-          value: 'RM54.02b',
-          label: '受害总损失（马来西亚）',
-          hint: '数据引自《2024 年诈骗现状报告》。',
+          value: 'RM255.37m',
+          label: '老年人诈骗损失',
+          hint: '截至 2024 年 8 月的报告金额。',
         },
         gdpShare: {
-          value: '~3%',
-          label: '约占全国 GDP',
-          hint: '诈骗损失的估算影响。',
+          value: '27.9%',
+          label: '老年人网诈案件',
+          hint: '截至 2024 年 8 月的案件占比。',
         },
         seniorsAffected: {
           value: '44%',
@@ -1344,7 +1344,7 @@ const STRINGS: Record<Language, Strings> = {
           hint: '2022-2023 年 RM20.7 亿中近 RM9.10 亿。',
         },
       },
-      sources: '来源：Global Anti-Scam Alliance（2024）；Saifuddin 等（2024）。',
+      sources: '来源：Ramli Mohamed Yoosuf，Malay Mail（2024）；The Star（2024）。',
     },
     hero: {
       titleTokens: [
