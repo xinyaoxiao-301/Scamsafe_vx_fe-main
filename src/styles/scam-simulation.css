@@ -425,24 +425,29 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  gap: calc(10px * var(--sim-scale));
+  gap: calc(12px * var(--sim-scale));
 }
 
 .scam-simulation-page__msg {
   display: flex;
   justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .scam-simulation-page__msg--bot {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  align-items: end;
+  align-items: flex-start;
   justify-content: start;
   gap: 10px;
 }
 
 .scam-simulation-page__msg--user {
   justify-content: flex-end;
+}
+
+.scam-simulation-page__msg--roomy {
+  margin-block: calc(2px * var(--sim-scale));
 }
 
 .scam-simulation-page__msg-avatar {
@@ -476,24 +481,32 @@
 .scam-simulation-page__bubble {
   /* fit-content keeps short replies compact, while max-width preserves readable
      line lengths for longer scam messages. */
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
   width: fit-content;
   max-width: 86%;
+  min-width: 0;
   padding: calc(8px * var(--sim-scale)) calc(10px * var(--sim-scale));
   border-radius: 16px;
   border: 1px solid rgba(17, 38, 58, 0.12);
   background: #ffffff;
   color: var(--text);
   font-size: calc(0.672rem * var(--sim-scale));
-  line-height: 1.45;
+  line-height: 1.56;
   font-weight: 500;
   position: relative;
   white-space: break-spaces;
   overflow-wrap: anywhere;
+  word-break: break-word;
   text-align: left;
   text-justify: auto;
   word-spacing: 0.14em;
   letter-spacing: 0;
+}
+
+.scam-simulation-page__bubble--roomy {
+  padding-top: calc(10px * var(--sim-scale));
+  padding-bottom: calc(10px * var(--sim-scale));
 }
 
 .scam-simulation-page__bubble--bot {

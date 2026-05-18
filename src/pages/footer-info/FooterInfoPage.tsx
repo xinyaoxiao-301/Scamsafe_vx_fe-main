@@ -247,8 +247,16 @@ export function FooterInfoPage({ kind, onBackHome }: FooterInfoPageProps) {
             </div>
 
             <div className="footer-info-page__sources-groups" aria-label={strings.footer.sourcesTitle}>
-              {sourceSections.map((section) => (
-                <section key={section.title} className="footer-info-page__sources-group">
+              {sourceSections.map((section, index) => (
+                <section
+                  key={section.title}
+                  className={[
+                    'footer-info-page__sources-group',
+                    index === 1 ? 'footer-info-page__sources-group--reference' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                >
                   <div className="footer-info-page__sources-group-head">
                     <h3>{section.title}</h3>
                     <p>{section.text}</p>

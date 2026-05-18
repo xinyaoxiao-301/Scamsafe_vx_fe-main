@@ -138,6 +138,16 @@ function mergeSpeechTranscript(baseDraft: string, transcript: string, language: 
   return [...baseWords, ...transcriptWords.slice(overlapSize)].join(' ').trim()
 }
 
+function shouldUseRoomyChatBubble(text: string) {
+  const normalizedText = text.replace(/\s+/g, ' ').trim()
+  if (!normalizedText) return false
+
+  const lineBreakCount = (text.match(/\n/g) ?? []).length
+  const wordCount = normalizedText.split(' ').filter(Boolean).length
+
+  return lineBreakCount > 0 || normalizedText.length >= 96 || wordCount >= 18
+}
+
 export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const { language, strings } = useI18n()
   const isMobile = useMediaQuery('(max-width: 767px)')
@@ -700,39 +710,51 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 <div className="scam-simulation-page__messages" ref={listRef} aria-label={s.messagesLabel}>
                   {scenarioType ? (
                     <>
-                      {messages.map((message) => (
-                        <div
-                          key={message.id}
-                          className={
-                            message.from === 'user'
-                              ? 'scam-simulation-page__msg scam-simulation-page__msg--user'
-                              : 'scam-simulation-page__msg scam-simulation-page__msg--bot'
-                          }
-                        >
-                          {message.from === 'bot' ? (
-                            <span className="scam-simulation-page__msg-avatar" aria-hidden="true">
-                              <svg className="scam-simulation-page__msg-bot-icon" viewBox="0 0 48 48">
-                                <path d="M24 8v5" />
-                                <path d="M14 18a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v9a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6v-9Z" />
-                                <circle cx="20" cy="22" r="1.8" />
-                                <circle cx="28" cy="22" r="1.8" />
-                                <path d="M19.2 28c1.4 1.2 3 1.8 4.8 1.8 1.8 0 3.4-.6 4.8-1.8" />
-                                <path d="M14 21h-3" />
-                                <path d="M37 21h-3" />
-                              </svg>
-                            </span>
-                          ) : null}
+                      {messages.map((message) => {
+                        const isRoomyBubble = shouldUseRoomyChatBubble(message.text)
+
+                        return (
                           <div
-                            className={
+                            key={message.id}
+                            className={[
+                              'scam-simulation-page__msg',
                               message.from === 'user'
-                                ? 'scam-simulation-page__bubble scam-simulation-page__bubble--user'
-                                : 'scam-simulation-page__bubble scam-simulation-page__bubble--bot'
-                            }
+                                ? 'scam-simulation-page__msg--user'
+                                : 'scam-simulation-page__msg--bot',
+                              isRoomyBubble ? 'scam-simulation-page__msg--roomy' : '',
+                            ]
+                              .filter(Boolean)
+                              .join(' ')}
                           >
-                            {message.text}
+                            {message.from === 'bot' ? (
+                              <span className="scam-simulation-page__msg-avatar" aria-hidden="true">
+                                <svg className="scam-simulation-page__msg-bot-icon" viewBox="0 0 48 48">
+                                  <path d="M24 8v5" />
+                                  <path d="M14 18a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v9a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6v-9Z" />
+                                  <circle cx="20" cy="22" r="1.8" />
+                                  <circle cx="28" cy="22" r="1.8" />
+                                  <path d="M19.2 28c1.4 1.2 3 1.8 4.8 1.8 1.8 0 3.4-.6 4.8-1.8" />
+                                  <path d="M14 21h-3" />
+                                  <path d="M37 21h-3" />
+                                </svg>
+                              </span>
+                            ) : null}
+                            <div
+                              className={[
+                                'scam-simulation-page__bubble',
+                                message.from === 'user'
+                                  ? 'scam-simulation-page__bubble--user'
+                                  : 'scam-simulation-page__bubble--bot',
+                                isRoomyBubble ? 'scam-simulation-page__bubble--roomy' : '',
+                              ]
+                                .filter(Boolean)
+                                .join(' ')}
+                            >
+                              {message.text}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        )
+                      })}
                       {isBotTyping && (
                         <div className="scam-simulation-page__msg scam-simulation-page__msg--bot">
                           <span className="scam-simulation-page__msg-avatar" aria-hidden="true">
