@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { useI18n } from '@/lib/i18n'
 import {
   API_SCENARIO_SLUGS,
@@ -42,6 +43,7 @@ type SpeechRecognitionCtor = new () => SpeechRecognitionLike
 
 export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const { language, strings } = useI18n()
+  const isMobile = useMediaQuery('(max-width: 767px)')
   const s = strings.scamSimulation
   const specificScenarioToggleLabel = s.showSpecificScenarios
   const hideSpecificScenarioToggleLabel = s.hideSpecificScenarios
@@ -124,7 +126,9 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
     const rect = element.getBoundingClientRect()
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const targetTop = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2
+    const targetTop = isMobile
+      ? window.scrollY + rect.top - 16
+      : window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2
 
     window.scrollTo({
       top: Math.max(0, targetTop),
@@ -200,7 +204,10 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
     window.requestAnimationFrame(() => {
       scrollElementToViewportCenter(chatCardRef.current)
-      window.setTimeout(() => setIsChatPopping(true), 120)
+
+      if (!isMobile) {
+        window.setTimeout(() => setIsChatPopping(true), 120)
+      }
     })
 
     try {

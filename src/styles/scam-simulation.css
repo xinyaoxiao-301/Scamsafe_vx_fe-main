@@ -592,12 +592,20 @@
 .scam-simulation-page__icon-button {
   width: var(--sim-composer-control-size);
   height: var(--sim-composer-control-size);
+  padding: 0;
+  margin: 0;
   border-radius: 999px;
   border: 1px solid rgba(17, 38, 58, 0.14);
   background: #ffffff;
   color: var(--accent-strong);
   display: grid;
   place-items: center;
+  align-self: center;
+  justify-self: center;
+  flex-shrink: 0;
+  line-height: 0;
+  appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
   transition:
     transform 180ms ease,
@@ -610,6 +618,7 @@
 .scam-simulation-page__icon-button svg {
   width: var(--sim-composer-icon-size);
   height: var(--sim-composer-icon-size);
+  display: block;
 }
 
 .scam-simulation-page__icon-button:hover {
@@ -928,7 +937,7 @@
   }
 
   .scam-simulation-page__composer {
-    grid-template-columns: 1fr auto auto;
+    grid-template-columns: minmax(0, 1fr) repeat(2, var(--sim-composer-control-size));
   }
 }
 
@@ -962,6 +971,10 @@
     line-height: 1.55;
   }
 
+  .scam-simulation-page__performance {
+    margin-top: 0;
+  }
+
   .scam-simulation-page__input {
     /* Prevent iOS Safari from auto-zooming the viewport when focusing inputs. */
     font-size: 16px;
@@ -978,18 +991,6 @@
 
   .scam-simulation-page__icon-button:focus-visible {
     outline: none;
-  }
-
-  .scam-simulation-page__icon-button svg {
-    display: block;
-  }
-
-  .scam-simulation-page__icon-button--mic svg {
-    transform: translateY(1px);
-  }
-
-  .scam-simulation-page__icon-button--send svg {
-    transform: translateX(1px);
   }
 
   .scam-simulation-page__footer-actions {
@@ -1018,6 +1019,7 @@
   }
 
   .scam-simulation-page__composer {
+    grid-template-columns: minmax(0, 1fr) repeat(2, var(--sim-composer-control-size));
     gap: 8px;
     padding: 10px;
     padding-bottom: calc(10px + env(safe-area-inset-bottom));
