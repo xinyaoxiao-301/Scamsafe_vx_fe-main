@@ -118,6 +118,42 @@ export function FooterInfoPage({ kind, onBackHome }: FooterInfoPageProps) {
                 ? '补充更多诈骗文本示例和变化写法参考。'
                 : 'Adds more scam text examples and wording variations for project reference.',
         },
+        {
+          title: 'Older Adults Most Affected by Online Scams',
+          href: 'https://www.nst.com.my/news/nation/2024/12/1149805/updated-older-adults-most-affected-online-scams',
+          host: 'nst.com.my',
+          badge: language === 'ms' ? 'Berita' : language === 'zh' ? '新闻参考' : 'News reference',
+          text:
+            language === 'ms'
+              ? 'Dirujuk untuk statistik dan konteks tentang warga emas yang terkesan oleh scam dalam talian.'
+              : language === 'zh'
+                ? '用于参考老年人受网络诈骗影响的统计与背景。'
+                : 'Referenced for statistics and context on older adults affected by online scams.',
+        },
+        {
+          title: 'Elderly Online Scam Victims Lose RM255m',
+          href: 'https://www.malaymail.com/news/malaysia/2024/09/28/bukit-aman-elderly-online-scam-victims-lose-rm255m-as-fraud-cases-surge-in-2024/151915',
+          host: 'malaymail.com',
+          badge: language === 'ms' ? 'Berita' : language === 'zh' ? '新闻参考' : 'News reference',
+          text:
+            language === 'ms'
+              ? 'Dirujuk untuk angka kerugian warga emas dan bahagian kerugian fraud dalam talian pada 2024.'
+              : language === 'zh'
+                ? '用于参考 2024 年老年人网诈损失与相关占比。'
+                : 'Referenced for 2024 elderly fraud losses and online fraud loss share.',
+        },
+        {
+          title: 'The Star',
+          href: 'https://www.thestar.com.my/',
+          host: 'thestar.com.my',
+          badge: language === 'ms' ? 'Berita' : language === 'zh' ? '新闻参考' : 'News reference',
+          text:
+            language === 'ms'
+              ? 'Dirujuk untuk konteks laporan CCID tentang kaedah scam telekomunikasi terhadap warga emas.'
+              : language === 'zh'
+                ? '用于参考 CCID 关于电信诈骗针对老年人的报道背景。'
+                : 'Referenced for CCID reporting context on telecommunication scams affecting seniors.',
+        },
       ],
     },
     {
@@ -149,6 +185,9 @@ export function FooterInfoPage({ kind, onBackHome }: FooterInfoPageProps) {
     '© 2024–2026 uciml (Kaggle author). All rights reserved to original contributors.',
     '© Government of Malaysia, NFCC.',
     '© 2023–2026 Kucev Roman (Kaggle author). All rights reserved to original contributors.',
+    '© 2026 New Straits Times Press (M) Bhd. All rights reserved.',
+    '© 2026 Malay Mail. All rights reserved.',
+    '© Star Media Group Berhad. All rights reserved.',
   ]
   // The About page reuses site-approved copy so the footer detail page stays in
   // sync with the rest of the product messaging across all languages.
