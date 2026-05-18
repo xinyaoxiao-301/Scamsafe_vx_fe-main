@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { SectionCard } from '@/components/ui/SectionCard'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
-import { useI18n } from '@/lib/i18n'
+import { useI18n, type Language } from '@/lib/i18n'
 import {
   API_SCENARIO_SLUGS,
   type ApiScenarioType,
@@ -23,8 +23,13 @@ type ScamSimulationPageProps = {
   onBackHome: () => void
 }
 
+type SpeechRecognitionResultLike = {
+  0?: { transcript?: string }
+  isFinal?: boolean
+}
+
 type SpeechRecognitionEventLike = {
-  results: ArrayLike<{ 0?: { transcript?: string } }>
+  results: ArrayLike<SpeechRecognitionResultLike>
 }
 
 type SpeechRecognitionLike = {
@@ -33,6 +38,7 @@ type SpeechRecognitionLike = {
   continuous: boolean
   interimResults: boolean
   lang: string
+  maxAlternatives?: number
   onstart: null | (() => void)
   onend: null | (() => void)
   onerror: null | (() => void)
@@ -40,6 +46,97 @@ type SpeechRecognitionLike = {
 }
 
 type SpeechRecognitionCtor = new () => SpeechRecognitionLike
+
+function getSpeechRecognitionLanguage(language: Language) {
+  const fallbackLocale = language === 'zh' ? 'zh-CN' : language === 'ms' ? 'ms-MY' : 'en-MY'
+  if (typeof navigator === 'undefined') return fallbackLocale
+
+  const browserLocales = Array.from(
+    new Set([navigator.language, ...(navigator.languages ?? [])].filter(Boolean)),
+  )
+
+  const localeMatcher =
+    language === 'zh'
+      ? (locale: string) => /^zh(?:-|$)/i.test(locale)
+      : language === 'ms'
+        ? (locale: string) => /^ms(?:-|$)/i.test(locale)
+        : (locale: string) => /^en(?:-|$)/i.test(locale)
+
+  return browserLocales.find(localeMatcher) ?? fallbackLocale
+}
+
+function normalizeWordForSpeechComparison(word: string) {
+  const normalized = word
+    .toLowerCase()
+    .replace(/(^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$)/gu, '')
+
+  return normalized || word.toLowerCase()
+}
+
+function collapseRepeatedWords(transcript: string) {
+  const words = transcript.split(' ').filter(Boolean)
+  const deduped: string[] = []
+
+  for (const word of words) {
+    const previousWord = deduped[deduped.length - 1]
+    if (previousWord && normalizeWordForSpeechComparison(previousWord) === normalizeWordForSpeechComparison(word)) {
+      continue
+    }
+
+    deduped.push(word)
+  }
+
+  return deduped.join(' ')
+}
+
+function normalizeSpeechTranscript(transcript: string, language: Language) {
+  const compactTranscript =
+    language === 'zh'
+      ? transcript.replace(/\s+/g, '').trim()
+      : transcript.replace(/\s+/g, ' ').trim()
+
+  if (!compactTranscript) return ''
+
+  return language === 'zh' ? compactTranscript : collapseRepeatedWords(compactTranscript)
+}
+
+function mergeSpeechTranscript(baseDraft: string, transcript: string, language: Language) {
+  const normalizedBase =
+    language === 'zh'
+      ? baseDraft.trim()
+      : baseDraft.replace(/\s+/g, ' ').trim()
+
+  if (!normalizedBase) return transcript
+
+  if (language === 'zh') {
+    let overlapSize = 0
+
+    for (let size = Math.min(normalizedBase.length, transcript.length); size > 0; size -= 1) {
+      if (normalizedBase.slice(-size) === transcript.slice(0, size)) {
+        overlapSize = size
+        break
+      }
+    }
+
+    return `${normalizedBase}${transcript.slice(overlapSize)}`
+  }
+
+  const baseWords = normalizedBase.split(' ')
+  const transcriptWords = transcript.split(' ')
+  let overlapSize = 0
+
+  for (let size = Math.min(baseWords.length, transcriptWords.length); size > 0; size -= 1) {
+    const baseTail = baseWords.slice(-size).map(normalizeWordForSpeechComparison)
+    const transcriptHead = transcriptWords.slice(0, size).map(normalizeWordForSpeechComparison)
+
+    if (baseTail.join(' ') === transcriptHead.join(' ')) {
+      overlapSize = size
+      break
+    }
+  }
+
+  return [...baseWords, ...transcriptWords.slice(overlapSize)].join(' ').trim()
+}
 
 export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const { language, strings } = useI18n()
@@ -67,6 +164,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const listRef        = useRef<HTMLDivElement | null>(null)
   const feedbackRef    = useRef<HTMLElement | null>(null)
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null)
+  const speechDraftBeforeListenRef = useRef('')
+  const lastSpeechTranscriptRef = useRef('')
   const inputRef       = useRef<HTMLInputElement | null>(null)
   const chatCardRef    = useRef<HTMLDivElement | null>(null)
 
@@ -106,9 +205,9 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   }, [])
 
   useEffect(() => {
-    if (!scenarioType || !sessionId || isBotTyping || isFinished) return
-    inputRef.current?.focus()
-  }, [scenarioType, sessionId, isBotTyping, isFinished])
+    if (!scenarioType || !sessionId || isFinished || isListening) return
+    focusComposerInput()
+  }, [scenarioType, sessionId, isBotTyping, isFinished, isListening])
 
   useEffect(() => {
     if (scenarioType && scenarioType !== 'mixed-scams') {
@@ -120,6 +219,36 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const timeLabel  = new Intl.DateTimeFormat(timeLocale, {
     month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit',
   }).format(now)
+
+  const focusComposerInput = () => {
+    const input = inputRef.current
+    if (!input) return
+
+    input.focus()
+    const valueLength = input.value.length
+    input.setSelectionRange?.(valueLength, valueLength)
+  }
+
+  const clearSpeechRecognitionState = () => {
+    speechDraftBeforeListenRef.current = ''
+    lastSpeechTranscriptRef.current = ''
+    recognitionRef.current = null
+    setIsListening(false)
+  }
+
+  const stopSpeechRecognition = () => {
+    const recognition = recognitionRef.current
+
+    if (recognition) {
+      recognition.onstart = null
+      recognition.onend = null
+      recognition.onerror = null
+      recognition.onresult = null
+      recognition.stop?.()
+    }
+
+    clearSpeechRecognitionState()
+  }
 
   const scrollElementToViewportCenter = (element: HTMLElement | null) => {
     if (!element) return
@@ -159,28 +288,45 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     if (!SpeechRecognitionCtor) { window.alert(s.micUnsupported); return }
 
     if (recognitionRef.current) {
-      recognitionRef.current.stop?.()
-      recognitionRef.current = null
-      setIsListening(false)
+      stopSpeechRecognition()
+      if (isMobile) {
+        window.requestAnimationFrame(() => focusComposerInput())
+      }
       return
     }
 
     const recognition = new SpeechRecognitionCtor()
+    speechDraftBeforeListenRef.current = draft
+    lastSpeechTranscriptRef.current = ''
     recognitionRef.current  = recognition
     recognition.continuous      = false
-    recognition.interimResults  = true
-    recognition.lang            = language === 'zh' ? 'zh-CN' : language === 'ms' ? 'ms-MY' : 'en-MY'
+    recognition.interimResults  = false
+    recognition.lang            = getSpeechRecognitionLanguage(language)
+    recognition.maxAlternatives = 1
 
     recognition.onstart  = () => setIsListening(true)
-    recognition.onend    = () => { recognitionRef.current = null; setIsListening(false) }
-    recognition.onerror  = () => { recognitionRef.current = null; setIsListening(false) }
+    recognition.onend    = () => {
+      clearSpeechRecognitionState()
+      if (isMobile && scenarioType && sessionId && !isFinished) {
+        window.requestAnimationFrame(() => focusComposerInput())
+      }
+    }
+    recognition.onerror  = () => {
+      clearSpeechRecognitionState()
+      if (isMobile && scenarioType && sessionId && !isFinished) {
+        window.requestAnimationFrame(() => focusComposerInput())
+      }
+    }
     recognition.onresult = (event) => {
-      const transcript = Array.from(event.results as ArrayLike<{ 0?: { transcript?: string } }>)
-        .map((r) => r[0]?.transcript ?? '')
-        .join('')
-        .trim()
+      const latestResult = event.results[event.results.length - 1]
+      if (latestResult && latestResult.isFinal === false) return
+
+      const transcript = normalizeSpeechTranscript(latestResult?.[0]?.transcript ?? '', language)
       if (!transcript) return
-      setDraft((current) => (current ? `${current} ${transcript}` : transcript))
+      if (transcript === lastSpeechTranscriptRef.current) return
+
+      lastSpeechTranscriptRef.current = transcript
+      setDraft(mergeSpeechTranscript(speechDraftBeforeListenRef.current, transcript, language))
     }
     recognition.start()
   }
@@ -235,9 +381,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   // ── Reset ───────────────────────────────────────────────────────────────────
   const resetScenario = () => {
-    recognitionRef.current?.stop?.()
-    recognitionRef.current = null
-    setIsListening(false)
+    stopSpeechRecognition()
     setScenarioType(null)
     setSessionId(null)
     setMessages([])
@@ -251,8 +395,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   useEffect(() => {
     return () => {
-      recognitionRef.current?.stop?.()
-      recognitionRef.current = null
+      stopSpeechRecognition()
 
       if (!sessionId) return
 
@@ -278,7 +421,11 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     const text = draft.trim()
     if (!text) return
 
+    stopSpeechRecognition()
     setDraft('')
+    if (isMobile) {
+      focusComposerInput()
+    }
     setMessages((current) => [
       ...current,
       { id: `user-${Date.now()}`, from: 'user', text, timestamp: Date.now() },
@@ -599,7 +746,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                     placeholder={scenarioType ? s.inputPlaceholderActive : s.inputPlaceholderInactive}
                     value={draft}
                     onChange={(e) => setDraft(e.target.value)}
-                    disabled={!scenarioType || !sessionId || isBotTyping || isFinished}
+                    disabled={!scenarioType || !sessionId || isFinished}
                     onKeyDown={(e) => { if (e.key === 'Enter') sendUserMessage() }}
                   />
                   <button
@@ -671,6 +818,12 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
             {/* Keep the return action inside the report card so the feedback
                 reads as one self-contained block on smaller screens. */}
             <div className="scam-simulation-page__report-actions">
+              <Button
+                variant="secondary"
+                onClick={onBackHome}
+              >
+                {strings.common.backToHome}
+              </Button>
               <Button
                 variant="primary"
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

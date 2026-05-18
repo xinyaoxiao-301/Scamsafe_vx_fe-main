@@ -160,15 +160,11 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
           title={s.latestReportsTitle}
           description={!newsLoading && !newsError && newsItems.length > 0 ? s.latestReportsDescription : undefined}
           footer={
-            <div className="knowledge-hub-page__overview-footer">
-              {!newsLoading && !newsError && newsItems.length > 0 ? (
-                <p className="knowledge-hub-page__overview-note">
-                  {isReadingArticle
-                    ? s.readingNote
-                    : s.chooseNote}
-                </p>
-              ) : null}
-            </div>
+            !newsLoading && !newsError && newsItems.length > 0 && isReadingArticle ? (
+              <div className="knowledge-hub-page__overview-footer">
+                <p className="knowledge-hub-page__overview-note">{s.readingNote}</p>
+              </div>
+            ) : undefined
           }
         >
           {newsLoading && (
