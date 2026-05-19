@@ -120,15 +120,27 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
 
   useEffect(() => {
     if (pendingScrollTargetRef.current !== 'feedback' || !hasSubmitted) return
-    const frame = window.requestAnimationFrame(() => {
-      if (isMobile) {
-        scrollElementToViewportTop(step2CardRef.current)
-      } else {
-        scrollElementToViewportCenter(feedbackRef.current)
-      }
-      pendingScrollTargetRef.current = null
-    })
-    return () => window.cancelAnimationFrame(frame)
+    let frame = 0
+    let settleFrame = 0
+    const timeoutId = window.setTimeout(() => {
+      frame = window.requestAnimationFrame(() => {
+        if (isMobile) {
+          scrollElementToViewportTop(step2CardRef.current)
+          settleFrame = window.requestAnimationFrame(() => {
+            scrollElementToViewportTop(step2CardRef.current)
+          })
+        } else {
+          scrollElementToViewportCenter(feedbackRef.current)
+        }
+        pendingScrollTargetRef.current = null
+      })
+    }, isMobile ? 180 : 0)
+
+    return () => {
+      window.clearTimeout(timeoutId)
+      window.cancelAnimationFrame(frame)
+      window.cancelAnimationFrame(settleFrame)
+    }
   }, [hasSubmitted, isMobile])
 
   useEffect(() => {

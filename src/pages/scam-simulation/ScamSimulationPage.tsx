@@ -148,6 +148,12 @@ function shouldUseRoomyChatBubble(text: string) {
   return lineBreakCount > 0 || normalizedText.length >= 96 || wordCount >= 18
 }
 
+function wait(ms: number) {
+  return new Promise<void>((resolve) => {
+    window.setTimeout(resolve, ms)
+  })
+}
+
 export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const { language, strings } = useI18n()
   const isMobile = useMediaQuery('(max-width: 767px)')
@@ -242,7 +248,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
     const frameId = window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
-        scrollElementToViewportTop(chatCardRef.current)
+        scrollElementToViewportCenter(chatCardRef.current)
       })
     })
 
@@ -296,12 +302,16 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   }
 
   const keepLatestChatVisible = () => {
-    if (isMobile) {
-      scrollMessagesToBottom('smooth')
-      return
-    }
-
     scrollMessagesToBottom('smooth')
+  }
+
+  const settleMobileComposerBeforeSend = async () => {
+    if (!isMobile) return
+
+    dismissComposerFocus()
+    await wait(180)
+    scrollElementToViewportCenter(chatCardRef.current)
+    await wait(120)
   }
 
   const stopSpeechRecognition = () => {
@@ -323,24 +333,10 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
     const rect = element.getBoundingClientRect()
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const targetTop = isMobile
-      ? window.scrollY + rect.top - 16
-      : window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2
+    const targetTop = window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2
 
     window.scrollTo({
       top: Math.max(0, targetTop),
-      behavior: reduceMotion ? 'auto' : 'smooth',
-    })
-  }
-
-  const scrollElementToViewportTop = (element: HTMLElement | null) => {
-    if (!element) return
-
-    const rect = element.getBoundingClientRect()
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-    window.scrollTo({
-      top: Math.max(0, window.scrollY + rect.top),
       behavior: reduceMotion ? 'auto' : 'smooth',
     })
   }
@@ -521,15 +517,13 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     if (!text) return
 
     stopSpeechRecognition()
+    await settleMobileComposerBeforeSend()
     setDraft('')
-    if (isMobile) {
-      focusComposerInput()
-      window.requestAnimationFrame(() => keepLatestChatVisible())
-    }
     setMessages((current) => [
       ...current,
       { id: `user-${Date.now()}`, from: 'user', text, timestamp: Date.now() },
     ])
+    window.requestAnimationFrame(() => keepLatestChatVisible())
 
     // Goodbye → quit path (success)
     if (isGoodbye(text)) {

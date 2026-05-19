@@ -266,7 +266,9 @@ export function ScamDetectionPage({ onBackHome }: ScamDetectionPageProps) {
             >
               {isOverLimit
                 ? s.wordLimitExceeded(WORD_LIMIT, wordCount)
-                : `${wordCount} ${s.wordsLabel}`}
+                : language === 'zh'
+                  ? `${wordCount}${s.wordsLabel}`
+                  : `${wordCount} ${s.wordsLabel}`}
             </p>
           </div>
 
