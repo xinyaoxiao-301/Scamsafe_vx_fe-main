@@ -87,7 +87,6 @@ export function NotificationRevealPage({ onBackHome }: NotificationRevealPagePro
           className="notification-reveal-page__card"
           eyebrow={s.eyebrow}
           title={s.loadingTitle}
-          footer={<Button onClick={onBackHome}>{strings.common.backToHome}</Button>}
         />
       </main>
     )

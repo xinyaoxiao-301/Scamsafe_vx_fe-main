@@ -171,7 +171,7 @@ export function KnowledgeHubPage({ onBackHome }: KnowledgeHubPageProps) {
             <p className="knowledge-hub-page__news-status">{s.loadingNews}</p>
           )}
           {newsError && (
-            <p className="knowledge-hub-page__news-status">
+            <p className="knowledge-hub-page__news-status knowledge-hub-page__news-status--error" role="alert">
               {s.newsErrorPrefix}
             </p>
           )}

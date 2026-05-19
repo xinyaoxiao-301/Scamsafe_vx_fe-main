@@ -367,7 +367,14 @@
 }
 
 .knowledge-hub-page__news-status--error {
-  color: #b42318;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 0, 0, 0.35);
+  background: rgba(255, 0, 0, 0.08);
+  color: #8b0000;
+  font-weight: 800;
+  line-height: 1.45;
+  text-align: center;
 }
 
 @keyframes knowledge-hub-reader-open {

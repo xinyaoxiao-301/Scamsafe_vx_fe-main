@@ -202,19 +202,31 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const isApiMode = true
 
   useEffect(() => {
+    // On mobile, keep the first view anchored on Step 1 until the learner has
+    // actually picked a category and started the chat flow.
+    if (!scenarioType) return
+
     const frameId = window.requestAnimationFrame(() => {
       keepLatestChatVisible()
     })
 
     return () => window.cancelAnimationFrame(frameId)
-  }, [messages, isBotTyping])
+  }, [scenarioType, messages, isBotTyping])
 
   useEffect(() => {
     if (!aiFeedback) return
-    window.setTimeout(() => {
+
+    inputRef.current?.blur()
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
+
+    const timeoutId = window.setTimeout(() => {
       feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 0)
-  }, [aiFeedback])
+    }, isMobile ? 180 : 0)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [aiFeedback, isMobile])
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 30_000)
@@ -244,6 +256,14 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     input.focus()
     const valueLength = input.value.length
     input.setSelectionRange?.(valueLength, valueLength)
+  }
+
+  const dismissComposerFocus = () => {
+    inputRef.current?.blur()
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
   }
 
   const clearSpeechRecognitionState = () => {
@@ -481,10 +501,12 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
       setIsBotTyping(true)
       try {
         const result = await quitSimulationSession(sessionId)
+        dismissComposerFocus()
         setAiFeedback(result.feedback)
         setLastOutcome('safe')
         recordPerformance(scenarioType, 'safe')
       } catch {
+        dismissComposerFocus()
         setAiFeedback(s.safeQuitFeedback)
         setLastOutcome('safe')
         recordPerformance(scenarioType, 'safe')
@@ -503,11 +525,13 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
       // The backend is the source of truth for whether the learner stayed safe,
       // fell for the scam, or simply continues the conversation.
       if (result.fell_for_scam) {
+        dismissComposerFocus()
         setAiFeedback(result.feedback)
         setLastOutcome('risky')
         recordPerformance(scenarioType, 'risky')
         setIsFinished(true)
       } else if (result.session_ended) {
+        dismissComposerFocus()
         setAiFeedback(result.feedback)
         setLastOutcome('safe')
         recordPerformance(scenarioType, 'safe')
@@ -686,18 +710,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 aria-label={s.messagesLabel}
               >
                 <header className="scam-simulation-page__phone-header">
-                  <div className="scam-simulation-page__phone-left" aria-hidden="true">
-                    <div className="scam-simulation-page__bot-avatar">
-                      <svg className="scam-simulation-page__bot-icon" viewBox="0 0 48 48">
-                        <path d="M24 8v5" />
-                        <path d="M14 18a6 6 0 0 1 6-6h8a6 6 0 0 1 6 6v9a6 6 0 0 1-6 6h-8a6 6 0 0 1-6-6v-9Z" />
-                        <circle cx="20" cy="22" r="1.8" />
-                        <circle cx="28" cy="22" r="1.8" />
-                        <path d="M19.2 28c1.4 1.2 3 1.8 4.8 1.8 1.8 0 3.4-.6 4.8-1.8" />
-                        <path d="M14 21h-3" />
-                        <path d="M37 21h-3" />
-                      </svg>
-                    </div>
+                  <div className="scam-simulation-page__phone-left">
                     <p className="scam-simulation-page__phone-title">
                       {scenarioType ? scenarioLabels[scenarioType] : s.phoneDefaultTitle}
                     </p>
