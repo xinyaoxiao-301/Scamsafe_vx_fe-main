@@ -220,6 +220,8 @@ export type Strings = {
     reviewNote: string
     completeNote: string
     confirmLabel: string
+    confirmReminderTitle: string
+    confirmReminderText: string
     nextStepButton: string
     emergencySide: {
       policeTitle: string

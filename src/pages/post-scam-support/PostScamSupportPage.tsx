@@ -17,6 +17,7 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
   const [selectedIncident, setSelectedIncident] = useState<'transferred-money' | null>(null)
   const [completedCount, setCompletedCount] = useState(0)
   const [isCurrentStepConfirmed, setIsCurrentStepConfirmed] = useState(false)
+  const [showConfirmReminder, setShowConfirmReminder] = useState(false)
   const [reviewingStepIndex, setReviewingStepIndex] = useState<number | null>(null)
   const trackerRef = useRef<HTMLDivElement | null>(null)
 
@@ -52,6 +53,7 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
     setSelectedIncident('transferred-money')
     setCompletedCount(0)
     setIsCurrentStepConfirmed(false)
+    setShowConfirmReminder(false)
     setReviewingStepIndex(null)
 
     requestAnimationFrame(() => {
@@ -63,9 +65,13 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
   }
 
   const completeCurrentStep = () => {
-    if (!isCurrentStepConfirmed) return
+    if (!isCurrentStepConfirmed) {
+      setShowConfirmReminder(true)
+      return
+    }
     setCompletedCount((count) => Math.min(count + 1, steps.length))
     setIsCurrentStepConfirmed(false)
+    setShowConfirmReminder(false)
     setReviewingStepIndex(null)
 
     requestAnimationFrame(() => {
@@ -80,6 +86,7 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
     if (index > completedCount) return
     setReviewingStepIndex(index === completedCount ? null : index)
     setIsCurrentStepConfirmed(false)
+    setShowConfirmReminder(false)
   }
 
   return (
@@ -182,17 +189,40 @@ export function PostScamSupportPage({ onBackHome }: PostScamSupportPageProps) {
                     </p>
                   ) : (
                     <>
-                      <label className="support-recovery-page__confirm-check">
+                      <label
+                        className={[
+                          'support-recovery-page__confirm-check',
+                          !isCurrentStepConfirmed ? 'support-recovery-page__confirm-check--prompting' : '',
+                        ].filter(Boolean).join(' ')}
+                      >
                         <input
                           type="checkbox"
                           checked={isCurrentStepConfirmed}
-                          onChange={(event) => setIsCurrentStepConfirmed(event.target.checked)}
+                          onChange={(event) => {
+                            setIsCurrentStepConfirmed(event.target.checked)
+                            if (event.target.checked) {
+                              setShowConfirmReminder(false)
+                            }
+                          }}
                         />
                         <span>{s.confirmLabel}</span>
                       </label>
+                      {showConfirmReminder ? (
+                        <div
+                          className="support-recovery-page__confirm-reminder"
+                          role="alert"
+                          aria-live="assertive"
+                        >
+                          <p className="support-recovery-page__confirm-reminder-title">
+                            {s.confirmReminderTitle}
+                          </p>
+                          <p className="support-recovery-page__confirm-reminder-text">
+                            {s.confirmReminderText}
+                          </p>
+                        </div>
+                      ) : null}
                       <Button
                         onClick={completeCurrentStep}
-                        disabled={!isCurrentStepConfirmed}
                         className="support-recovery-page__active-button"
                       >
                         {s.nextStepButton}

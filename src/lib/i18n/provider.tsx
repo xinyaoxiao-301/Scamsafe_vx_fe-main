@@ -315,6 +315,8 @@ const STRINGS: Record<Language, Strings> = {
       reviewNote: 'You are reviewing an earlier step. Return to the active step in the tracker when you are ready to continue.',
       completeNote: 'Complete this action in real life before unlocking the next step.',
       confirmLabel: 'I have completed this action.',
+      confirmReminderTitle: 'Please confirm this step first.',
+      confirmReminderText: 'Tick the box only after you have really completed this action, then continue to the next step.',
       nextStepButton: 'Next',
       emergencySide: {
         policeTitle: 'Police',
@@ -884,6 +886,8 @@ const STRINGS: Record<Language, Strings> = {
       reviewNote: 'Anda sedang menyemak langkah terdahulu. Kembali ke langkah aktif dalam penjejak apabila anda sedia untuk teruskan.',
       completeNote: 'Selesaikan tindakan ini dalam kehidupan sebenar sebelum membuka langkah seterusnya.',
       confirmLabel: 'Saya telah menyelesaikan tindakan ini.',
+      confirmReminderTitle: 'Sila sahkan langkah ini dahulu.',
+      confirmReminderText: 'Tandakan kotak ini hanya selepas anda benar-benar menyelesaikan tindakan ini, kemudian teruskan ke langkah seterusnya.',
       nextStepButton: 'Seterusnya',
       emergencySide: {
         policeTitle: 'Polis',
@@ -1451,6 +1455,8 @@ const STRINGS: Record<Language, Strings> = {
       reviewNote: '你正在查看之前的步骤。准备继续时，请回到进度条中的当前步骤。',
       completeNote: '请先在现实中完成这个行动，再解锁下一步。',
       confirmLabel: '我已完成这个行动。',
+      confirmReminderTitle: '请先确认这一步。',
+      confirmReminderText: '请在你真的完成这个行动后再勾选，然后继续下一步。',
       nextStepButton: '下一步',
       emergencySide: {
         policeTitle: '警方',
