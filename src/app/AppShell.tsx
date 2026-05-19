@@ -168,6 +168,8 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
     return '中文'
   }
 
+  const desktopLanguageButtonLabel = strings.ui.languageOption[language]
+
   return (
     <div className="app-shell">
       <div className="app-shell__ambient" aria-hidden="true" />
@@ -269,7 +271,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                   aria-expanded={isLangMenuOpen}
                   onClick={() => setIsLangMenuOpen((open) => !open)}
                 >
-                  {strings.ui.language}
+                  {desktopLanguageButtonLabel}
                 </button>
                 {isLangMenuOpen ? (
                   <div className="app-shell__lang-menu" role="menu" aria-label={strings.ui.language}>
