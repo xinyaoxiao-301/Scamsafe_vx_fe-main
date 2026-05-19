@@ -16,10 +16,11 @@ function supportsNativeNotifications() {
   return typeof window !== 'undefined' && 'Notification' in window
 }
 
-export function useNotificationTraining(enabled: boolean, language = 'en') {
+export function useNotificationTraining(enabled: boolean, language = 'en', notificationTitle = 'ScamSafe notification training') {
   const entryTimeRef = useRef<number | null>(null)
   const hasTriggeredRef = useRef(false)
   const notificationRef = useRef<Notification | null>(null)
+  const previousLanguageRef = useRef(language)
   const [activeScenario, setActiveScenario] = useState<StoredNotificationScenario | null>(null)
   const [permission, setPermission] = useState<NotificationPermissionState>(() => {
     if (!supportsNativeNotifications()) {
@@ -84,6 +85,26 @@ export function useNotificationTraining(enabled: boolean, language = 'en') {
   }, [enabled])
 
   useEffect(() => {
+    if (previousLanguageRef.current === language) {
+      return
+    }
+
+    previousLanguageRef.current = language
+
+    if (!enabled || (!activeScenario && !notificationRef.current)) {
+      return
+    }
+
+    // If the user changes language while a training alert is visible, replace
+    // that in-flight scenario so the refreshed preview comes back localized.
+    notificationRef.current?.close()
+    notificationRef.current = null
+    setActiveScenario(null)
+    hasTriggeredRef.current = false
+    entryTimeRef.current = Date.now() - FIRST_NOTIFICATION_DELAY_MS
+  }, [activeScenario, enabled, language])
+
+  useEffect(() => {
     if (!enabled || hasTriggeredRef.current) {
       return
     }
@@ -123,7 +144,7 @@ export function useNotificationTraining(enabled: boolean, language = 'en') {
 
           if (permission === 'granted') {
             try {
-              const nativeNotification = new window.Notification('ScamSafe notification training', {
+              const nativeNotification = new window.Notification(notificationTitle, {
                 body: scenario.message,
                 icon: logo,
                 requireInteraction: true,
@@ -155,7 +176,7 @@ export function useNotificationTraining(enabled: boolean, language = 'en') {
       isCancelled = true
       window.clearTimeout(timeoutId)
     }
-  }, [enabled, language, permission])
+  }, [enabled, language, notificationTitle, permission])
 
   useEffect(() => {
     if (!enabled) {

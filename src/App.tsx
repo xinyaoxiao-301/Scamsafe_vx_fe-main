@@ -45,15 +45,15 @@ function AppContent() {
   const [showDismissedScamToast, setShowDismissedScamToast] = useState(false)
   const hasAcceptedSiteDisclaimer = siteEntryState === 'accepted'
   const hasDeclinedSiteDisclaimer = siteEntryState === 'declined'
+  const siteDisclaimerStrings = strings.siteDisclaimer
+  const notificationStrings = strings.notificationTraining
 
   // Pass the active language so the hook fetches a localised notification message.
   const { activeScenario, dismissScenario, openScenario } = useNotificationTraining(
     hasAcceptedSiteDisclaimer,
     language,
+    notificationStrings.practiceAlertName,
   )
-
-  const siteDisclaimerStrings = strings.siteDisclaimer
-  const notificationStrings = strings.notificationTraining
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -73,6 +73,12 @@ function AppContent() {
       window.removeEventListener('hashchange', handleHashChange)
     }
   }, [])
+
+  useEffect(() => {
+    // Treat a language change like re-entering the current feature so each page
+    // can restart with localized copy, data fetches, and default state.
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }, [language])
 
   useEffect(() => {
     if (!activeScenario) {
@@ -141,6 +147,8 @@ function AppContent() {
 
     window.location.hash = route
   }
+
+  const pageRenderKey = `${currentRoute}:${language}`
 
   const page = (() => {
     switch (currentRoute) {
@@ -246,6 +254,7 @@ function AppContent() {
       ) : (
         <>
           <AppShell
+            key={pageRenderKey}
             currentRoute={currentRoute}
             onNavigate={handleNavigate}
             enableHeroAnimations={hasAcceptedSiteDisclaimer}

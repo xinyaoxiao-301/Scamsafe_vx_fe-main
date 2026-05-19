@@ -25,6 +25,12 @@ const RISK_SCORE_MAP: Record<ScamRiskLevel, number> = {
   'Very High': 88,
 }
 
+const FALLBACK_SUMMARY_BY_LANGUAGE: Record<Language, string> = {
+  en: 'Analysis not available.',
+  ms: 'Analisis tidak tersedia.',
+  zh: '暂时无法提供分析结果。',
+}
+
 export function countWords(text: string) {
   const trimmed = text.trim()
   if (!trimmed) return 0
@@ -33,13 +39,13 @@ export function countWords(text: string) {
 
 export async function analyzeScamText(
   text: string,
-  _language: Language = 'en',
+  language: Language = 'en',
 ): Promise<ScamAnalysis> {
   try {
     const res = await fetch(`${API_BASE}/api/detect`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, language: _language }),
+      body: JSON.stringify({ text, language }),
     })
 
     if (!res.ok) {
@@ -78,7 +84,7 @@ export async function analyzeScamText(
       riskScore: 0,
       riskLevel: 'Very Low',
       scamType: 'Other',
-      summary: 'Analysis not available.',
+      summary: FALLBACK_SUMMARY_BY_LANGUAGE[language],
       indicators: [],
       guidance: [],
     }

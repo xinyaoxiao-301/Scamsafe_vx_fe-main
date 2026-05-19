@@ -1,4 +1,4 @@
-﻿// I18nProvider owns language selection, persistence, and the complete
+// I18nProvider owns language selection, persistence, and the complete
 // translation dictionary for the app. Centralizing the strings here keeps page
 // components declarative and ensures route labels stay language-aware.
 import { useEffect, useMemo, useState } from 'react'
@@ -56,6 +56,7 @@ const STRINGS: Record<Language, Strings> = {
     },
     footer: {
       title: 'References & Information',
+      copyright: 'designed by Team 08.exe',
       sourcesTitle: 'Data sources',
       sourcesKicker: 'Trusted sources used in ScamSafe',
       sourcesLead: 'These are the main websites, datasets, and official references used to support ScamSafe.',
@@ -623,6 +624,7 @@ const STRINGS: Record<Language, Strings> = {
     },
     footer: {
       title: 'Rujukan & Maklumat',
+      copyright: 'direka oleh Team 08.exe',
       sourcesTitle: 'Sumber data',
       sourcesKicker: 'Sumber dipercayai yang digunakan dalam ScamSafe',
       sourcesLead: 'Ini ialah laman web, dataset, dan rujukan rasmi utama yang digunakan untuk menyokong ScamSafe.',
@@ -1189,6 +1191,7 @@ const STRINGS: Record<Language, Strings> = {
     },
     footer: {
       title: '参考与说明',
+      copyright: '由 Team 08.exe 设计',
       sourcesTitle: '数据来源',
       sourcesKicker: 'ScamSafe 使用的可信来源',
       sourcesLead: '这里列出支持 ScamSafe 的主要网站、数据集和官方参考资料。',

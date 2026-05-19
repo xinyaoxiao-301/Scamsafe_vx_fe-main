@@ -1,3 +1,5 @@
+// Shared ESLint config for the frontend workspace. It combines the base JS
+// rules, TypeScript support, and React-specific safety checks used in dev.
 import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
@@ -24,4 +26,3 @@ export default tseslint.config(
     },
   },
 )
-

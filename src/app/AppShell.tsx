@@ -176,7 +176,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
         <header className="app-shell__brand" aria-label={strings.ui.brandLabel}>
           <div className="app-shell__brand-copy">
             <button className="app-shell__brand-home" type="button" onClick={() => onNavigate(appRoutes.home)}>
-              <img className="app-shell__brand-logo" src={logo} alt="ScamSafe logo" />
+              <img className="app-shell__brand-logo" src={logo} alt="" />
               <span className="app-shell__brand-mark">ScamSafe</span>
             </button>
           </div>
@@ -269,7 +269,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                   aria-expanded={isLangMenuOpen}
                   onClick={() => setIsLangMenuOpen((open) => !open)}
                 >
-                  Language
+                  {strings.ui.language}
                 </button>
                 {isLangMenuOpen ? (
                   <div className="app-shell__lang-menu" role="menu" aria-label={strings.ui.language}>
@@ -347,7 +347,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                       <div className="app-shell__hero-video-button" aria-label={strings.ui.tutorialVideoLabel}>
                         <iframe
                           src="https://www.youtube.com/embed/fkkt_-kdKNw?si=tBTtOybm-OvxuCmW&vq=hd1080"
-                          title="YouTube video player"
+                          title={strings.ui.tutorialVideoLabel}
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                           referrerPolicy="strict-origin-when-cross-origin"
                           allowFullScreen
@@ -475,7 +475,7 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                   )
                 ))}
               </div>
-              <p className="app-footer__copyright">© {new Date().getFullYear()} ScamSafe, designed by Team 08.exe</p>
+              <p className="app-footer__copyright">© {new Date().getFullYear()} ScamSafe, {strings.footer.copyright}</p>
             </div>
           </footer>
         </div>

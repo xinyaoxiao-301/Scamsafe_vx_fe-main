@@ -37,6 +37,7 @@ export type Strings = {
   }
   footer: {
     title: string
+    copyright: string
     sourcesTitle: string
     sourcesKicker: string
     sourcesLead: string

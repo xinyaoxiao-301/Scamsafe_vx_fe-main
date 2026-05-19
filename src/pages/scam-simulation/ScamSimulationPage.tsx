@@ -207,19 +207,23 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     if (!scenarioType) return
 
     const frameId = window.requestAnimationFrame(() => {
-      keepLatestChatVisible()
+      if (isMobile) {
+        messageEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+        return
+      }
+
+      scrollMessagesToBottom('smooth')
     })
 
     return () => window.cancelAnimationFrame(frameId)
-  }, [scenarioType, messages, isBotTyping])
+  }, [isMobile, scenarioType, messages, isBotTyping])
 
   useEffect(() => {
     if (!aiFeedback) return
 
-    inputRef.current?.blur()
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur()
-    }
+    // Final feedback should take over the viewport on mobile, so close the
+    // keyboard first and only then scroll to the report block.
+    dismissComposerFocus()
 
     const timeoutId = window.setTimeout(() => {
       feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -234,9 +238,9 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   }, [])
 
   useEffect(() => {
-    if (!canCompose || isListening) return
+    if (!canCompose || isListening || isMobile) return
     focusComposerInput()
-  }, [canCompose, isBotTyping, isListening])
+  }, [canCompose, isBotTyping, isListening, isMobile])
 
   useEffect(() => {
     if (scenarioType && scenarioType !== 'mixed-scams') {
@@ -259,6 +263,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   }
 
   const dismissComposerFocus = () => {
+    // Blurring both the known input ref and the active element covers iOS
+    // keyboard cases where focus moved during the send/feedback transition.
     inputRef.current?.blur()
 
     if (document.activeElement instanceof HTMLElement) {
@@ -286,7 +292,6 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   const keepLatestChatVisible = () => {
     if (isMobile) {
       messageEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-      inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
       return
     }
 
@@ -459,7 +464,16 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   useEffect(() => {
     return () => {
-      stopSpeechRecognition()
+      const recognition = recognitionRef.current
+
+      if (recognition) {
+        recognition.onstart = null
+        recognition.onend = null
+        recognition.onerror = null
+        recognition.onresult = null
+        recognition.stop?.()
+        recognitionRef.current = null
+      }
 
       if (!sessionId) return
 
