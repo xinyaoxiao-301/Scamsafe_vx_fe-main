@@ -208,7 +208,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
     const frameId = window.requestAnimationFrame(() => {
       if (isMobile) {
-        messageEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+        scrollMessagesToBottom('auto')
         return
       }
 
@@ -238,15 +238,21 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
   }, [])
 
   useEffect(() => {
+    if (!scenarioType || !isMobile) return
+
+    const frameId = window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        scrollElementToViewportTop(chatCardRef.current)
+      })
+    })
+
+    return () => window.cancelAnimationFrame(frameId)
+  }, [isMobile, scenarioType])
+
+  useEffect(() => {
     if (!canCompose || isListening || isMobile) return
     focusComposerInput()
   }, [canCompose, isBotTyping, isListening, isMobile])
-
-  useEffect(() => {
-    if (scenarioType && scenarioType !== 'mixed-scams') {
-      setShowSpecificScenarios(true)
-    }
-  }, [scenarioType])
 
   const timeLocale = language === 'ms' ? 'ms-MY' : language === 'zh' ? 'zh-Hans-MY' : 'en-MY'
   const timeLabel  = new Intl.DateTimeFormat(timeLocale, {
@@ -291,7 +297,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
   const keepLatestChatVisible = () => {
     if (isMobile) {
-      messageEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      scrollMessagesToBottom('smooth')
       return
     }
 
@@ -323,6 +329,18 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
 
     window.scrollTo({
       top: Math.max(0, targetTop),
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    })
+  }
+
+  const scrollElementToViewportTop = (element: HTMLElement | null) => {
+    if (!element) return
+
+    const rect = element.getBoundingClientRect()
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    window.scrollTo({
+      top: Math.max(0, window.scrollY + rect.top),
       behavior: reduceMotion ? 'auto' : 'smooth',
     })
   }
@@ -416,13 +434,16 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
     setMessages([])
     setIsBotTyping(true)
     setIsChatPopping(false)
+    setShowSpecificScenarios(false)
 
     window.requestAnimationFrame(() => {
-      scrollElementToViewportCenter(chatCardRef.current)
+      window.requestAnimationFrame(() => {
+        scrollElementToViewportCenter(chatCardRef.current)
 
-      if (!isMobile) {
-        window.setTimeout(() => setIsChatPopping(true), 120)
-      }
+        if (!isMobile) {
+          window.setTimeout(() => setIsChatPopping(true), 120)
+        }
+      })
     })
 
     try {
@@ -440,7 +461,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
       setMessages([{
         id:        `bot-err-${Date.now()}`,
         from:      'bot',
-        text:      'Sorry, could not start the simulation. Please try again.',
+        text:      s.startError,
         timestamp: Date.now(),
       }])
     } finally {
@@ -567,7 +588,7 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
         {
           id:        `bot-err-${Date.now()}`,
           from:      'bot',
-          text:      'Something went wrong. Please try again.',
+          text:      s.messageError,
           timestamp: Date.now(),
         },
       ])
@@ -690,31 +711,32 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
         </SectionCard>
 
         {/* ── Chat phone UI ───────────────────────────────────────────── */}
-        <SectionCard
-          className={
-            [
-              'scam-simulation-page__card',
-              'scam-simulation-page__card--chat',
-              showSpecificScenarios ? 'scam-simulation-page__card--chat-condensed' : '',
-            ]
-              .filter(Boolean)
-              .join(' ')
-          }
-          eyebrow={s.step2Eyebrow}
-          title={s.step2Title}
-          description={s.step2Description}
-          footer={
-            <div className="scam-simulation-page__footer-actions">
-              <Button variant="secondary" onClick={resetScenario} disabled={!scenarioType}>
-                {s.reset}
-              </Button>
-              <Button variant="secondary" onClick={onBackHome}>
-                {strings.common.backToHome}
-              </Button>
-            </div>
-          }
-        >
-          <div className="scam-simulation-page__chat" ref={chatCardRef}>
+        <div ref={chatCardRef}>
+          <SectionCard
+            className={
+              [
+                'scam-simulation-page__card',
+                'scam-simulation-page__card--chat',
+                showSpecificScenarios ? 'scam-simulation-page__card--chat-condensed' : '',
+              ]
+                .filter(Boolean)
+                .join(' ')
+            }
+            eyebrow={s.step2Eyebrow}
+            title={s.step2Title}
+            description={s.step2Description}
+            footer={
+              <div className="scam-simulation-page__footer-actions">
+                <Button variant="secondary" onClick={resetScenario} disabled={!scenarioType}>
+                  {s.reset}
+                </Button>
+                <Button variant="secondary" onClick={onBackHome}>
+                  {strings.common.backToHome}
+                </Button>
+              </div>
+            }
+          >
+            <div className="scam-simulation-page__chat">
               <div
                 className={
                   isChatPopping
@@ -866,7 +888,8 @@ export function ScamSimulationPage({ onBackHome }: ScamSimulationPageProps) {
                 </div>
               </div>
             </div>
-        </SectionCard>
+          </SectionCard>
+        </div>
       </section>
 
       {/* Feedback report (shared under Step 1 + Step 2) */}

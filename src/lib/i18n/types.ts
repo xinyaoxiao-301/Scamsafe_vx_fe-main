@@ -422,6 +422,8 @@ export type Strings = {
     progressHideCategories: string
     showSpecificScenarios: string
     hideSpecificScenarios: string
+    startError: string
+    messageError: string
     safeQuitFeedback: string
     riskyOutcomeTitle: string
     safeOutcomeTitle: string

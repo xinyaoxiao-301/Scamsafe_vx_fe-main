@@ -905,9 +905,12 @@
   }
 
   .scam-simulation-page__phone {
-    height: 100%;
+    /* Keep the desktop/tablet chat frame at a fixed height. Using 100% here
+       lets the card fall back to content-based sizing, which makes the whole
+       right column grow as more messages are added. */
+    height: var(--sim-phone-height);
     min-height: var(--sim-phone-height);
-    max-height: none;
+    max-height: var(--sim-phone-height);
   }
 
   .scam-simulation-page__card--chat .section-card__footer {
@@ -915,9 +918,9 @@
   }
 
   .scam-simulation-page__card--chat-condensed .scam-simulation-page__phone {
-    height: 100%;
+    height: var(--sim-phone-height);
     min-height: var(--sim-phone-height);
-    max-height: none;
+    max-height: var(--sim-phone-height);
     flex: 1 1 auto;
   }
 
@@ -952,9 +955,9 @@
   }
 
   .scam-simulation-page__card--chat-condensed .scam-simulation-page__phone {
-    height: 100%;
+    height: var(--sim-phone-height);
     min-height: var(--sim-phone-height);
-    max-height: none;
+    max-height: var(--sim-phone-height);
     flex-basis: auto;
   }
 
@@ -1078,21 +1081,17 @@
     padding-bottom: 0;
     line-height: calc(var(--sim-composer-control-size) - 2px);
     -webkit-tap-highlight-color: transparent;
+    text-align: left;
   }
 
   .scam-simulation-page__input::placeholder {
     /* Placeholder copy is longer than the actual user draft, so shrink it on
        phones to keep the full instruction visible inside the composer pill. */
+    display: block;
+    width: 100%;
     font-size: 0.67em;
     line-height: inherit;
-  }
-
-  .scam-simulation-page__input:placeholder-shown {
     text-align: center;
-  }
-
-  .scam-simulation-page__input:not(:placeholder-shown) {
-    text-align: left;
   }
 
   .scam-simulation-page__input:focus {

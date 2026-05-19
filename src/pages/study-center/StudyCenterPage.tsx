@@ -61,6 +61,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   const featuredTopic = topics.find((item) => item.topic === 'mixed') ?? topics[0]
   const specificTopics = topics.filter((item) => item.topic !== 'mixed')
   const [sessions, setSessions] = useState<QuizSessionRecord[]>(() => getSessions())
+  const step1CardRef = useRef<HTMLDivElement | null>(null)
   const questionRef = useRef<HTMLParagraphElement | null>(null)
   const feedbackRef = useRef<HTMLDivElement | null>(null)
   const pendingScrollTargetRef = useRef<'feedback' | 'question' | null>(null)
@@ -100,6 +101,17 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     window.scrollTo({ top: Math.max(0, targetTop), behavior: reduceMotion ? 'auto' : 'smooth' })
   }
 
+  const scrollElementToViewportTop = (element: HTMLElement | null) => {
+    if (!element) return
+
+    const rect = element.getBoundingClientRect()
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    window.scrollTo({
+      top: Math.max(0, window.scrollY + rect.top),
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    })
+  }
+
   useEffect(() => {
     if (selectedTopic !== 'mixed') {
       setShowSpecificTopics(true)
@@ -109,11 +121,15 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   useEffect(() => {
     if (pendingScrollTargetRef.current !== 'feedback' || !hasSubmitted) return
     const frame = window.requestAnimationFrame(() => {
-      scrollElementToViewportCenter(feedbackRef.current)
+      if (isMobile) {
+        scrollElementToViewportTop(step2CardRef.current)
+      } else {
+        scrollElementToViewportCenter(feedbackRef.current)
+      }
       pendingScrollTargetRef.current = null
     })
     return () => window.cancelAnimationFrame(frame)
-  }, [hasSubmitted])
+  }, [hasSubmitted, isMobile])
 
   useEffect(() => {
     if (pendingScrollTargetRef.current !== 'question') return
@@ -144,7 +160,11 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     setIsStep2Popping(false)
 
     window.requestAnimationFrame(() => {
-      scrollElementToViewportCenter(step2CardRef.current)
+      if (isMobile) {
+        scrollElementToViewportTop(step2CardRef.current)
+      } else {
+        scrollElementToViewportCenter(step2CardRef.current)
+      }
       window.setTimeout(() => setIsStep2Popping(true), 120)
     })
 
@@ -163,6 +183,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
   }
 
   const reset = () => {
+    pendingScrollTargetRef.current = null
     setQuizQuestions(null)
     setIndex(0)
     setSelectedOptionId(null)
@@ -174,6 +195,11 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
     setIsFinished(false)
     setIsLoadingQuiz(false)
     setIsStep2Popping(false)
+
+    // Restarting should always return the viewport to the Step 1 picker.
+    window.requestAnimationFrame(() => {
+      scrollElementToViewportTop(step1CardRef.current)
+    })
   }
 
   useEffect(() => {
@@ -304,141 +330,143 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
       </header>
 
       <section className="study-center-page__grid" aria-label={strings.studyCenter.pageLabel}>
-        <SectionCard
-          className="study-center-page__card"
-          eyebrow={strings.studyCenter.step1Eyebrow}
-          title={strings.studyCenter.step1Title}
-          description={strings.studyCenter.step1Description}
-          footer={
-            <div className="study-center-page__actions">
-              <Button variant="secondary" onClick={onBackHome}>
-                {strings.common.backToHome}
-              </Button>
-              <Button
-                className="study-center-page__action-primary"
-                onClick={() => void startQuiz()}
-                disabled={isLoadingQuiz}
-              >
-                {isLoadingQuiz ? strings.studyCenter.loadingLabel : strings.studyCenter.startQuiz}
-              </Button>
-            </div>
-          }
-        >
-          <div className="study-center-page__picker-stack">
-            <div className="study-center-page__topics study-center-page__topics--primary" role="list" aria-label={strings.studyCenter.chooseTopicLabel}>
-              {featuredTopic ? (
+        <div ref={step1CardRef}>
+          <SectionCard
+            className="study-center-page__card"
+            eyebrow={strings.studyCenter.step1Eyebrow}
+            title={strings.studyCenter.step1Title}
+            description={strings.studyCenter.step1Description}
+            footer={
+              <div className="study-center-page__actions">
+                <Button variant="secondary" onClick={onBackHome}>
+                  {strings.common.backToHome}
+                </Button>
+                <Button
+                  className="study-center-page__action-primary"
+                  onClick={() => void startQuiz()}
+                  disabled={isLoadingQuiz}
+                >
+                  {isLoadingQuiz ? strings.studyCenter.loadingLabel : strings.studyCenter.startQuiz}
+                </Button>
+              </div>
+            }
+          >
+            <div className="study-center-page__picker-stack">
+              <div className="study-center-page__topics study-center-page__topics--primary" role="list" aria-label={strings.studyCenter.chooseTopicLabel}>
+                {featuredTopic ? (
+                  <button
+                    key={featuredTopic.topic}
+                    type="button"
+                    className={
+                      [
+                        'study-center-page__topic',
+                        selectedTopic === featuredTopic.topic ? 'study-center-page__topic--active' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')
+                    }
+                    onClick={() => {
+                      if (isMobile) {
+                        void startQuiz(featuredTopic.topic)
+                        return
+                      }
+                      setSelectedTopic(featuredTopic.topic)
+                    }}
+                    aria-label={featuredTopic.title}
+                    aria-describedby={`sc-topic-tip-${featuredTopic.topic}`}
+                  >
+                    <p className="study-center-page__topic-title">{featuredTopic.title}</p>
+                    <span
+                      id={`sc-topic-tip-${featuredTopic.topic}`}
+                      className="study-center-page__topic-tooltip"
+                      role="tooltip"
+                    >
+                      {featuredTopic.description}
+                    </span>
+                  </button>
+                ) : null}
+              </div>
+
+              <div className="study-center-page__specific-picker">
                 <button
-                  key={featuredTopic.topic}
                   type="button"
                   className={
                     [
-                      'study-center-page__topic',
-                      selectedTopic === featuredTopic.topic ? 'study-center-page__topic--active' : '',
+                      'study-center-page__specific-toggle',
+                      showSpecificTopics ? 'study-center-page__specific-toggle--open' : '',
                     ]
                       .filter(Boolean)
                       .join(' ')
                   }
-                  onClick={() => {
-                    if (isMobile) {
-                      void startQuiz(featuredTopic.topic)
-                      return
-                    }
-                    setSelectedTopic(featuredTopic.topic)
-                  }}
-                  aria-label={featuredTopic.title}
-                  aria-describedby={`sc-topic-tip-${featuredTopic.topic}`}
+                  aria-expanded={showSpecificTopics}
+                  aria-controls="study-specific-topics"
+                  onClick={() => setShowSpecificTopics((value) => !value)}
                 >
-                  <p className="study-center-page__topic-title">{featuredTopic.title}</p>
-                  <span
-                    id={`sc-topic-tip-${featuredTopic.topic}`}
-                    className="study-center-page__topic-tooltip"
-                    role="tooltip"
-                  >
-                    {featuredTopic.description}
+                  <span>{showSpecificTopics ? hideSpecificTopicToggleLabel : specificTopicToggleLabel}</span>
+                  <span className="study-center-page__specific-toggle-icon" aria-hidden="true">
+                    ▾
                   </span>
                 </button>
-              ) : null}
-            </div>
 
-            <div className="study-center-page__specific-picker">
-              <button
-                type="button"
-                className={
-                  [
-                    'study-center-page__specific-toggle',
-                    showSpecificTopics ? 'study-center-page__specific-toggle--open' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')
-                }
-                aria-expanded={showSpecificTopics}
-                aria-controls="study-specific-topics"
-                onClick={() => setShowSpecificTopics((value) => !value)}
-              >
-                <span>{showSpecificTopics ? hideSpecificTopicToggleLabel : specificTopicToggleLabel}</span>
-                <span className="study-center-page__specific-toggle-icon" aria-hidden="true">
-                  ▾
-                </span>
-              </button>
-
-              {showSpecificTopics ? (
-                <div
-                  id="study-specific-topics"
-                  className="study-center-page__topics study-center-page__topics--specific"
-                  role="list"
-                  aria-label={specificTopicToggleLabel}
-                >
-                  {specificTopics.map((item) => {
-                    const tooltipId = `sc-topic-tip-${item.topic}`
-                    return (
-                      <button
-                        key={item.topic}
-                        type="button"
-                        className={
-                          [
-                            'study-center-page__topic',
-                            selectedTopic === item.topic ? 'study-center-page__topic--active' : '',
-                          ]
-                            .filter(Boolean)
-                            .join(' ')
-                        }
-                        onClick={() => {
-                          if (isMobile) {
-                            setShowSpecificTopics(true)
-                            void startQuiz(item.topic)
-                            return
+                {showSpecificTopics ? (
+                  <div
+                    id="study-specific-topics"
+                    className="study-center-page__topics study-center-page__topics--specific"
+                    role="list"
+                    aria-label={specificTopicToggleLabel}
+                  >
+                    {specificTopics.map((item) => {
+                      const tooltipId = `sc-topic-tip-${item.topic}`
+                      return (
+                        <button
+                          key={item.topic}
+                          type="button"
+                          className={
+                            [
+                              'study-center-page__topic',
+                              selectedTopic === item.topic ? 'study-center-page__topic--active' : '',
+                            ]
+                              .filter(Boolean)
+                              .join(' ')
                           }
-                          setSelectedTopic(item.topic)
-                          setShowSpecificTopics(true)
-                        }}
-                        aria-label={item.title}
-                        aria-describedby={tooltipId}
-                      >
-                        <p className="study-center-page__topic-title">{item.title}</p>
-                        <span
-                          id={tooltipId}
-                          className="study-center-page__topic-tooltip"
-                          role="tooltip"
+                          onClick={() => {
+                            if (isMobile) {
+                              setShowSpecificTopics(true)
+                              void startQuiz(item.topic)
+                              return
+                            }
+                            setSelectedTopic(item.topic)
+                            setShowSpecificTopics(true)
+                          }}
+                          aria-label={item.title}
+                          aria-describedby={tooltipId}
                         >
-                          {item.description}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              ) : null}
+                          <p className="study-center-page__topic-title">{item.title}</p>
+                          <span
+                            id={tooltipId}
+                            className="study-center-page__topic-tooltip"
+                            role="tooltip"
+                          >
+                            {item.description}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
-        </SectionCard>
+          </SectionCard>
+        </div>
 
-        <SectionCard
-          className="study-center-page__card"
-          eyebrow={strings.studyCenter.step2Eyebrow}
-          title={strings.studyCenter.step2Title}
-          description={strings.studyCenter.step2Description}
-          footer={step2Footer}
-        >
-          <div ref={step2CardRef} />
+        <div ref={step2CardRef}>
+          <SectionCard
+            className="study-center-page__card"
+            eyebrow={strings.studyCenter.step2Eyebrow}
+            title={strings.studyCenter.step2Title}
+            description={strings.studyCenter.step2Description}
+            footer={step2Footer}
+          >
           <div
             className={
               isStep2Popping
@@ -576,7 +604,8 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
               ) : null
             )}
           </div>
-        </SectionCard>
+          </SectionCard>
+        </div>
       </section>
 
       {!sessions.length ? (
