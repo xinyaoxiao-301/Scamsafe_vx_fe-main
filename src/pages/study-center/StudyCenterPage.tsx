@@ -490,7 +490,7 @@ export function StudyCenterPage({ onBackHome }: StudyCenterPageProps) {
             {isLoadingQuiz ? (
               <div className="study-center-page__loading" role="status" aria-live="polite">
                 <div className="study-center-page__spinner" aria-hidden="true" />
-                <p>{strings.studyCenter.loadingStateLabel}</p>
+                <p className="study-center-page__loading-label">{strings.studyCenter.loadingStateLabel}</p>
               </div>
             ) : quizQuestions && current ? (
               <>

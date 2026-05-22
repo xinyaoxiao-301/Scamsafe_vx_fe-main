@@ -16,7 +16,7 @@ const imageCreditUrl =
   'https://www.freepik.com/free-photo/elderly-senior-asian-male-freelancer-casual-clothes-typing-laptop-keyboard-while-talking-smartphone-standing-desk-busy-working-home-office_25117731.htm#fromView=search&page=1&position=2&uuid=ff5cca6a-b8fa-489a-ba36-8c4ab535e59c&query=Elderly+fraud+asian+technical'
 
 export function FooterInfoPage({ kind, onBackHome }: FooterInfoPageProps) {
-  const { language, strings } = useI18n()
+  const { strings } = useI18n()
   const infoPages = [
     {
       key: 'sources' as const,
@@ -39,140 +39,17 @@ export function FooterInfoPage({ kind, onBackHome }: FooterInfoPageProps) {
     {
       title: strings.footer.sourcesSections[0]?.title ?? '',
       text: strings.footer.sourcesSections[0]?.text ?? '',
-      items: [
-        {
-          title: 'GROQ',
-          href: 'https://groq.com/',
-          host: 'groq.com',
-          badge: language === 'ms' ? 'Jawapan AI' : language === 'zh' ? 'AI 回应' : 'AI replies',
-          text:
-            language === 'ms'
-              ? 'Membantu ScamSafe memberi jawapan AI dengan lebih pantas.'
-              : language === 'zh'
-                ? '帮助 ScamSafe 更快给出 AI 回应。'
-                : 'Helps ScamSafe deliver AI replies more quickly.',
-        },
-        {
-          title: 'Neon',
-          href: 'https://console.neon.tech/app/projects/patient-waterfall-61747240',
-          host: 'console.neon.tech',
-          badge: language === 'ms' ? 'Data projek' : language === 'zh' ? '项目数据' : 'Project data',
-          text:
-            language === 'ms'
-              ? 'Membantu menyimpan data projek yang digunakan dalam laman web.'
-              : language === 'zh'
-                ? '帮助保存网站使用到的项目数据。'
-                : 'Helps store project data used by the website.',
-        },
-        {
-          title: 'NewsAPI',
-          href: 'https://newsapi.org/',
-          host: 'newsapi.org',
-          badge: language === 'ms' ? 'Berita' : language === 'zh' ? '新闻来源' : 'News source',
-          text:
-            language === 'ms'
-              ? 'Dirujuk sebagai sumber artikel berita dan pautan asal untuk kandungan berita scam.'
-              : language === 'zh'
-                ? '作为诈骗新闻内容的文章来源与原始链接参考。'
-                : 'Referenced as a news source for article sourcing and original links.',
-        },
-      ],
+      items: strings.footer.sourceGroupItems[0] ?? [],
     },
     {
       title: strings.footer.sourcesSections[1]?.title ?? '',
       text: strings.footer.sourcesSections[1]?.text ?? '',
-      items: [
-        {
-          title: 'Call Transcripts Scam Determinations',
-          href: 'https://www.kaggle.com/datasets/mealss/call-transcripts-scam-determinations?resource=download',
-          host: 'kaggle.com',
-          badge: language === 'ms' ? 'Panggilan' : language === 'zh' ? '通话示例' : 'Call examples',
-          text:
-            language === 'ms'
-              ? 'Dirujuk untuk mempelajari contoh perbualan panggilan scam.'
-              : language === 'zh'
-                ? '用于参考诈骗电话对话示例。'
-                : 'Referenced to study examples of scam phone conversations.',
-        },
-        {
-          title: 'SMS Spam Collection Dataset',
-          href: 'https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset',
-          host: 'kaggle.com',
-          badge: language === 'ms' ? 'SMS contoh' : language === 'zh' ? '短信示例' : 'SMS examples',
-          text:
-            language === 'ms'
-              ? 'Dirujuk untuk mengenal pasti corak mesej scam yang biasa.'
-              : language === 'zh'
-                ? '用于参考常见诈骗短信模式。'
-                : 'Referenced to study common scam message patterns.',
-        },
-        {
-          title: 'SMS Spam Dataset',
-          href: 'https://www.kaggle.com/datasets/tapakah68/spam-text-messages-dataset',
-          host: 'kaggle.com',
-          badge: language === 'ms' ? 'Teks contoh' : language === 'zh' ? '文本示例' : 'Text examples',
-          text:
-            language === 'ms'
-              ? 'Menambah lebih banyak contoh teks scam untuk rujukan corak projek.'
-              : language === 'zh'
-                ? '补充更多诈骗文本示例和变化写法参考。'
-                : 'Adds more scam text examples and wording variations for project reference.',
-        },
-        {
-          title: 'Older Adults Most Affected by Online Scams',
-          href: 'https://www.nst.com.my/news/nation/2024/12/1149805/updated-older-adults-most-affected-online-scams',
-          host: 'nst.com.my',
-          badge: language === 'ms' ? 'Berita' : language === 'zh' ? '新闻参考' : 'News reference',
-          text:
-            language === 'ms'
-              ? 'Dirujuk untuk statistik dan konteks tentang warga emas yang terkesan oleh scam dalam talian.'
-              : language === 'zh'
-                ? '用于参考老年人受网络诈骗影响的统计与背景。'
-                : 'Referenced for statistics and context on older adults affected by online scams.',
-        },
-        {
-          title: 'Elderly Online Scam Victims Lose RM255m',
-          href: 'https://www.malaymail.com/news/malaysia/2024/09/28/bukit-aman-elderly-online-scam-victims-lose-rm255m-as-fraud-cases-surge-in-2024/151915',
-          host: 'malaymail.com',
-          badge: language === 'ms' ? 'Berita' : language === 'zh' ? '新闻参考' : 'News reference',
-          text:
-            language === 'ms'
-              ? 'Dirujuk untuk angka kerugian warga emas dan bahagian kerugian fraud dalam talian pada 2024.'
-              : language === 'zh'
-                ? '用于参考 2024 年老年人网诈损失与相关占比。'
-                : 'Referenced for 2024 elderly fraud losses and online fraud loss share.',
-        },
-        {
-          title: 'The Star',
-          href: 'https://www.thestar.com.my/',
-          host: 'thestar.com.my',
-          badge: language === 'ms' ? 'Berita' : language === 'zh' ? '新闻参考' : 'News reference',
-          text:
-            language === 'ms'
-              ? 'Dirujuk untuk konteks laporan CCID tentang kaedah scam telekomunikasi terhadap warga emas.'
-              : language === 'zh'
-                ? '用于参考 CCID 关于电信诈骗针对老年人的报道背景。'
-                : 'Referenced for CCID reporting context on telecommunication scams affecting seniors.',
-        },
-      ],
+      items: strings.footer.sourceGroupItems[1] ?? [],
     },
     {
       title: strings.footer.sourcesSections[2]?.title ?? '',
       text: strings.footer.sourcesSections[2]?.text ?? '',
-      items: [
-        {
-          title: 'NFCC / NSRC',
-          href: 'https://nfcc.jpm.gov.my/index.php/en/about-nsrc',
-          host: 'nfcc.jpm.gov.my',
-          badge: language === 'ms' ? 'Rasmi' : language === 'zh' ? '官方帮助' : 'Official help',
-          text:
-            language === 'ms'
-              ? 'Membantu kami merujuk panduan rasmi Malaysia tentang tindak balas terhadap scam.'
-              : language === 'zh'
-                ? '帮助我们参考马来西亚官方的诈骗应对信息。'
-                : 'Helps us reference official scam-response guidance in Malaysia.',
-        },
-      ],
+      items: strings.footer.sourceGroupItems[2] ?? [],
     },
   ]
   // Credits are intentionally kept verbatim because they represent external

@@ -28,6 +28,7 @@ export type Strings = {
     keyStatisticsLabel: string
     footerLabel: string
     languageOption: Record<Language, string>
+    languageMenuOption: Record<Language, string>
   }
   common: {
     backToHome: string
@@ -47,6 +48,15 @@ export type Strings = {
       title: string
       text: string
     }>
+    sourceGroupItems: Array<
+      Array<{
+        title: string
+        href: string
+        host: string
+        badge: string
+        text: string
+      }>
+    >
     sourcesCreditsTitle: string
     sourcesCreditsNote: string
     aboutTitle: string

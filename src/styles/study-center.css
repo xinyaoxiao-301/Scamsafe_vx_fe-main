@@ -251,6 +251,14 @@
   margin-left: auto;
 }
 
+.study-center-page__loading-label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
 .study-center-page__workspace {
   display: grid;
   gap: 12px;

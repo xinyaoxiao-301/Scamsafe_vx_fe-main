@@ -278,15 +278,15 @@ export function AppShell({ children, currentRoute, onNavigate, enableHeroAnimati
                     {[
                       {
                         value: 'en' as const,
-                        label: language === 'ms' ? 'Inggeris' : language === 'zh' ? '英文' : 'English',
+                        label: strings.ui.languageMenuOption.en,
                       },
                       {
                         value: 'ms' as const,
-                        label: language === 'ms' ? 'Melayu' : language === 'zh' ? '马来文' : 'Malay',
+                        label: strings.ui.languageMenuOption.ms,
                       },
                       {
                         value: 'zh' as const,
-                        label: language === 'ms' ? 'Cina' : language === 'zh' ? '中文' : 'Chinese',
+                        label: strings.ui.languageMenuOption.zh,
                       },
                     ].map((item) => (
                       <button
